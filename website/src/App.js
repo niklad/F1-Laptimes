@@ -1,5 +1,5 @@
-import logo from './bragis.jpg';
 import './App.css';
+import logo from './bragis.jpg';
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -44,12 +44,12 @@ function App() {
         <div className="App">
             <header className="App-header">
                 <img src={logo} className="App-logo" alt="logo" />
-                <p>Test: {process.env.REACT_APP_PROJECT_ID}</p>
                 <p>
                     <br />
                     <br />
                     Hei.
                 </p>
+                process.env.REACT_APP_TEST_VARIABLE: {process.env.REACT_APP_PRIVATE_KEY}
             </header>
         </div>
     );
