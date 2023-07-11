@@ -1,17 +1,11 @@
-import logo from './bragis.jpg';
 import './App.css';
+import logo from './bragis.jpg';
 
 function App() {
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-
-                <p>
-                    <br />
-                    <br />
-                    Hei.
-                </p>
+                process.env.REACT_APP_TEST_VARIABLE: {process.env.REACT_APP_PRIVATE_KEY}
             </header>
         </div>
     );
