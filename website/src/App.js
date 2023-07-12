@@ -1,9 +1,17 @@
 import './App.css';
-import logo from './bragis.jpg';
 
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getDatabase, update, ref, set } from "firebase/database";
+import { getDatabase, ref, onValue } from "firebase/database";
+
+import { useState } from 'react';
+import { useEffect } from 'react';
+
+import Leaderboard from './components/TrackContainer';
+import TrackSelector from './components/TrackContainer/HeaderAndTrackSelector';
+
+import './styles/HeaderAndTrackSelector.css';
+
+// import TrackContainer from './components/TrackContainer';
 
 // Web app's Firebase configuration
 const firebaseConfig = {
@@ -17,39 +25,43 @@ const firebaseConfig = {
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-/**
- * Register a new laptime.
- * @constructor
- * @param {string} track - Name of track.
- * @param {string} user - Name of user.
- * @param {string} timestamp - Date and time of input. Format: yyyy-dd-mm_hh-mm-ss (date_time)
- * @param {Boolean} racingline - Bool varaible indicating the use of the racing line
- * Example of use: registerLaptime('SPA', 'EIRIK', '2023-07-10_01:02:04', '01:35:699', true);
- */
-function registerLaptime(track, user, timestamp, laptime, racingline) {
-    const db = getDatabase();
-    update(ref(db, track + '/' + user + '/' + timestamp), { 
-            'LAPTIME': laptime,
-            'RACING_LINE': racingline
-        }
-    );
-}
 
 function App() {
+    const [track, setTrack] = useState("SPA");
+    const [trackData, setTrackData] = useState(null);
+
+    // Define the track options for the dropdown menu
+    const trackOptions = ["SPA", "SILVERSTONE"];
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
+    // Set the trackData to be the data in the database at the key of the track name, e.g. "SPA".
+    useEffect(() => {
+        const trackRef = ref(db, track);
+        onValue(trackRef, (snapshot) => {
+            const data = snapshot.val();
+            setTrackData(data);
+        });
+    }, [track]);
+
+    // Define a function to handle changes to the selected track
+    const handleTrackChange = (event) => {
+        setTrack(event.target.value);
+    };
 
     return (
         <div className="App">
             <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo" />
-                <p>
-                    <br />
-                    <br />
-                    Hei.
-                </p>
-                process.env.REACT_APP_TEST_VARIABLE: {process.env.REACT_APP_PRIVATE_KEY}
+                <h1>
+                    <TrackSelector
+                        trackOptions={trackOptions}
+                        selectedTrack={track}
+                        onChange={handleTrackChange}
+                    />
+                </h1>
+                {trackData && <Leaderboard trackData={trackData} />}
             </header>
         </div>
     );
