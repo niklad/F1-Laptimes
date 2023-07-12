@@ -29,7 +29,7 @@ const trackFlagMap = {
 
 // A map of track names to track country
 const trackCountryMap = {
-    "SILVERSTONE": "UNITED KINGDOM",
+    "SILVERSTONE": "UK",
     "SPA": "BELGIUM",
     "SUZUKA": "JAPAN",
     "MONZA": "ITALY",
@@ -37,8 +37,8 @@ const trackCountryMap = {
     "MELBOURNE": "AUSTRALIA",
     "BAKU": "AZERBAIJAN",
     "SINGAPORE": "SINGAPORE",
-    "ABU DHABI": "UNITED ARAB EMIRATES",
-    "AUSTIN": "UNITED STATES",
+    "ABU DHABI": "UAE",
+    "AUSTIN": "US",
     "INTERLAGOS": "BRAZIL",
     "MONACO": "MONACO",
     "BAHRAIN": "BAHRAIN",
