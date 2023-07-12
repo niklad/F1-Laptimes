@@ -34,7 +34,8 @@ function App() {
     const [displayMode, setDisplayMode] = useState("leaderboard"); // "leaderboard", "addTime" or "statistics"
 
     // Define the track options for the dropdown menu
-    const trackOptions = ["SPA",
+    const trackOptions = [
+        "SPA",
         "SILVERSTONE",
         "SUZUKA",
         "MONZA",

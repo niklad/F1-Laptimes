@@ -1,9 +1,10 @@
 
 .leaderboard-table {
     border-collapse: separate;
-    border-spacing: 10px 10px; /* updated value */
+    border-spacing: 10px 10px;
     width: 100%;
-    margin-bottom: 70px; /* add margin to the bottom of the leaderboard */
+    margin-top: 50px; /* Change the value to adjust the distance */
+    margin-bottom: 70px;
 }
 
 .leaderboard-table td, .leaderboard-table th {
