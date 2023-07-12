@@ -3,13 +3,11 @@ import './App.css';
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue, update, get } from "firebase/database";
 
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-import Leaderboard from './components/TrackContainer';
-import TrackSelector from './components/TrackContainer/HeaderAndTrackSelector';
-import AddLaptimeForm from './components/TrackContainer/AddTimeButton';
-// import handleAddLaptime from './components/TrackContainer/AddTimeButton';
+import Leaderboard from './components/Leaderboard';
+import TrackSelector from './components/HeaderAndTrackSelector';
+import AddLaptimeForm from './components/AddTimeButton';
 
 import './styles/HeaderAndTrackSelector.css';
 
