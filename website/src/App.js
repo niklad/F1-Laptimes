@@ -10,6 +10,7 @@ import TrackSelector from './components/HeaderAndTrackSelector';
 import AddLaptimeForm from './components/AddTimeButton';
 
 import './styles/HeaderAndTrackSelector.css';
+import './styles/Buttons.css';
 
 // import TrackContainer from './components/TrackContainer';
 
