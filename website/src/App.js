@@ -1,13 +1,15 @@
 import './App.css';
 
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, onValue } from "firebase/database";
+import { getDatabase, ref, onValue, update, get } from "firebase/database";
 
 import { useState } from 'react';
 import { useEffect } from 'react';
 
 import Leaderboard from './components/TrackContainer';
 import TrackSelector from './components/TrackContainer/HeaderAndTrackSelector';
+import AddLaptimeForm from './components/TrackContainer/AddTimeButton';
+// import handleAddLaptime from './components/TrackContainer/AddTimeButton';
 
 import './styles/HeaderAndTrackSelector.css';
 
@@ -26,9 +28,11 @@ const firebaseConfig = {
 };
 
 
+
 function App() {
     const [track, setTrack] = useState("SPA");
     const [trackData, setTrackData] = useState(null);
+    const [displayMode, setDisplayMode] = useState("leaderboard"); // "leaderboard", "addTime" or "statistics"
 
     // Define the track options for the dropdown menu
     const trackOptions = ["SPA", "SILVERSTONE"];
@@ -36,6 +40,8 @@ function App() {
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
+
+
 
     // Set the trackData to be the data in the database at the key of the track name, e.g. "SPA".
     useEffect(() => {
@@ -51,6 +57,36 @@ function App() {
         setTrack(event.target.value);
     };
 
+    const handleAddLaptime = (track, driverName, laptime, racingLineUsed) => {
+        const timestamp = new Date().toISOString().replace(/[-:.]/g, "_");
+        update(ref(db, `${track}/${driverName}/${timestamp}`), {
+            LAPTIME: laptime,
+            RACING_LINE: racingLineUsed,
+        }).then(() => {
+            return get(ref(db, track));
+        }).then((snapshot) => {
+            setTrackData(snapshot.val());
+            setTrack(track);
+            setDisplayMode("leaderboard");
+        }).catch((error) => {
+            console.error(error);
+        });
+    };
+
+
+    const renderContent = () => {
+    switch (displayMode) {
+        case "leaderboard":
+            return trackData && <Leaderboard trackData={trackData} />;
+        case "addTime":
+            return <AddLaptimeForm track={track} onSubmit={handleAddLaptime} />;
+        case "statistics":
+            return <div>Statistics Graph</div>;
+        default:
+        return null;
+    }
+    };
+
     return (
         <div className="App">
             <header className="App-header">
@@ -61,7 +97,10 @@ function App() {
                         onChange={handleTrackChange}
                     />
                 </h1>
-                {trackData && <Leaderboard trackData={trackData} />}
+                {renderContent()}
+                <button onClick={() => setDisplayMode("addTime")}>Add Laptime</button>
+                <button onClick={() => setDisplayMode("statistics")}>Statistics</button>
+                <button onClick={() => setDisplayMode("leaderboard")}>Leaderboard</button>
             </header>
         </div>
     );

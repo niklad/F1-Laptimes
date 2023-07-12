@@ -4,6 +4,8 @@
 
 import React from 'react';
 
+import '../../styles/Leaderboard.css';
+
 // trackData:
 // "SILVERSTONE": {
 //   "BRAGE": {
@@ -70,16 +72,15 @@ const Leaderboard = ({ trackData }) => {
   });
 
     return (
-      // Show latest laptimes
       <div>
-        <table>
+        <table className="leaderboard-table">
           <tbody>
             {latestLaptimesWithIndex.map(({ index, driver, laptime, racingLine }) => (
               <tr key={driver}>
                 <td>{index}.</td>
                 <td>{driver}</td>
                 <td>{laptime}</td>
-                <td>{racingLine ? <span style={{color: 'red'}}>RL</span> : ""}</td>
+                <td>{racingLine ? <span style={{fontWeight: 'bold'}}>RL</span> : ""}</td>
               </tr>
             ))}
           </tbody>
