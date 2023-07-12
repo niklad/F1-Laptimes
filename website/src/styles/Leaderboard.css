@@ -1,0 +1,17 @@
+.leaderboard-table {
+    border-collapse: separate;
+    border-spacing: 10px 10px; /* updated value */
+    width: 100%;
+}
+
+.leaderboard-table td, .leaderboard-table th {
+    border: none;
+    padding: 8px;
+    text-align: left;
+}
+
+.leaderboard-table th {
+    background-color: #f2f2f2;
+    color: #333;
+    font-weight: bold;
+}
