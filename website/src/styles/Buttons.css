@@ -13,6 +13,7 @@ button {
     font-size: 16px;
     font-family: inherit; /* Use the same font as the parent element */
     width: 30%;
+    min-width: 150px; /* Set a minimum width of 150 pixels */
     border-radius: 5px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease-in-out;
@@ -23,3 +24,78 @@ button:hover {
     background: rgb(0, 0, 0, 0.0);
     cursor: pointer;
 }
+
+.wide-button {
+    width: 100%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 20px;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+}
+
+input[type="text"],
+input[type="checkbox"] {
+  margin-left: 10px;
+  padding: 5px;
+  border-radius: 5px;
+  /* border: 1px solid #ccc; */
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  height: 20px;
+  border-radius: 5px;
+  /* border: 1px solid rgb(0, 0, 0, 0.3); */
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+input[type="checkbox"]:before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20px;
+  height: 20px;
+  border-radius: 2px;
+  background-color: #fff;
+  transition: all 0.3s ease-in-out;
+}
+
+input[type="checkbox"]:checked:before {
+  background-color: red;
+}
+
+
+/*
+button[type="submit"] {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  border: none;
+  background-color: #007acc;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #005f8b;
+} */

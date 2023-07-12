@@ -3,8 +3,7 @@
     border-collapse: separate;
     border-spacing: 10px 10px; /* updated value */
     width: 100%;
-    margin-bottom: 50px; /* add margin to the bottom of the leaderboard */
-
+    margin-bottom: 70px; /* add margin to the bottom of the leaderboard */
 }
 
 .leaderboard-table td, .leaderboard-table th {

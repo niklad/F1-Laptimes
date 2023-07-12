@@ -97,9 +97,12 @@ function App() {
                     />
                 </h1>
                 {renderContent()}
-                <button onClick={() => setDisplayMode("addTime")}>Add Laptime</button>
-                <button onClick={() => setDisplayMode("statistics")}>Statistics</button>
-                <button onClick={() => setDisplayMode("leaderboard")}>Leaderboard</button>
+                <button onClick={() => setDisplayMode(displayMode === "addTime" ? "leaderboard" : "addTime")}>
+                {displayMode === "addTime" ? "Show Leaderboard" : "Add Laptime"}
+                </button>
+                <button onClick={() => setDisplayMode(displayMode === "statistics" ? "leaderboard" : "statistics")}>
+                {displayMode === "statistics" ? "Show Leaderboard" : "Statistics"}
+                </button>
             </header>
         </div>
     );
