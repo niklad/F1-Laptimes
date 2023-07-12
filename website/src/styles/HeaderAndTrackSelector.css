@@ -3,11 +3,12 @@
     position: absolute;
     padding: 8px;
     cursor: pointer;
-    width: 80%;
+    width: 65%;
     height: 100px;
     top: 10%; /* set the distance from the page top */
     left: 50%; /* set the left position to 50% */
     transform: translateX(-50%); /* move the element back by 50% of its own width */
+    font-family: 'Formula One Bold', sans-serif;
 }
 
 .track-selector select,

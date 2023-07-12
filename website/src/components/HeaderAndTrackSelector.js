@@ -51,6 +51,18 @@ const trackCountryMap = {
     "PAUL RICARD": "FRANCE",
 };
 
+// A map of the colors in each track's flag
+const trackFlagColorMap = {
+    "SILVERSTONE": ["#012169", "#FFFFFF", "#CE1126"],
+    "SPA": ["#000000", "#FFD700", "#FF0000"],
+    "SUZUKA": ["#FFFFFF", "#DC143C"],
+    "MONZA": ["#009246", "#FFFFFF", "#DC0000"],
+    "MONTREAL": ["#FFFFFF", "#DC143C"],
+    "BAKU": ["#3F8AE0", "#ED2939"],
+    "SINGAPORE": ["#FFFFFF", "#DC143C"],
+    "INTERLAGOS": ["#009B3A", "#FEE12B", "#FFFFFF", "#009B3A"],
+}
+
 
 function TrackSelector({ trackOptions, selectedTrack, onChange }) {
     return (

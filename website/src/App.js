@@ -8,6 +8,8 @@ import { useState, useEffect } from 'react';
 import Leaderboard from './components/Leaderboard';
 import TrackSelector from './components/HeaderAndTrackSelector';
 import AddLaptimeForm from './components/AddTimeButton';
+import trackFlagColorMap from './components/HeaderAndTrackSelector';
+import Statistics from './components/Statistics';
 
 import './styles/HeaderAndTrackSelector.css';
 import './styles/Buttons.css';
@@ -109,7 +111,7 @@ function App() {
 
     return (
         <div className="App">
-            <header className="App-header">
+            <header className="App-header" style={{background: trackFlagColorMap[track]}}>
                 <h1>
                     <TrackSelector
                         trackOptions={trackOptions}
