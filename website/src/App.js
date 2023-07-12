@@ -34,7 +34,27 @@ function App() {
     const [displayMode, setDisplayMode] = useState("leaderboard"); // "leaderboard", "addTime" or "statistics"
 
     // Define the track options for the dropdown menu
-    const trackOptions = ["SPA", "SILVERSTONE"];
+    const trackOptions = ["SPA",
+        "SILVERSTONE",
+        "SUZUKA",
+        "MONZA",
+        "MONTREAL",
+        "MELBOURNE",
+        "BAKU",
+        "SINGAPORE",
+        "ABU DHABI",
+        "AUSTIN",
+        "INTERLAGOS",
+        "MONACO",
+        "BAHRAIN",
+        "SOCHI",
+        "HUNGARORING",
+        "BARCELONA",
+        "ZANDVOORT",
+        "JEDDAH",
+        "IMOLA",
+        "PAUL RICARD",
+    ];
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
@@ -98,10 +118,10 @@ function App() {
                 </h1>
                 {renderContent()}
                 <button onClick={() => setDisplayMode(displayMode === "addTime" ? "leaderboard" : "addTime")}>
-                {displayMode === "addTime" ? "Show Leaderboard" : "Add Laptime"}
+                {displayMode === "addTime" ? "Back to Leaderboard" : "Add Laptime"}
                 </button>
                 <button onClick={() => setDisplayMode(displayMode === "statistics" ? "leaderboard" : "statistics")}>
-                {displayMode === "statistics" ? "Show Leaderboard" : "Statistics"}
+                {displayMode === "statistics" ? "Back to Leaderboard" : "Show Statistics"}
                 </button>
             </header>
         </div>
