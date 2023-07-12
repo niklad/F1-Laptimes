@@ -5,7 +5,7 @@ function formatLaptime(laptime) {
     // Make a function to format a laptime, so that it is always in the format m:ss:SSS
     // Example: 1:2.3 -> 01:02:300
 
-    laptime = laptime.replace(".", ":");
+    laptime = laptime.replace(/\./g, ":");
 
     // Split the laptime into minutes, seconds and milliseconds
     const laptimeSplit = laptime.split(":");
@@ -16,6 +16,14 @@ function formatLaptime(laptime) {
     // Remove leading zeros
     if (minutes[0] === "0") {
         minutes = minutes.substring(1);
+    }
+    if (seconds.length === 1) {
+        seconds = "0" + seconds;
+    }
+    if (milliseconds.length === 1) {
+        milliseconds = "00" + milliseconds;
+    } else if (milliseconds.length === 2) {
+        milliseconds = "0" + milliseconds;
     }
 
     // Return the formatted laptime
