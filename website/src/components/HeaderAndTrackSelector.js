@@ -4,7 +4,7 @@ import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 
 // A map of track names to flag icons
-const trackFlagMap = {
+export const trackFlagMap = {
     "SILVERSTONE": "gb",
     "SPA": "be",
     "SUZUKA": "jp",
@@ -28,7 +28,7 @@ const trackFlagMap = {
 };
 
 // A map of track names to track country
-const trackCountryMap = {
+export const trackCountryMap = {
     "SILVERSTONE": "UK",
     "SPA": "BELGIUM",
     "SUZUKA": "JAPAN",
@@ -52,7 +52,7 @@ const trackCountryMap = {
 };
 
 // A map of the colors in each track's flag
-const trackFlagColorMap = {
+export const trackFlagColorMap = {
     "SILVERSTONE": ["#012169", "#FFFFFF", "#CE1126"],
     "SPA": ["#000000", "#FFD700", "#FF0000"],
     "SUZUKA": ["#FFFFFF", "#DC143C"],
@@ -63,8 +63,32 @@ const trackFlagColorMap = {
     "INTERLAGOS": ["#009B3A", "#FEE12B", "#FFFFFF", "#009B3A"],
 }
 
+// A map of track name to track layout svg file name
+export const trackLayoutMap = {
+    "SILVERSTONE": "greatbritain.svg",
+    "SPA": "belgium.svg",
+    "SUZUKA": "japan.svg",
+    "MONZA": "italy.svg",
+    "MONTREAL": "canada.svg",
+    "MELBOURNE": "australia.svg",
+    "BAKU": "azerbaijan.svg",
+    "SINGAPORE": "singapore.svg",
+    "ABU DHABI": "abudhabi.svg",
+    "AUSTIN": "usa.svg",
+    "INTERLAGOS": "brazil.svg",
+    "MONACO": "monaco.svg",
+    "BAHRAIN": "bahrain.svg",
+    "SOCHI": "russia.svg",
+    "HUNGARORING": "hungary.svg",
+    "BARCELONA": "spain.svg",
+    "ZANDVOORT": "netherlands.svg",
+    // "JEDDAH": "saudiarabia.svg",
+    // "IMOLA": "italy.svg",
+    "PAUL RICARD": "france.svg",
+};
 
-function TrackSelector({ trackOptions, selectedTrack, onChange }) {
+
+export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
     return (
         <div className="track-selector" onClick={(e) => e.stopPropagation()}>
             <span>{trackCountryMap[selectedTrack]}  </span>

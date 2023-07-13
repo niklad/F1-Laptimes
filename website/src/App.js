@@ -6,10 +6,32 @@ import { getDatabase, ref, onValue, update, get } from "firebase/database";
 import { useState, useEffect } from 'react';
 
 import Leaderboard from './components/Leaderboard';
-import TrackSelector from './components/HeaderAndTrackSelector';
+import { TrackSelector, trackFlagColorMap, trackLayoutMap } from './components/HeaderAndTrackSelector';
 import AddLaptimeForm from './components/AddTimeButton';
-import trackFlagColorMap from './components/HeaderAndTrackSelector';
 import Statistics from './components/Statistics';
+// import all svgs from ./images/trackLayouts/
+// import belgiumTrackLayout from './images/trackLayouts/belgium.svg';
+// import greatbritainTrackLayout from './images/trackLayouts/greatbritain.svg';
+// import japanTrackLayout from './images/trackLayouts/japan.svg';
+// import italyTrackLayout from './images/trackLayouts/italy.svg';
+// import canadaTrackLayout from './images/trackLayouts/canada.svg';
+// import australiaTrackLayout from './images/trackLayouts/australia.svg';
+// import azerbaijanTrackLayout from './images/trackLayouts/azerbaijan.svg';
+// import singaporeTrackLayout from './images/trackLayouts/singapore.svg';
+// import abudhabiTrackLayout from './images/trackLayouts/abudhabi.svg';
+// import usaTrackLayout from './images/trackLayouts/usa.svg';
+// import brazilTrackLayout from './images/trackLayouts/brazil.svg';
+// import monacoTrackLayout from './images/trackLayouts/monaco.svg';
+// import bahrainTrackLayout from './images/trackLayouts/bahrain.svg';
+// import russiaTrackLayout from './images/trackLayouts/russia.svg';
+// import hungaryTrackLayout from './images/trackLayouts/hungary.svg';
+// import spainTrackLayout from './images/trackLayouts/spain.svg';
+// import netherlandsTrackLayout from './images/trackLayouts/netherlands.svg';
+// import franceTrackLayout from './images/trackLayouts/france.svg';
+// import chinaTrackLayout from './images/trackLayouts/china.svg';
+// import mexicoTrackLayout from './images/trackLayouts/mexico.svg';
+// import vietnamTrackLayout from './images/trackLayouts/vietnam.svg';
+
 
 import './styles/HeaderAndTrackSelector.css';
 import './styles/Buttons.css';
@@ -109,6 +131,9 @@ function App() {
     }
     };
 
+    let trackLayoutPath = trackLayoutMap[track];
+    console.log(trackLayoutPath)
+
     return (
         <div className="App">
             <header className="App-header" style={{background: trackFlagColorMap[track]}}>
@@ -119,7 +144,9 @@ function App() {
                         onChange={handleTrackChange}
                     />
                 </h1>
-                {renderContent()}
+                {/* show the svg of the current track layout from ./images/trackLayouts with name given by tra
+                ckLayoutMap[track].svg */}
+                <img src={"trackLayouts/"+trackLayoutMap[track]} alt="track layout" width="10%" />                {renderContent()}
                 <button onClick={() => setDisplayMode(displayMode === "addTime" ? "leaderboard" : "addTime")}>
                 {displayMode === "addTime" ? "Back to Leaderboard" : "Add Laptime"}
                 </button>
