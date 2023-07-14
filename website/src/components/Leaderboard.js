@@ -56,11 +56,16 @@ const Leaderboard = ({ trackData }) => {
     <div>
       <table className="leaderboard-table">
         <tbody>
-          {latestLaptimesWithIndex.map(({ index, driver, laptime, racingLine }) => (
+          {latestLaptimesWithIndex.map(({ index, driver, laptime, racingLine }, laptimeIndex) => (
             <tr key={driver}>
               <td>{index}.</td>
               <td>{driver}</td>
               <td>{laptime}</td>
+              {laptimeIndex > 0 ? (
+                <td style={{ color: 'yellow' }}> {calculateTimeDifference(laptime, latestLaptimesWithIndex[0].laptime)}</td>
+              ) : (
+                <td></td>
+              )}
               <td>{racingLine ? <span style={{fontWeight: 'bold'}}>RL</span> : ""}</td>
             </tr>
           ))}
@@ -72,3 +77,26 @@ const Leaderboard = ({ trackData }) => {
 
 export default Leaderboard;
 
+// Function to calculate the time difference between two lap times
+const calculateTimeDifference = (laptime, quickestLaptime) => {
+  // Convert laptime strings to arrays of time components
+  const laptimeArray = laptime.split(":").map(Number);
+  const quickestLaptimeArray = quickestLaptime.split(":").map(Number);
+
+  // Calculate the time difference in milliseconds
+  const laptimeMilliseconds = laptimeArray[0] * 60000 + laptimeArray[1] * 1000 + laptimeArray[2];
+  const quickestLaptimeMilliseconds = quickestLaptimeArray[0] * 60000 + quickestLaptimeArray[1] * 1000 + quickestLaptimeArray[2];
+  const differenceMilliseconds = laptimeMilliseconds - quickestLaptimeMilliseconds;
+
+  // Format the time difference as a string
+  const minutes = Math.floor(differenceMilliseconds / 60000);
+  const seconds = Math.floor((differenceMilliseconds % 60000) / 1000);
+  const milliseconds = differenceMilliseconds % 1000;
+
+  if (minutes > 0) {
+    const totalSeconds = minutes * 60 + seconds + milliseconds / 1000;
+    return <span style={{ color: 'yellow' }}>+ {totalSeconds.toFixed(3)}</span>;
+  } else {
+    return <span style={{ color: 'yellow' }}>+ {seconds}.{milliseconds.toString().padStart(3, '0')}</span>;
+  }
+};
