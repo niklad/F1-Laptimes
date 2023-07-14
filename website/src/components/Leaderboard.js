@@ -24,6 +24,12 @@ const Leaderboard = ({ trackData }) => {
     });
   });
 
+  console.log(latestLaptimes)
+  // return "No laptimes set" if latestLaptimes are nothing
+  if (latestLaptimes.length === 0) {
+    return <div>No laptimes set</div>;
+  }
+
   // Sort the latest laptimes by laptime
   latestLaptimes.sort((a, b) => {
     const aLaptime = a.laptime.split(":");
@@ -46,22 +52,22 @@ const Leaderboard = ({ trackData }) => {
     };
   });
 
-    return (
-      <div>
-        <table className="leaderboard-table">
-          <tbody>
-            {latestLaptimesWithIndex.map(({ index, driver, laptime, racingLine }) => (
-              <tr key={driver}>
-                <td>{index}.</td>
-                <td>{driver}</td>
-                <td>{laptime}</td>
-                <td>{racingLine ? <span style={{fontWeight: 'bold'}}>RL</span> : ""}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
+  return (
+    <div>
+      <table className="leaderboard-table">
+        <tbody>
+          {latestLaptimesWithIndex.map(({ index, driver, laptime, racingLine }) => (
+            <tr key={driver}>
+              <td>{index}.</td>
+              <td>{driver}</td>
+              <td>{laptime}</td>
+              <td>{racingLine ? <span style={{fontWeight: 'bold'}}>RL</span> : ""}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
 export default Leaderboard;

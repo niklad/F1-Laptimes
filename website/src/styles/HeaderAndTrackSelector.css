@@ -1,4 +1,5 @@
 .track-selector {
+    order: 1;
     display: inline-block;
     position: absolute;
     padding: 8px;

@@ -13,6 +13,7 @@
   }
 }
 
+
 .App-header {
   /* background: linear-gradient(to bottom right, #ff00cc, #3333ff); */
   width: 100wh;
@@ -30,10 +31,42 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  position: relative;
 }
 
 .App-link {
   color: #61dafb;
+}
+
+.track-layout {
+  position: absolute;
+  /* top: 25%; */
+  /* top: 0%; */
+  display: flex;
+  /* center */
+  justify-content: center;
+  align-items: center;
+  /* height: 15%; */
+  /* width: 15%; */
+  height: 45%;
+  width: 100%;
+  opacity: 0.3;
+  /* filter: brightness(100); */
+}
+
+.Buttons {
+  position: absolute;
+  bottom: 5%;
+  /* center */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30%;
+  width: 15%;
+}
+
+.Rendered-content {
+  z-index: 1;
 }
 
 

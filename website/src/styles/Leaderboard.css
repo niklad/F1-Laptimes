@@ -1,10 +1,13 @@
-
 .leaderboard-table {
     border-collapse: separate;
     border-spacing: 10px 10px;
+    /* position: absolute; Added absolute positioning */
     width: 100%;
-    margin-top: 50px; /* Change the value to adjust the distance */
+    top: 40%; /* Change the value to adjust the distance */
+    left: 50%; /* Change the value to adjust the distance */
     margin-bottom: 70px;
+    /* Bring to the front */
+    z-index: 1;
 }
 
 .leaderboard-table td, .leaderboard-table th {

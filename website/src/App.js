@@ -9,34 +9,10 @@ import Leaderboard from './components/Leaderboard';
 import { TrackSelector, trackFlagColorMap, trackLayoutMap } from './components/HeaderAndTrackSelector';
 import AddLaptimeForm from './components/AddTimeButton';
 import Statistics from './components/Statistics';
-// import all svgs from ./images/trackLayouts/
-// import belgiumTrackLayout from './images/trackLayouts/belgium.svg';
-// import greatbritainTrackLayout from './images/trackLayouts/greatbritain.svg';
-// import japanTrackLayout from './images/trackLayouts/japan.svg';
-// import italyTrackLayout from './images/trackLayouts/italy.svg';
-// import canadaTrackLayout from './images/trackLayouts/canada.svg';
-// import australiaTrackLayout from './images/trackLayouts/australia.svg';
-// import azerbaijanTrackLayout from './images/trackLayouts/azerbaijan.svg';
-// import singaporeTrackLayout from './images/trackLayouts/singapore.svg';
-// import abudhabiTrackLayout from './images/trackLayouts/abudhabi.svg';
-// import usaTrackLayout from './images/trackLayouts/usa.svg';
-// import brazilTrackLayout from './images/trackLayouts/brazil.svg';
-// import monacoTrackLayout from './images/trackLayouts/monaco.svg';
-// import bahrainTrackLayout from './images/trackLayouts/bahrain.svg';
-// import russiaTrackLayout from './images/trackLayouts/russia.svg';
-// import hungaryTrackLayout from './images/trackLayouts/hungary.svg';
-// import spainTrackLayout from './images/trackLayouts/spain.svg';
-// import netherlandsTrackLayout from './images/trackLayouts/netherlands.svg';
-// import franceTrackLayout from './images/trackLayouts/france.svg';
-// import chinaTrackLayout from './images/trackLayouts/china.svg';
-// import mexicoTrackLayout from './images/trackLayouts/mexico.svg';
-// import vietnamTrackLayout from './images/trackLayouts/vietnam.svg';
-
 
 import './styles/HeaderAndTrackSelector.css';
 import './styles/Buttons.css';
 
-// import TrackContainer from './components/TrackContainer';
 
 // Web app's Firebase configuration
 const firebaseConfig = {
@@ -49,7 +25,6 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_APP_ID,
   measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
-
 
 
 function App() {
@@ -85,8 +60,6 @@ function App() {
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-
-
     // Set the trackData to be the data in the database at the key of the track name, e.g. "SPA".
     useEffect(() => {
         const trackRef = ref(db, track);
@@ -119,24 +92,37 @@ function App() {
 
 
     const renderContent = () => {
-    switch (displayMode) {
-        case "leaderboard":
-            return trackData && <Leaderboard trackData={trackData} />;
-        case "addTime":
-            return <AddLaptimeForm track={track} onSubmit={handleAddLaptime} />;
-        case "statistics":
-            return <div>Statistics Graph</div>;
-        default:
-        return null;
-    }
+        switch (displayMode) {
+            case "leaderboard":
+                return trackData && <Leaderboard trackData={trackData} />;
+            case "addTime":
+                return <AddLaptimeForm track={track} onSubmit={handleAddLaptime} />;
+            case "statistics":
+                return <div>Statistics Graph</div>;
+            default:
+            return null;
+        }
     };
 
-    let trackLayoutPath = trackLayoutMap[track];
-    console.log(trackLayoutPath)
+    // Attempt at making the left and right arrow keys change the track:
+    // document.addEventListener('keydown', (event) => {
+    //     if (event.key === 'ArrowLeft') {
+    //         // Go to the previous track
+    //         const index = trackOptions.indexOf(track);
+    //         const newIndex = (index - 1 + trackOptions.length) % trackOptions.length;
+    //         setTrack(trackOptions[newIndex]);
+    //     } else if (event.key === 'ArrowRight') {
+    //         // Go to the next track
+    //         const index = trackOptions.indexOf(track);
+    //         const newIndex = (index + 1) % trackOptions.length;
+    //         setTrack(trackOptions[newIndex]);
+    //     }
+    // });
 
     return (
         <div className="App">
             <header className="App-header" style={{background: trackFlagColorMap[track]}}>
+                <img src={"trackLayouts/" + trackLayoutMap[track]} alt="" className="track-layout"/>
                 <h1>
                     <TrackSelector
                         trackOptions={trackOptions}
@@ -144,15 +130,17 @@ function App() {
                         onChange={handleTrackChange}
                     />
                 </h1>
-                {/* show the svg of the current track layout from ./images/trackLayouts with name given by tra
-                ckLayoutMap[track].svg */}
-                <img src={"trackLayouts/"+trackLayoutMap[track]} alt="track layout" width="10%" />                {renderContent()}
-                <button onClick={() => setDisplayMode(displayMode === "addTime" ? "leaderboard" : "addTime")}>
-                {displayMode === "addTime" ? "Back to Leaderboard" : "Add Laptime"}
-                </button>
-                <button onClick={() => setDisplayMode(displayMode === "statistics" ? "leaderboard" : "statistics")}>
-                {displayMode === "statistics" ? "Back to Leaderboard" : "Show Statistics"}
-                </button>
+                <div className="Rendered-content">
+                    {renderContent()}
+                </div>
+                <div className="Buttons">
+                    <button onClick={() => setDisplayMode(displayMode === "addTime" ? "leaderboard" : "addTime")}>
+                        {displayMode === "addTime" ? "Back to Leaderboard" : "Add Laptime"}
+                    </button>
+                    <button onClick={() => setDisplayMode(displayMode === "statistics" ? "leaderboard" : "statistics")}>
+                    {displayMode === "statistics" ? "Back to Leaderboard" : "Show Statistics"}
+                    </button>
+                </div>
             </header>
         </div>
     );
