@@ -31,6 +31,7 @@ function App() {
     const [track, setTrack] = useState("SPA");
     const [trackData, setTrackData] = useState(null);
     const [displayMode, setDisplayMode] = useState("leaderboard"); // "leaderboard", "addTime" or "statistics"
+    const [showLaptimeDifference, setShowLaptimeDifference] = useState(true);
 
     // Define the track options for the dropdown menu
     const trackOptions = [
@@ -94,7 +95,7 @@ function App() {
     const renderContent = () => {
         switch (displayMode) {
             case "leaderboard":
-                return trackData && <Leaderboard trackData={trackData} />;
+                return trackData && <Leaderboard trackData={trackData} showLaptimeDifference={showLaptimeDifference} />;
             case "addTime":
                 return <AddLaptimeForm track={track} onSubmit={handleAddLaptime} />;
             case "statistics":
@@ -139,6 +140,9 @@ function App() {
                     </button>
                     <button onClick={() => setDisplayMode(displayMode === "statistics" ? "leaderboard" : "statistics")}>
                     {displayMode === "statistics" ? "Back to Leaderboard" : "Show Statistics"}
+                    </button>
+                    <button onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}>
+                        {showLaptimeDifference ? "Show Interval" : "Show Gap to leader"}
                     </button>
                 </div>
             </header>
