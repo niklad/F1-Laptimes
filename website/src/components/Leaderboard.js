@@ -3,7 +3,7 @@ import React from 'react';
 import '../styles/Leaderboard.css';
 
 
-const Leaderboard = ({ trackData }) => {
+const Leaderboard = ({ trackData, showLaptimeDifference }) => {
   const latestLaptimes = [];
 
   Object.keys(trackData).forEach((driver) => {
@@ -52,27 +52,49 @@ const Leaderboard = ({ trackData }) => {
     };
   });
 
+  // Calculate the laptime difference and time gap between each laptime and the one that is 1 index quicker
+  const latestLaptimesWithDifferenceAndGap = latestLaptimesWithIndex.map((laptime, index) => {
+    if (index > 0) {
+      const previousLaptime = latestLaptimesWithIndex[index - 1].laptime;
+      const timeToLeader = calculateTimeDifference(laptime.laptime, latestLaptimesWithIndex[0].laptime);
+      const timeInterval = calculateTimeDifference(laptime.laptime, previousLaptime);
+      return {
+        ...laptime,
+        timeToLeader,
+        timeInterval,
+      };
+    } else {
+      return {
+        ...laptime,
+        timeToLeader: "",
+        timeInterval: "",
+      };
+    }
+  });
+
   return (
     <div>
       <table className="leaderboard-table">
         <tbody>
-          {latestLaptimesWithIndex.map(({ index, driver, laptime, racingLine }, laptimeIndex) => (
+          {latestLaptimesWithDifferenceAndGap.map(({ index, driver, laptime, racingLine, timeToLeader, timeInterval }) => (
             <tr key={driver}>
               <td>{index}.</td>
               <td>{driver}</td>
               <td>{laptime}</td>
-              {laptimeIndex > 0 ? (
-                <td style={{ color: 'yellow' }}> {calculateTimeDifference(laptime, latestLaptimesWithIndex[0].laptime)}</td>
-              ) : (
-                <td></td>
-              )}
+              <td>
+                {showLaptimeDifference ? (
+                  <span style={{ color: 'yellow' }}>{timeToLeader}</span>
+                ) : (
+                  <span style={{color: 'yellow'}}> {timeInterval} </span>
+                )}
+              </td>
               <td>{racingLine ? <span style={{fontWeight: 'bold'}}>RL</span> : ""}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </div>
-  );
+  );  
 };
 
 export default Leaderboard;
@@ -95,8 +117,8 @@ const calculateTimeDifference = (laptime, quickestLaptime) => {
 
   if (minutes > 0) {
     const totalSeconds = minutes * 60 + seconds + milliseconds / 1000;
-    return <span style={{ color: 'yellow' }}>+ {totalSeconds.toFixed(3)}</span>;
+    return `+ ${totalSeconds.toFixed(3)}`;
   } else {
-    return <span style={{ color: 'yellow' }}>+ {seconds}.{milliseconds.toString().padStart(3, '0')}</span>;
+    return `+ ${seconds}.${milliseconds.toString().padStart(3, '0')}`;
   }
 };
