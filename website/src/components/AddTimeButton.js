@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Swal from 'sweetalert2';
 
 
 function formatLaptime(laptime) {
@@ -40,7 +41,13 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (driverName === "" || laptime === "") {
-            alert("Please enter a driver name and laptime.");
+            Swal.fire({
+                icon: 'warning',
+                title: 'heck no',
+                text: 'Please enter a driver name and laptime.',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'OK'
+            });
             return;
         }
         const formattedLaptime = formatLaptime(laptime);
