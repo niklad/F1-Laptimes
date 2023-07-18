@@ -1,7 +1,6 @@
-import React from 'react';
+import React from "react";
 
-import '../styles/Leaderboard.css';
-
+import "../styles/Leaderboard.css";
 
 const Leaderboard = ({ trackData, showLaptimeDifference }) => {
   const latestLaptimes = [];
@@ -24,7 +23,7 @@ const Leaderboard = ({ trackData, showLaptimeDifference }) => {
     });
   });
 
-  console.log(latestLaptimes)
+  console.log(latestLaptimes);
   // return "No laptimes set" if latestLaptimes are nothing
   if (latestLaptimes.length === 0) {
     return <div>No laptimes set</div>;
@@ -53,48 +52,71 @@ const Leaderboard = ({ trackData, showLaptimeDifference }) => {
   });
 
   // Calculate the laptime difference and time gap between each laptime and the one that is 1 index quicker
-  const latestLaptimesWithDifferenceAndGap = latestLaptimesWithIndex.map((laptime, index) => {
-    if (index > 0) {
-      const previousLaptime = latestLaptimesWithIndex[index - 1].laptime;
-      const timeToLeader = calculateTimeDifference(laptime.laptime, latestLaptimesWithIndex[0].laptime);
-      const timeInterval = calculateTimeDifference(laptime.laptime, previousLaptime);
-      return {
-        ...laptime,
-        timeToLeader,
-        timeInterval,
-      };
-    } else {
-      return {
-        ...laptime,
-        timeToLeader: "",
-        timeInterval: "",
-      };
+  const latestLaptimesWithDifferenceAndGap = latestLaptimesWithIndex.map(
+    (laptime, index) => {
+      if (index > 0) {
+        const previousLaptime = latestLaptimesWithIndex[index - 1].laptime;
+        const timeToLeader = calculateTimeDifference(
+          laptime.laptime,
+          latestLaptimesWithIndex[0].laptime
+        );
+        const timeInterval = calculateTimeDifference(
+          laptime.laptime,
+          previousLaptime
+        );
+        return {
+          ...laptime,
+          timeToLeader,
+          timeInterval,
+        };
+      } else {
+        return {
+          ...laptime,
+          timeToLeader: "",
+          timeInterval: "",
+        };
+      }
     }
-  });
+  );
 
   return (
     <div>
       <table className="leaderboard-table">
         <tbody>
-          {latestLaptimesWithDifferenceAndGap.map(({ index, driver, laptime, racingLine, timeToLeader, timeInterval }) => (
-            <tr key={driver}>
-              <td>{index}.</td>
-              <td>{driver}</td>
-              <td>{laptime}</td>
-              <td>
-                {showLaptimeDifference ? (
-                  <span style={{ color: 'yellow' }}>{timeToLeader}</span>
-                ) : (
-                  <span style={{color: 'yellow'}}> {timeInterval} </span>
-                )}
-              </td>
-              <td>{racingLine ? <span style={{fontWeight: 'bold'}}>RL</span> : ""}</td>
-            </tr>
-          ))}
+          {latestLaptimesWithDifferenceAndGap.map(
+            ({
+              index,
+              driver,
+              laptime,
+              racingLine,
+              timeToLeader,
+              timeInterval,
+            }) => (
+              <tr key={driver}>
+                <td>{index}.</td>
+                <td>{driver}</td>
+                <td>{laptime}</td>
+                <td>
+                  {showLaptimeDifference ? (
+                    <span style={{ color: "yellow" }}>{timeToLeader}</span>
+                  ) : (
+                    <span style={{ color: "yellow" }}> {timeInterval} </span>
+                  )}
+                </td>
+                <td>
+                  {racingLine ? (
+                    <span style={{ fontWeight: "bold" }}>RL</span>
+                  ) : (
+                    ""
+                  )}
+                </td>
+              </tr>
+            )
+          )}
         </tbody>
       </table>
     </div>
-  );  
+  );
 };
 
 export default Leaderboard;
@@ -106,9 +128,14 @@ const calculateTimeDifference = (laptime, quickestLaptime) => {
   const quickestLaptimeArray = quickestLaptime.split(":").map(Number);
 
   // Calculate the time difference in milliseconds
-  const laptimeMilliseconds = laptimeArray[0] * 60000 + laptimeArray[1] * 1000 + laptimeArray[2];
-  const quickestLaptimeMilliseconds = quickestLaptimeArray[0] * 60000 + quickestLaptimeArray[1] * 1000 + quickestLaptimeArray[2];
-  const differenceMilliseconds = laptimeMilliseconds - quickestLaptimeMilliseconds;
+  const laptimeMilliseconds =
+    laptimeArray[0] * 60000 + laptimeArray[1] * 1000 + laptimeArray[2];
+  const quickestLaptimeMilliseconds =
+    quickestLaptimeArray[0] * 60000 +
+    quickestLaptimeArray[1] * 1000 +
+    quickestLaptimeArray[2];
+  const differenceMilliseconds =
+    laptimeMilliseconds - quickestLaptimeMilliseconds;
 
   // Format the time difference as a string
   const minutes = Math.floor(differenceMilliseconds / 60000);
@@ -119,6 +146,6 @@ const calculateTimeDifference = (laptime, quickestLaptime) => {
     const totalSeconds = minutes * 60 + seconds + milliseconds / 1000;
     return `+ ${totalSeconds.toFixed(3)}`;
   } else {
-    return `+ ${seconds}.${milliseconds.toString().padStart(3, '0')}`;
+    return `+ ${seconds}.${milliseconds.toString().padStart(3, "0")}`;
   }
 };
