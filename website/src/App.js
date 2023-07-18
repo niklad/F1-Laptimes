@@ -142,7 +142,7 @@ function App() {
                     {displayMode === "statistics" ? "Back to Leaderboard" : "Show Statistics"}
                     </button>
                     <button onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}>
-                        {showLaptimeDifference ? "Show Interval" : "Show Gap to leader"}
+                        {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
                     </button>
                 </div>
             </header>
