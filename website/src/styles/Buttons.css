@@ -6,7 +6,7 @@ button {
   border: none;
   color: white;
   padding: 20px 20px;
-  margin: 10px 0px;
+  margin: 10px 5px;
   text-align: center;
   text-decoration: none;
   display: inline-block;
@@ -57,7 +57,6 @@ input[type="checkbox"] {
   appearance: none;
   height: 20px;
   border-radius: 5px;
-  /* border: 1px solid rgb(0, 0, 0, 0.3); */
   outline: none;
   transition: all 0.3s ease-in-out;
   position: relative;
@@ -68,7 +67,7 @@ input[type="checkbox"] {
 input[type="checkbox"]:before {
   display: block;
   content: "";
-  position: absolute;
+  position: relative;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -82,19 +81,3 @@ input[type="checkbox"]:before {
 input[type="checkbox"]:checked:before {
   background-color: red;
 }
-
-/*
-button[type="submit"] {
-  margin-top: 20px;
-  padding: 10px;
-  border-radius: 5px;
-  border: none;
-  background-color: #007acc;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-button[type="submit"]:hover {
-  background-color: #005f8b;
-} */

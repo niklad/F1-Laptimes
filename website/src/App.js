@@ -40,23 +40,23 @@ function App() {
     "SPA",
     "SILVERSTONE",
     "SUZUKA",
+    "INTERLAGOS",
+    "BAKU",
     "MONZA",
+    "MONACO",
+    "AUSTIN",
+    "BARCELONA",
+    "BAHRAIN",
     "MONTREAL",
     "MELBOURNE",
-    "BAKU",
     "SINGAPORE",
-    "ABU DHABI",
-    "AUSTIN",
-    "INTERLAGOS",
-    "MONACO",
-    "BAHRAIN",
-    "SOCHI",
     "HUNGARORING",
-    "BARCELONA",
     "ZANDVOORT",
-    "JEDDAH",
-    "IMOLA",
     "PAUL RICARD",
+    "SOCHI",
+    "ABU DHABI",
+    "IMOLA",
+    "JEDDAH",
   ];
 
   // Initialize Firebase
@@ -116,31 +116,14 @@ function App() {
     }
   };
 
-  // Attempt at making the left and right arrow keys change the track:
-  // document.addEventListener('keydown', (event) => {
-  //     if (event.key === 'ArrowLeft') {
-  //         // Go to the previous track
-  //         const index = trackOptions.indexOf(track);
-  //         const newIndex = (index - 1 + trackOptions.length) % trackOptions.length;
-  //         setTrack(trackOptions[newIndex]);
-  //     } else if (event.key === 'ArrowRight') {
-  //         // Go to the next track
-  //         const index = trackOptions.indexOf(track);
-  //         const newIndex = (index + 1) % trackOptions.length;
-  //         setTrack(trackOptions[newIndex]);
-  //     }
-  // });
-
   return (
     <div className="App">
-      <header
-        className="App-header"
-        style={{ background: trackFlagColorMap[track] }}
-      >
+      <div className="Background" />
+      <div className="Content">
         <img
           src={"trackLayouts/" + trackLayoutMap[track]}
           alt=""
-          className="track-layout"
+          className="Track-layout"
         />
         <h1>
           <TrackSelector
@@ -178,7 +161,7 @@ function App() {
             {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
           </button>
         </div>
-      </header>
+      </div>
     </div>
   );
 }
