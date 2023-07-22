@@ -1,31 +1,28 @@
 .track-selector {
-  position: relative;
-  transform: translate(-50%, -50%);
+  position: absolute;
   cursor: pointer;
-  /* Make the element not block other items */
-  pointer-events: none;
+  width: 65%;
+  height: 100px;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.track-selector select,
-.track-selector div {
-  position: relative;
+.track-selector select {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   border: none;
   padding: 8px;
+  background-color: white;
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
-  /* opacity: 0; */
-}
-
-.track-selector select {
-  height: 100px;
-  text-align: center;
-  background-color: transparent;
-  /* Scale font size with the width of the select box */
-  font-size: calc(20px + 2vmin);
-  color: white;
   font-family: inherit;
 }
 
-/* Customize the arrow to the right on the dropdown menu, make it bigger */
+.track-selector select {
+  opacity: 0;
+}
