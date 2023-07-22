@@ -6,27 +6,17 @@ button {
   border: none;
   color: white;
   padding: 20px 20px;
-  margin: 10px 5px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  font-family: inherit; /* Use the same font as the parent element */
-  width: 30%;
-  min-width: 150px; /* Set a minimum width of 150 pixels */
-  border-radius: 5px;
+  font-size: inherit;
+  font-family: inherit;
+  border-radius: 15px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-  transition: all 0.3s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
 button:hover {
   /* Darken the background on hover */
   background: rgb(0, 0, 0, 0);
   cursor: pointer;
-}
-
-.wide-button {
-  width: 120%;
 }
 
 form {

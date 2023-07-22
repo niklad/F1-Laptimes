@@ -1,14 +1,6 @@
 .leaderboard-table {
-  border-collapse: separate;
-  border-spacing: 10px 10px;
-  position: relative;
+  border-collapse: collapse;
   width: 100%;
-}
-
-.leaderboard-table td,
-.leaderboard-table th {
-  border: none;
-  padding: 8px;
   text-align: left;
 }
 
