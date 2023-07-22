@@ -56,10 +56,9 @@
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 30%;
-  width: 15%;
-  bottom: 0;
+
+.timeDiffButton {
+  color: yellow;
 }
 
 .Rendered-content {

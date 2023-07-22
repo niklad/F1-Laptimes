@@ -155,7 +155,7 @@ function App() {
               : "Show Statistics"}
           </button>
           <button
-            style={{ color: "yellow" }}
+            className="timeDiffButton"
             onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}
           >
             {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
