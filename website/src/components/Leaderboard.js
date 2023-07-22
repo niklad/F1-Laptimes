@@ -103,13 +103,7 @@ const Leaderboard = ({ trackData, showLaptimeDifference }) => {
                     <span style={{ color: "yellow" }}> {timeInterval} </span>
                   )}
                 </td>
-                <td>
-                  {racingLine ? (
-                    <span style={{ fontWeight: "bold" }}>RL</span>
-                  ) : (
-                    ""
-                  )}
-                </td>
+                <td>{racingLine ? <span>RL</span> : ""}</td>
               </tr>
             )
           )}
