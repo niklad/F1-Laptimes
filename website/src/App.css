@@ -64,6 +64,9 @@
 
 .Rendered-content {
   z-index: 1;
+  /* height: 100%; */
+  align-self: center;
+  width: 90%;
 }
 
 @-webkit-keyframes Gradient {
