@@ -1,23 +1,9 @@
 .leaderboard-table {
-    border-collapse: separate;
-    border-spacing: 10px 10px;
-    /* position: absolute; Added absolute positioning */
-    width: 100%;
-    top: 40%; /* Change the value to adjust the distance */
-    left: 50%; /* Change the value to adjust the distance */
-    margin-bottom: 70px;
-    /* Bring to the front */
-    z-index: 1;
+  border-collapse: collapse;
+  width: 90%;
+  text-align: left;
 }
 
-.leaderboard-table td, .leaderboard-table th {
-    border: none;
-    padding: 8px;
-    text-align: left;
-}
-
-.leaderboard-table th {
-    background-color: #f2f2f2;
-    color: #333;
-    font-weight: bold;
+.timeDiffs {
+  color: yellow;
 }
