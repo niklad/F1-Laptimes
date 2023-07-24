@@ -1,3 +1,3 @@
 # F1-Laptimes
 
-Velkommen, Brage.
+Check it out yo: [f1-laptimes.web.app](https://f1-laptimes.web.app/)
