@@ -52,12 +52,6 @@ const Leaderboard = ({ trackData, showLaptimeDifference }) => {
     });
   });
 
-  console.log(latestLaptimes);
-  // return "No laptimes set" if latestLaptimes are nothing
-  if (latestLaptimes.length === 0) {
-    return <div>No laptimes set</div>;
-  }
-
   // Sort the latest laptimes by laptime
   latestLaptimes.sort((a, b) => {
     const aLaptime = a.laptime.split(/[:.]/);
