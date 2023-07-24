@@ -60,8 +60,8 @@ const Leaderboard = ({ trackData, showLaptimeDifference }) => {
 
   // Sort the latest laptimes by laptime
   latestLaptimes.sort((a, b) => {
-    const aLaptime = a.laptime.split(":");
-    const bLaptime = b.laptime.split(":");
+    const aLaptime = a.laptime.split(/[:.]/);
+    const bLaptime = b.laptime.split(/[:.]/);
     for (let i = 0; i < aLaptime.length; i++) {
       if (parseInt(aLaptime[i]) < parseInt(bLaptime[i])) {
         return -1;
