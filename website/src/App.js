@@ -38,9 +38,10 @@ function App() {
   // Define the track options for the dropdown menu
   const trackOptions = [
     "SPA",
-    "SILVERSTONE",
+    "RED BULL RING",
     "SUZUKA",
     "INTERLAGOS",
+    "SILVERSTONE",
     "BAKU",
     "MONZA",
     "MONACO",
