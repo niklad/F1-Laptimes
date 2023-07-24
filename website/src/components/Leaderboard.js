@@ -5,8 +5,8 @@ import "../styles/Leaderboard.css";
 // Function to calculate the time difference between two lap times
 const calculateTimeDifference = (laptime, quickestLaptime) => {
   // Convert laptime strings to arrays of time components
-  const laptimeArray = laptime.split(":").map(Number);
-  const quickestLaptimeArray = quickestLaptime.split(":").map(Number);
+  const laptimeArray = laptime.split(/[:.]/).map(Number);
+  const quickestLaptimeArray = quickestLaptime.split(/[:.]/).map(Number);
 
   // Calculate the time difference in milliseconds
   const laptimeMilliseconds =

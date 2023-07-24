@@ -26,9 +26,7 @@ function formatLaptime(laptime) {
     milliseconds = "0" + milliseconds;
   }
 
-  // Return the formatted laptime
-
-  return minutes + ":" + seconds + ":" + milliseconds;
+  return minutes + ":" + seconds + "." + milliseconds;
 }
 
 const AddLaptimeForm = ({ track, onSubmit }) => {
