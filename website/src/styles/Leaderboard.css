@@ -2,16 +2,6 @@
   border-collapse: collapse;
   width: 100%;
   text-align: left;
-  border: 2px solid #ddd;
-}
-
-.leaderboard-table th {
-  border: 1px solid #ddd;
-}
-
-td,
-th {
-  border: 1px solid #ddd;
 }
 
 .indexColumn {
