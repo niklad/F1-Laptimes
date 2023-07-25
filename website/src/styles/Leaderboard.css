@@ -1,9 +1,40 @@
 .leaderboard-table {
   border-collapse: collapse;
-  width: 90%;
+  width: 100%;
   text-align: left;
+  border: 2px solid #ddd;
+}
+
+.leaderboard-table th {
+  border: 1px solid #ddd;
+}
+
+td,
+th {
+  border: 1px solid #ddd;
+}
+
+.indexColumn {
+  width: 1em;
+}
+
+.driverNameColumn {
+  width: 3em;
+}
+
+.laptimeColumn {
+  width: 5em;
+}
+
+.timeDiffsColumn {
+  width: 4em;
 }
 
 .timeDiffs {
   color: yellow;
+}
+
+.racingLineColumn {
+  text-align: end;
+  width: 1em;
 }

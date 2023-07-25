@@ -103,7 +103,7 @@ const Leaderboard = ({ trackData, showLaptimeDifference }) => {
   );
 
   return (
-    <div>
+    <>
       <table className="leaderboard-table">
         <tbody>
           {latestLaptimesWithDifferenceAndGap.map(
@@ -116,23 +116,25 @@ const Leaderboard = ({ trackData, showLaptimeDifference }) => {
               timeInterval,
             }) => (
               <tr key={driver}>
-                <td>{index}.</td>
-                <td>{driver}</td>
-                <td>{laptime}</td>
-                <td className="timeDiffs">
+                <td className="indexColumn">{index}.</td>
+                <td className="driverNameColumn">{driver}</td>
+                <td className="laptimeColumn">{laptime}</td>
+                <td className="timeDiffs timeDiffsColumn">
                   {showLaptimeDifference ? (
                     <span>{timeToLeader}</span>
                   ) : (
                     <span> {timeInterval} </span>
                   )}
                 </td>
-                <td>{racingLine ? <span>RL</span> : ""}</td>
+                <td className="racingLineColumn">
+                  {racingLine ? <span>RL</span> : ""}
+                </td>
               </tr>
             )
           )}
         </tbody>
       </table>
-    </div>
+    </>
   );
 };
 
