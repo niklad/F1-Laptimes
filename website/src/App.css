@@ -17,6 +17,7 @@
   position: absolute;
   height: 100%;
   width: 100%;
+  /** Some suggestions for color combinations: */
   /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
   /* background: linear-gradient(-45deg, #ff1801, #5f0f40, #0f4c5c, #9aa0a8); */
   background: linear-gradient(-45deg, #483c46, #ff1801, #70ae6e, #3c6e71);
@@ -35,7 +36,7 @@
     justify-content: space-between;
     position: relative;
     height: 80%;
-    width: 30em;
+    width: 35em;
   }
 }
 
@@ -47,8 +48,7 @@
     justify-content: space-between;
     position: relative;
     height: 80%;
-    min-width: 40%;
-    max-width: 90%;
+    width: 90%;
   }
 }
 

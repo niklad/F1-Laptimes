@@ -1,4 +1,7 @@
 import "./App.css";
+import "./styles/HeaderAndTrackSelector.css";
+import "./styles/Buttons.css";
+import "./styles/Leaderboard.css";
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue, update, get } from "firebase/database";
@@ -8,14 +11,9 @@ import { useState, useEffect } from "react";
 import Leaderboard from "./components/Leaderboard";
 import {
   TrackSelector,
-  trackFlagColorMap,
   trackLayoutMap,
 } from "./components/HeaderAndTrackSelector";
 import AddLaptimeForm from "./components/AddTimeButton";
-import Statistics from "./components/Statistics";
-
-import "./styles/HeaderAndTrackSelector.css";
-import "./styles/Buttons.css";
 
 // Web app's Firebase configuration
 const firebaseConfig = {
@@ -111,7 +109,11 @@ function App() {
       case "addTime":
         return <AddLaptimeForm track={track} onSubmit={handleAddLaptime} />;
       case "statistics":
-        return <div>Statistics Graph</div>;
+        return (
+          <div>
+            Statistics Graph <br /> Coming Soon
+          </div>
+        );
       default:
         return null;
     }
@@ -156,7 +158,7 @@ function App() {
               : "Show Statistics"}
           </button>
           <button
-            className="timeDiffButton"
+            className="timeDiffs"
             onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}
           >
             {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
