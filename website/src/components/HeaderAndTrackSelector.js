@@ -92,9 +92,12 @@ export const trackLayoutMap = {
 export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
   return (
     <div className="track-selector" onClick={(e) => e.stopPropagation()}>
-      <span>{trackCountryMap[selectedTrack]} </span>
+      {/* Display the flag */}
       <span className={`fi fi-${trackFlagMap[selectedTrack]}`}></span>
+      <br />
+      {/* Display the track name */}
       <span> {selectedTrack}</span>
+      {/* Choose selectedTrack based on a drop down menu */}
       <select value={selectedTrack} onChange={onChange}>
         {trackOptions.map((track) => (
           <option key={track} value={track}>
