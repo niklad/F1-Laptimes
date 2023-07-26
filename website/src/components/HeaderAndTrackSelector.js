@@ -84,17 +84,20 @@ export const trackLayoutMap = {
   HUNGARORING: "hungary.svg",
   BARCELONA: "spain.svg",
   ZANDVOORT: "netherlands.svg",
-  // "JEDDAH": "saudiarabia.svg",
-  // "IMOLA": "italy.svg",
+  JEDDAH: "../bragis.jpg",
+  IMOLA: "../bragis.jpg",
   "PAUL RICARD": "france.svg",
 };
 
 export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
   return (
     <div className="track-selector" onClick={(e) => e.stopPropagation()}>
-      <span>{trackCountryMap[selectedTrack]} </span>
+      {/* Display the flag */}
       <span className={`fi fi-${trackFlagMap[selectedTrack]}`}></span>
+      <br />
+      {/* Display the track name */}
       <span> {selectedTrack}</span>
+      {/* Choose selectedTrack based on a drop down menu */}
       <select value={selectedTrack} onChange={onChange}>
         {trackOptions.map((track) => (
           <option key={track} value={track}>

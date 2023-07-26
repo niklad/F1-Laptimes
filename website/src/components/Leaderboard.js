@@ -2,6 +2,76 @@ import React from "react";
 
 import "../styles/Leaderboard.css";
 
+const Leaderboard = ({ trackData, showLaptimeDifference }) => {
+  const latestLaptimes = [];
+  Object.keys(trackData).forEach((driver) => {
+    let latestTimestamp = null;
+    let latestLaptime = null;
+    Object.keys(trackData[driver]).forEach((timestamp) => {
+      if (!latestTimestamp || timestamp > latestTimestamp) {
+        latestTimestamp = timestamp;
+        latestLaptime = trackData[driver][timestamp].LAPTIME;
+      }
+    });
+    latestLaptimes.push({
+      driver,
+      laptime: latestLaptime,
+      racingLine: trackData[driver][latestTimestamp].RACING_LINE,
+    });
+  });
+
+  // Sort the latest laptimes by laptime
+  sortLaptimes(latestLaptimes);
+
+  // Add an index column to the latest laptimes
+  const latestLaptimesWithIndex = latestLaptimes.map((laptime, index) => {
+    return {
+      ...laptime,
+      index: index + 1,
+    };
+  });
+
+  // Calculate the laptime difference and time gap between each laptime and the one that is 1 index quicker
+  const latestLaptimesWithDifferenceAndGap = calculateLaptimeDiffAndGap(
+    latestLaptimesWithIndex
+  );
+
+  return (
+    <>
+      <table className="leaderboard-table">
+        <tbody>
+          {latestLaptimesWithDifferenceAndGap.map(
+            ({
+              index,
+              driver,
+              laptime,
+              racingLine,
+              timeToLeader,
+              timeInterval,
+            }) => (
+              <tr key={driver}>
+                <td className="indexColumn">{index}.</td>
+                <td className="driverNameColumn">{driver}</td>
+                <td className="laptimeColumn">{laptime}</td>
+                <td className="timeDiffs timeDiffsColumn">
+                  {showLaptimeDifference ? (
+                    <span>{timeToLeader}</span>
+                  ) : (
+                    <span> {timeInterval} </span>
+                  )}
+                </td>
+                <td className="racingLineColumn">
+                  {racingLine ? <span>RL</span> : ""}
+                </td>
+              </tr>
+            )
+          )}
+        </tbody>
+      </table>
+    </>
+  );
+};
+
 // Function to calculate the time difference between two lap times
 const calculateTimeDifference = (laptime, quickestLaptime) => {
   // Convert laptime strings to arrays of time components
@@ -31,28 +101,9 @@ const calculateTimeDifference = (laptime, quickestLaptime) => {
   }
 };
 
-const Leaderboard = ({ trackData, showLaptimeDifference }) => {
-  const latestLaptimes = [];
+export default Leaderboard;
 
-  Object.keys(trackData).forEach((driver) => {
-    let latestTimestamp = null;
-    let latestLaptime = null;
-
-    Object.keys(trackData[driver]).forEach((timestamp) => {
-      if (!latestTimestamp || timestamp > latestTimestamp) {
-        latestTimestamp = timestamp;
-        latestLaptime = trackData[driver][timestamp].LAPTIME;
-      }
-    });
-
-    latestLaptimes.push({
-      driver,
-      laptime: latestLaptime,
-      racingLine: trackData[driver][latestTimestamp].RACING_LINE,
-    });
-  });
-
-  // Sort the latest laptimes by laptime
+function sortLaptimes(latestLaptimes) {
   latestLaptimes.sort((a, b) => {
     const aLaptime = a.laptime.split(/[:.]/);
     const bLaptime = b.laptime.split(/[:.]/);
@@ -65,75 +116,31 @@ const Leaderboard = ({ trackData, showLaptimeDifference }) => {
     }
     return 0;
   });
+}
 
-  // Add an index column to the latest laptimes
-  const latestLaptimesWithIndex = latestLaptimes.map((laptime, index) => {
-    return {
-      ...laptime,
-      index: index + 1,
-    };
-  });
-
-  // Calculate the laptime difference and time gap between each laptime and the one that is 1 index quicker
-  const latestLaptimesWithDifferenceAndGap = latestLaptimesWithIndex.map(
-    (laptime, index) => {
-      if (index > 0) {
-        const previousLaptime = latestLaptimesWithIndex[index - 1].laptime;
-        const timeToLeader = calculateTimeDifference(
-          laptime.laptime,
-          latestLaptimesWithIndex[0].laptime
-        );
-        const timeInterval = calculateTimeDifference(
-          laptime.laptime,
-          previousLaptime
-        );
-        return {
-          ...laptime,
-          timeToLeader,
-          timeInterval,
-        };
-      } else {
-        return {
-          ...laptime,
-          timeToLeader: "",
-          timeInterval: "",
-        };
-      }
+function calculateLaptimeDiffAndGap(latestLaptimesWithIndex) {
+  return latestLaptimesWithIndex.map((laptime, index) => {
+    if (index > 0) {
+      const previousLaptime = latestLaptimesWithIndex[index - 1].laptime;
+      const timeToLeader = calculateTimeDifference(
+        laptime.laptime,
+        latestLaptimesWithIndex[0].laptime
+      );
+      const timeInterval = calculateTimeDifference(
+        laptime.laptime,
+        previousLaptime
+      );
+      return {
+        ...laptime,
+        timeToLeader,
+        timeInterval,
+      };
+    } else {
+      return {
+        ...laptime,
+        timeToLeader: "",
+        timeInterval: "",
+      };
     }
-  );
-
-  return (
-    <div>
-      <table className="leaderboard-table">
-        <tbody>
-          {latestLaptimesWithDifferenceAndGap.map(
-            ({
-              index,
-              driver,
-              laptime,
-              racingLine,
-              timeToLeader,
-              timeInterval,
-            }) => (
-              <tr key={driver}>
-                <td>{index}.</td>
-                <td>{driver}</td>
-                <td>{laptime}</td>
-                <td className="timeDiffs">
-                  {showLaptimeDifference ? (
-                    <span>{timeToLeader}</span>
-                  ) : (
-                    <span> {timeInterval} </span>
-                  )}
-                </td>
-                <td>{racingLine ? <span>RL</span> : ""}</td>
-              </tr>
-            )
-          )}
-        </tbody>
-      </table>
-    </div>
-  );
-};
-
-export default Leaderboard;
+  });
+}

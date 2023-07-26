@@ -17,6 +17,7 @@
   position: absolute;
   height: 100%;
   width: 100%;
+  /** Some suggestions for color combinations: */
   /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
   /* background: linear-gradient(-45deg, #ff1801, #5f0f40, #0f4c5c, #9aa0a8); */
   background: linear-gradient(-45deg, #483c46, #ff1801, #70ae6e, #3c6e71);
@@ -24,51 +25,66 @@
   -webkit-animation: Gradient 25s ease infinite;
   -moz-animation: Gradient 25s ease infinite;
   animation: Gradient 25s ease infinite;
+  z-index: -2;
 }
 
-.Content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  height: 60%;
-  min-width: 50vw;
+@media (min-aspect-ratio: 1/1) {
+  /* For desktop devices */
+  .Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    height: 80%;
+    width: 35em;
+  }
+
+  .Track-layout {
+    position: absolute;
+    /* Place in the middle of the viewport */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 45%;
+    width: 100%;
+    opacity: 0.3;
+    z-index: -1;
+  }
 }
 
-.App-link {
-  color: #61dafb;
-}
+@media (max-aspect-ratio: 1/1) {
+  /* For mobile devices */
+  .Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    height: 80%;
+    width: 90%;
+  }
 
-.Track-layout {
-  position: absolute;
-  /* Place in the middle of the viewport */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 45%;
-  width: 100%;
-  opacity: 0.3;
-}
-
-.Buttons {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.timeDiffButton {
-  color: yellow;
+  .Track-layout {
+    position: absolute;
+    /* Place in the middle of the viewport */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    opacity: 0.3;
+    z-index: -1;
+  }
 }
 
 .Rendered-content {
-  z-index: 1;
   /* height: 100%; */
-  align-self: center;
-  width: 90%;
+  width: 100%;
 }
 
 @-webkit-keyframes Gradient {
