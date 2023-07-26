@@ -24,19 +24,37 @@
   -webkit-animation: Gradient 25s ease infinite;
   -moz-animation: Gradient 25s ease infinite;
   animation: Gradient 25s ease infinite;
+  z-index: -2;
 }
 
-.Content {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  position: relative;
-  height: 60%;
-  min-width: 50vw;
+@media (min-aspect-ratio: 1/1) {
+  /* For desktop devices */
+  .Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    height: 80%;
+    width: 30em;
+  }
 }
 
-.App-link {
-  color: #61dafb;
+@media (max-aspect-ratio: 1/1) {
+  /* For mobile devices */
+  .Content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    height: 80%;
+    min-width: 40%;
+    max-width: 90%;
+  }
+}
+
+.Rendered-content {
+  /* height: 100%; */
+  width: 100%;
 }
 
 .Track-layout {
@@ -51,24 +69,7 @@
   height: 45%;
   width: 100%;
   opacity: 0.3;
-}
-
-.Buttons {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.timeDiffButton {
-  color: yellow;
-}
-
-.Rendered-content {
-  z-index: 1;
-  /* height: 100%; */
-  align-self: center;
-  width: 90%;
+  z-index: -1;
 }
 
 @-webkit-keyframes Gradient {
