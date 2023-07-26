@@ -1,5 +1,6 @@
 .leaderboard-table {
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0 0.5em;
   width: 100%;
   text-align: left;
 }
