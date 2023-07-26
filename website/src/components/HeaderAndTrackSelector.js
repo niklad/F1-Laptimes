@@ -84,8 +84,8 @@ export const trackLayoutMap = {
   HUNGARORING: "hungary.svg",
   BARCELONA: "spain.svg",
   ZANDVOORT: "netherlands.svg",
-  // "JEDDAH": "saudiarabia.svg",
-  // "IMOLA": "italy.svg",
+  JEDDAH: "../bragis.jpg",
+  IMOLA: "../bragis.jpg",
   "PAUL RICARD": "france.svg",
 };
 
