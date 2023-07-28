@@ -10,8 +10,9 @@
   }
 
   .Buttons button {
-    margin: 1%;
-    width: 30%;
+    margin: 0 1%;
+    width: 15em;
+    height: 4em;
   }
 }
 
