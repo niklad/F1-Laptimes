@@ -1,0 +1,17 @@
+.addLaptimeForm {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  justify-content: center;
+  height: 30vh;
+}
+
+.addLaptimeForm input {
+  width: 6em;
+  height: 1em;
+  /* border: none; */
+  border-radius: 10px;
+  /* box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); */
+  /* Center the text in the box */
+  text-align: center;
+}
