@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
+import "../styles/AddLaptimeForm.css";
 
 function formatLaptime(laptime) {
   // Make a function to format a laptime, so that it is always in the format m:ss:SSS
@@ -54,10 +55,11 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="addLaptimeForm">
       <label>
         Driver:
         <input
+          className="driverName"
           type="text"
           name="driverName"
           value={driverName}
@@ -70,7 +72,7 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
         <input
           type="text"
           name="laptime"
-          value={laptime}
+          value="1:00.000"
           onChange={(event) => setLaptime(event.target.value)}
         />
       </label>

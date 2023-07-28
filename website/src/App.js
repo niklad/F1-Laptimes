@@ -13,7 +13,7 @@ import {
   TrackSelector,
   trackLayoutMap,
 } from "./components/HeaderAndTrackSelector";
-import AddLaptimeForm from "./components/AddTimeButton";
+import AddLaptimeForm from "./components/AddLaptimeForm";
 
 // Web app's Firebase configuration
 const firebaseConfig = {
