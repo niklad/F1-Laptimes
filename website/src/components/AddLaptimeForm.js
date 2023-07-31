@@ -37,13 +37,12 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const nameRegex = /^[a-zA-Z]{3}$/;
+    const laptimeRegex = /^[0-9]{1,2}[:.][0-9]{1,2}[:.][0-9]{1,3}$/;
     if (
-      driverName === "" ||
-      laptime === "" ||
-      [0, 2, 3, 5, 6, 7].some((i) => isNaN(laptime[i])) ||
-      (laptime[1] !== ":" && laptime[1] !== ".") ||
-      (laptime[4] !== ":" && laptime[4] !== ".") ||
-      laptime.length !== 8
+      !nameRegex.test(driverName) ||
+      laptime.length !== 8 ||
+      !laptimeRegex.test(laptime)
     ) {
       Swal.fire({
         icon: "warning",
