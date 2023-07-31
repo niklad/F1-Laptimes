@@ -40,7 +40,10 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
     if (
       driverName === "" ||
       laptime === "" ||
-      [0, 2, 3, 5, 6, 7].some((i) => isNaN(laptime[i]))
+      [0, 2, 3, 5, 6, 7].some((i) => isNaN(laptime[i])) ||
+      (laptime[1] !== ":" && laptime[1] !== ".") ||
+      (laptime[4] !== ":" && laptime[4] !== ".") ||
+      laptime.length !== 8
     ) {
       Swal.fire({
         icon: "warning",
