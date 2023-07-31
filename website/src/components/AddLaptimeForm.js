@@ -70,6 +70,7 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
           className="driverName"
           type="text"
           name="driverName"
+          placeholder="ALO"
           value={driverName}
           onChange={(event) => setDriverName(event.target.value)}
         />
@@ -80,6 +81,7 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
         <input
           type="text"
           name="laptime"
+          placeholder="m:ss.SSS"
           value={laptime}
           onChange={(event) => setLaptime(event.target.value)}
         />
