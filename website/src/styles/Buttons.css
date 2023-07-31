@@ -1,7 +1,6 @@
 @media (min-aspect-ratio: 1/1) {
   /* Properties for desktop devices */
   .Buttons {
-    /* The group of buttons on the bottom of the App page */
     position: relative;
     display: flex;
     flex-direction: row;
