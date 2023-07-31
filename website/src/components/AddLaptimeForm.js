@@ -14,10 +14,6 @@ function formatLaptime(laptime) {
   let seconds = laptimeSplit[1];
   let milliseconds = laptimeSplit[2];
 
-  // Remove leading zeros
-  if (minutes[0] === "0") {
-    minutes = minutes.substring(1);
-  }
   if (seconds.length === 1) {
     seconds = "0" + seconds;
   }
