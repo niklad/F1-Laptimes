@@ -37,17 +37,22 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (driverName === "" || laptime === "") {
+    if (
+      driverName === "" ||
+      laptime === "" ||
+      [0, 2, 3, 5, 6, 7].some((i) => isNaN(laptime[i]))
+    ) {
       Swal.fire({
         icon: "warning",
         title: "heck no",
-        text: "Please enter a driver name and laptime.",
+        text: "Please enter a valid driver name and laptime.",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "OK",
       });
       return;
     }
     const formattedLaptime = formatLaptime(laptime);
+
     onSubmit(track, driverName.toUpperCase(), formattedLaptime, racingLineUsed);
     setDriverName("");
     setLaptime("");
