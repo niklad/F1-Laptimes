@@ -72,7 +72,7 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
         <input
           type="text"
           name="laptime"
-          value="1:00.000"
+          value={laptime}
           onChange={(event) => setLaptime(event.target.value)}
         />
       </label>
