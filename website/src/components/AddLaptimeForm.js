@@ -14,10 +14,6 @@ function formatLaptime(laptime) {
   let seconds = laptimeSplit[1];
   let milliseconds = laptimeSplit[2];
 
-  // Remove leading zeros
-  if (minutes[0] === "0") {
-    minutes = minutes.substring(1);
-  }
   if (seconds.length === 1) {
     seconds = "0" + seconds;
   }
@@ -37,17 +33,24 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (driverName === "" || laptime === "") {
+    const nameRegex = /^[a-zA-Z]{3}$/;
+    const laptimeRegex = /^[0-9]{1,2}[:.][0-9]{1,2}[:.][0-9]{1,3}$/;
+    if (
+      !nameRegex.test(driverName) ||
+      laptime.length !== 8 ||
+      !laptimeRegex.test(laptime)
+    ) {
       Swal.fire({
         icon: "warning",
         title: "heck no",
-        text: "Please enter a driver name and laptime.",
+        text: "Please enter a valid driver name and laptime.",
         confirmButtonColor: "#3085d6",
         confirmButtonText: "OK",
       });
       return;
     }
     const formattedLaptime = formatLaptime(laptime);
+
     onSubmit(track, driverName.toUpperCase(), formattedLaptime, racingLineUsed);
     setDriverName("");
     setLaptime("");
@@ -62,6 +65,7 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
           className="driverName"
           type="text"
           name="driverName"
+          placeholder="ALO"
           value={driverName}
           onChange={(event) => setDriverName(event.target.value)}
         />
@@ -72,6 +76,7 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
         <input
           type="text"
           name="laptime"
+          placeholder="m:ss.SSS"
           value={laptime}
           onChange={(event) => setLaptime(event.target.value)}
         />
