@@ -98,8 +98,12 @@ export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
             <br />
             {/* Display the track name */}
             <span> {selectedTrack}</span>
-            {/* Choose selectedTrack based on a drop down menu */}
             <select value={selectedTrack} onChange={onChange}>
+                {/* Add "Driver Standings to the top of the list" */}
+                <option key="DRIVER STANDINGS" value="DRIVER STANDINGS">
+                    DRIVER STANDINGS
+                </option>
+                {/* Add the rest of the tracks in trackOptions */}
                 {trackOptions.map((track) => (
                     <option key={track} value={track}>
                         {track}
