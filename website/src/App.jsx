@@ -35,6 +35,7 @@ function App() {
 
   // Define the track options for the dropdown menu
   const trackOptions = [
+    "DRIVER STANDINGS",
     "SPA",
     "RED BULL RING",
     "SUZUKA",

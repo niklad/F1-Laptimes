@@ -4,6 +4,7 @@ import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 // A map of track names to flag icons
 export const trackFlagMap = {
+  "DRIVER STANDINGS": "no", // Replace with a trophy icon
   SILVERSTONE: "gb",
   SPA: "be",
   SUZUKA: "jp",
