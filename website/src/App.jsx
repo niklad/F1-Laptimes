@@ -132,11 +132,13 @@ function App() {
         <div className="App">
             <div className="Background" />
             <div className="Content">
-                <img
-                    src={"trackLayouts/" + trackLayoutMap[track]}
-                    alt=""
-                    className="Track-layout"
-                />
+                {displayMode === "driverStandings" ? null : (
+                    <img
+                        src={"trackLayouts/" + trackLayoutMap[track]}
+                        alt=""
+                        className="Track-layout"
+                    />
+                )}
                 <TrackSelector
                     trackOptions={trackOptions}
                     selectedTrack={track}
