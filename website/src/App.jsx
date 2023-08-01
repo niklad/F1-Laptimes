@@ -28,9 +28,9 @@ const firebaseConfig = {
 };
 
 function App() {
-    const [track, setTrack] = useState("SPA");
+    const [track, setTrack] = useState("DRIVER STANDINGS");
     const [trackData, setTrackData] = useState(null);
-    const [displayMode, setDisplayMode] = useState("leaderboard"); // "leaderboard", "addTime" or "statistics"
+    const [displayMode, setDisplayMode] = useState("driverStandings");
     const [showLaptimeDifference, setShowLaptimeDifference] = useState(true);
 
     // Define the track options for the dropdown menu
