@@ -135,12 +135,14 @@ function App() {
         />
         <div className="Rendered-content">{renderContent()}</div>
         <div className="Buttons">
-          <button
-            className="timeDiffs"
-            onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}
-          >
-            {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
-          </button>
+          {displayMode === "leaderboard" ? (
+            <button
+              className="timeDiffs"
+              onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}
+            >
+              {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
+            </button>
+          ) : null}
           <button
             onClick={() =>
               setDisplayMode(
