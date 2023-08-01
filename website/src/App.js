@@ -128,11 +128,11 @@ function App() {
           alt=""
           className="Track-layout"
         />
-          <TrackSelector
-            trackOptions={trackOptions}
-            selectedTrack={track}
-            onChange={handleTrackChange}
-          />
+        <TrackSelector
+          trackOptions={trackOptions}
+          selectedTrack={track}
+          onChange={handleTrackChange}
+        />
         <div className="Rendered-content">{renderContent()}</div>
         <div className="Buttons">
           <button
