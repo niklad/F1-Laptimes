@@ -30,7 +30,7 @@ const firebaseConfig = {
 function App() {
     const [track, setTrack] = useState("DRIVER STANDINGS");
     const [trackData, setTrackData] = useState(null);
-    const [displayMode, setDisplayMode] = useState("driverStandings");
+    const [displayMode, setDisplayMode] = useState("leaderboard");
     const [showLaptimeDifference, setShowLaptimeDifference] = useState(true);
 
     // Define the track options for the dropdown menu
@@ -97,13 +97,14 @@ function App() {
     };
 
     const renderContent = () => {
+        if (track === "DRIVER STANDINGS") {
+            return (
+                <div>
+                    Driver Standings <br /> Coming Soon
+                </div>
+            );
+        }
         switch (displayMode) {
-            case "driverStandings":
-                return (
-                    <div>
-                        Driver Standings <br /> Coming Soon
-                    </div>
-                );
             case "leaderboard":
                 return (
                     trackData && (
@@ -132,10 +133,10 @@ function App() {
         <div className="App">
             <div className="Background" />
             <div className="Content">
-                {displayMode === "driverStandings" ? null : (
+                {track === "DRIVER STANDINGS" ? null : (
                     <img
                         src={"trackLayouts/" + trackLayoutMap[track]}
-                        alt=""
+                        alt="track layout"
                         className="Track-layout"
                     />
                 )}
@@ -146,7 +147,8 @@ function App() {
                 />
                 <div className="Rendered-content">{renderContent()}</div>
                 <div className="Buttons">
-                    {displayMode === "leaderboard" ? (
+                    {displayMode === "leaderboard" &&
+                    track !== "DRIVER STANDINGS" ? (
                         <button
                             className="timeDiffs"
                             onClick={() =>
@@ -158,19 +160,21 @@ function App() {
                                 : "Show Gap to Leader"}
                         </button>
                     ) : null}
-                    <button
-                        onClick={() =>
-                            setDisplayMode(
-                                displayMode === "addTime"
-                                    ? "leaderboard"
-                                    : "addTime"
-                            )
-                        }
-                    >
-                        {displayMode === "addTime"
-                            ? "Back to Leaderboard"
-                            : "Add Laptime"}
-                    </button>
+                    {track === "DRIVER STANDINGS" ? null : (
+                        <button
+                            onClick={() =>
+                                setDisplayMode(
+                                    displayMode === "addTime"
+                                        ? "leaderboard"
+                                        : "addTime"
+                                )
+                            }
+                        >
+                            {displayMode === "addTime"
+                                ? "Back to Leaderboard"
+                                : "Add Laptime"}
+                        </button>
+                    )}
                     <button
                         onClick={() =>
                             setDisplayMode(
