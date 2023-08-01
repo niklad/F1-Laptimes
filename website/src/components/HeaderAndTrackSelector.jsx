@@ -93,8 +93,16 @@ export const trackLayoutMap = {
 export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
     return (
         <div className="track-selector" onClick={(e) => e.stopPropagation()}>
-            {/* Display the flag */}
-            <span className={`fi fi-${trackFlagMap[selectedTrack]}`}></span>
+            {/* If selectedTrack is "driverStandings", display trophy.svg instead of a flag */}
+            {selectedTrack === "DRIVER STANDINGS" ? (
+                <img
+                    src="trophy-icon.svg"
+                    className="trophy-image"
+                    alt="trophy"
+                />
+            ) : (
+                <span className={`fi fi-${trackFlagMap[selectedTrack]}`}></span>
+            )}
             <br />
             {/* Display the track name */}
             <span> {selectedTrack}</span>

@@ -19,3 +19,7 @@
 .track-selector select {
     opacity: 0;
 }
+
+.trophy-image {
+    height: 1em;
+}
