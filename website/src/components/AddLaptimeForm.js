@@ -37,8 +37,8 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
     const laptimeRegex = /^[0-9]{1,2}[:.][0-9]{1,2}[:.][0-9]{1,3}$/;
     if (
       !nameRegex.test(driverName) ||
-      laptime.length !== 8 ||
-      !laptimeRegex.test(laptime)
+      !laptimeRegex.test(laptime) ||
+      laptime.length !== 8
     ) {
       Swal.fire({
         icon: "warning",

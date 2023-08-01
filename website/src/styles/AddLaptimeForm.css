@@ -3,7 +3,7 @@
   flex-direction: column;
   align-content: center;
   justify-content: center;
-  height: 30vh;
+  height: 100%;
 }
 
 .addLaptimeForm input {

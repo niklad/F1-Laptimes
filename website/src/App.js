@@ -40,10 +40,10 @@ function App() {
     "SUZUKA",
     "INTERLAGOS",
     "ZANDVOORT",
+    "MONACO",
     "SILVERSTONE",
     "BAKU",
     "MONZA",
-    "MONACO",
     "AUSTIN",
     "BARCELONA",
     "BAHRAIN",
@@ -128,15 +128,21 @@ function App() {
           alt=""
           className="Track-layout"
         />
-        <h1>
-          <TrackSelector
-            trackOptions={trackOptions}
-            selectedTrack={track}
-            onChange={handleTrackChange}
-          />
-        </h1>
+        <TrackSelector
+          trackOptions={trackOptions}
+          selectedTrack={track}
+          onChange={handleTrackChange}
+        />
         <div className="Rendered-content">{renderContent()}</div>
         <div className="Buttons">
+          {displayMode === "leaderboard" ? (
+            <button
+              className="timeDiffs"
+              onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}
+            >
+              {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
+            </button>
+          ) : null}
           <button
             onClick={() =>
               setDisplayMode(
@@ -156,12 +162,6 @@ function App() {
             {displayMode === "statistics"
               ? "Back to Leaderboard"
               : "Show Statistics"}
-          </button>
-          <button
-            className="timeDiffs"
-            onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}
-          >
-            {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
           </button>
         </div>
       </div>
