@@ -136,6 +136,12 @@ function App() {
         <div className="Rendered-content">{renderContent()}</div>
         <div className="Buttons">
           <button
+            className="timeDiffs"
+            onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}
+          >
+            {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
+          </button>
+          <button
             onClick={() =>
               setDisplayMode(
                 displayMode === "addTime" ? "leaderboard" : "addTime"
@@ -154,12 +160,6 @@ function App() {
             {displayMode === "statistics"
               ? "Back to Leaderboard"
               : "Show Statistics"}
-          </button>
-          <button
-            className="timeDiffs"
-            onClick={() => setShowLaptimeDifference(!showLaptimeDifference)}
-          >
-            {showLaptimeDifference ? "Show Interval" : "Show Gap to Leader"}
           </button>
         </div>
       </div>
