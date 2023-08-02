@@ -3,33 +3,7 @@ import React from "react";
 import "../styles/Leaderboard.css";
 
 const Leaderboard = ({ trackData, showLaptimeDifference }) => {
-    const latestLaptimes = [];
-    Object.keys(trackData).forEach((driver) => {
-        let latestTimestamp = null;
-        let latestLaptime = null;
-        Object.keys(trackData[driver]).forEach((timestamp) => {
-            if (!latestTimestamp || timestamp > latestTimestamp) {
-                latestTimestamp = timestamp;
-                latestLaptime = trackData[driver][timestamp].LAPTIME;
-            }
-        });
-        latestLaptimes.push({
-            driver,
-            laptime: latestLaptime,
-            racingLine: trackData[driver][latestTimestamp].RACING_LINE,
-        });
-    });
-
-    // Sort the latest laptimes by laptime
-    sortLaptimes(latestLaptimes);
-
-    // Add an index column to the latest laptimes
-    const latestLaptimesWithIndex = latestLaptimes.map((laptime, index) => {
-        return {
-            ...laptime,
-            index: index + 1,
-        };
-    });
+    const latestLaptimesWithIndex = findAndSortLaptimes(trackData);
 
     // Calculate the laptime difference and time gap between each laptime and the one that is 1 index quicker
     const latestLaptimesWithDifferenceAndGap = calculateLaptimeDiffAndGap(
@@ -102,6 +76,42 @@ const calculateTimeDifference = (laptime, quickestLaptime) => {
 };
 
 export default Leaderboard;
+
+function findAndSortLaptimes(trackData) {
+    const latestLaptimes = findLatestLaptime(trackData);
+
+    // Sort the latest laptimes by laptime
+    sortLaptimes(latestLaptimes);
+
+    // Add an index column to the latest laptimes
+    const latestLaptimesWithIndex = latestLaptimes.map((laptime, index) => {
+        return {
+            ...laptime,
+            index: index + 1,
+        };
+    });
+    return latestLaptimesWithIndex;
+}
+
+function findLatestLaptime(trackData) {
+    const latestLaptimes = [];
+    Object.keys(trackData).forEach((driver) => {
+        let latestTimestamp = null;
+        let latestLaptime = null;
+        Object.keys(trackData[driver]).forEach((timestamp) => {
+            if (!latestTimestamp || timestamp > latestTimestamp) {
+                latestTimestamp = timestamp;
+                latestLaptime = trackData[driver][timestamp].LAPTIME;
+            }
+        });
+        latestLaptimes.push({
+            driver,
+            laptime: latestLaptime,
+            racingLine: trackData[driver][latestTimestamp].RACING_LINE,
+        });
+    });
+    return latestLaptimes;
+}
 
 function sortLaptimes(latestLaptimes) {
     latestLaptimes.sort((a, b) => {
