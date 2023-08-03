@@ -1,31 +1,39 @@
 .leaderboard-table {
-  border-collapse: separate;
-  border-spacing: 0 0.5em;
-  width: 100%;
-  text-align: left;
+    border-collapse: separate;
+    border-spacing: 0 0.5em;
+    width: 100%;
+    text-align: left;
+}
+
+.leaderboard-table driver-standings {
 }
 
 .indexColumn {
-  width: 1em;
+    width: 1em;
 }
 
 .driverNameColumn {
-  width: 3em;
+    width: 3em;
 }
 
 .laptimeColumn {
-  width: 5em;
+    width: 5em;
 }
 
 .timeDiffsColumn {
-  width: 4em;
+    width: 4em;
 }
 
 .timeDiffs {
-  color: yellow;
+    color: yellow;
 }
 
 .racingLineColumn {
-  text-align: end;
-  width: 1em;
+    text-align: end;
+    width: 1em;
+}
+
+.driverStandingsPointsColumn {
+    text-align: end;
+    width: 1em;
 }

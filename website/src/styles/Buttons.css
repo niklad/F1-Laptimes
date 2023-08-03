@@ -1,99 +1,99 @@
 @media (min-aspect-ratio: 1/1) {
-  /* Properties for desktop devices */
-  .Buttons {
-    position: relative;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
-  }
+    /* Properties for desktop devices */
+    .Buttons {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        width: 100%;
+    }
 
-  .Buttons button {
-    margin: 0 1%;
-    width: 15em;
-    height: 4em;
-  }
+    .Buttons button {
+        margin: 0 1%;
+        width: 15em;
+        height: 4em;
+    }
 }
 
 @media (max-aspect-ratio: 1/1) {
-  /* Properties for mobile devices */
-  .Buttons {
-    flex-direction: column;
-    align-content: center;
-    justify-content: center;
-  }
-  .Buttons button {
-    margin: 1%;
-    width: 100%;
-  }
+    /* Properties for mobile devices */
+    .Buttons {
+        flex-direction: column;
+        align-content: center;
+        justify-content: center;
+    }
+    .Buttons button {
+        margin: 1%;
+        width: 100%;
+    }
 }
 
 button {
-  /* Gradient background */
-  background: rgb(0, 0, 0, 0.1);
-  border: none;
-  color: white;
-  padding: 20px 20px;
-  font-size: inherit;
-  font-family: inherit;
-  border-radius: 15px;
-  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-  transition: all 0.25s ease-in-out;
+    /* Gradient background */
+    background: rgb(0, 0, 0, 0.1);
+    border: none;
+    color: white;
+    padding: 20px 20px;
+    font-size: inherit;
+    font-family: inherit;
+    border-radius: 15px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+    transition: all 0.25s ease-in-out;
 }
 
 button:hover {
-  background: rgb(0, 0, 0, 0);
-  cursor: pointer;
+    background: rgb(0, 0, 0, 0);
+    cursor: pointer;
 }
 
 form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
 }
 
 label {
-  display: flex;
-  flex-direction: column;
-  margin: 10px;
+    display: flex;
+    flex-direction: column;
+    margin: 10px;
 }
 
 input[type="text"],
 input[type="checkbox"] {
-  margin-left: 10px;
-  padding: 5px;
-  border-radius: 5px;
+    margin-left: 10px;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 input[type="checkbox"] {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  height: 20px;
-  border-radius: 5px;
-  outline: none;
-  transition: all 0.3s ease-in-out;
-  position: relative;
-  cursor: pointer;
-  display: inline-block;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    height: 20px;
+    border-radius: 5px;
+    outline: none;
+    transition: all 0.3s ease-in-out;
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
 }
 
 input[type="checkbox"]:before {
-  display: block;
-  content: "";
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20px;
-  height: 20px;
-  border-radius: 2px;
-  background-color: #fff;
-  transition: all 0.3s ease-in-out;
+    display: block;
+    content: "";
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 20px;
+    height: 20px;
+    border-radius: 2px;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
 }
 
 input[type="checkbox"]:checked:before {
-  background-color: red;
+    background-color: red;
 }
