@@ -96,12 +96,13 @@ function App() {
             });
     };
 
-    const renderContent = () => {
+    const renderContent = (trackOptions) => {
         if (track === "DRIVER STANDINGS") {
             return (
-                <div>
-                    Driver Standings <br /> Coming Soon
-                </div>
+                <CombinedLeaderboard
+                    database={db}
+                    trackOptions={trackOptions}
+                />
             );
         }
         switch (displayMode) {
