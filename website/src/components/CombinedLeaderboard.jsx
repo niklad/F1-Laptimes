@@ -84,20 +84,7 @@ export function CombinedLeaderboard({ database, trackOptions }) {
                                     : ""
                             }
                         >
-                            <td className="indexColumn">
-                                {
-                                    // Check if the driver is tied for the previous position
-                                    index > 0 &&
-                                    combinedLeaderboardPoints[
-                                        Object.keys(combinedLeaderboardPoints)[
-                                            index - 1
-                                        ]
-                                    ] === points
-                                        ? index
-                                        : index + 1
-                                }
-                                .
-                            </td>
+                            <td className="indexColumn">{index + 1}.</td>
                             <td className="driverNameColumn">{driver}</td>
                             <td className="driverStandingsPointsColumn">
                                 {points}
