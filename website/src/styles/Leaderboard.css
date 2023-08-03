@@ -34,5 +34,6 @@
 }
 
 .driverStandingsPointsColumn {
+    text-align: end;
     width: 1em;
 }
