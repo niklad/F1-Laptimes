@@ -33,6 +33,10 @@ function App() {
     const [displayMode, setDisplayMode] = useState("leaderboard");
     const [showLaptimeDifference, setShowLaptimeDifference] = useState(true);
 
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+
     // Define the track options for the dropdown menu
     const trackOptions = [
         "DRIVER STANDINGS",
@@ -58,10 +62,6 @@ function App() {
         "IMOLA",
         "JEDDAH",
     ];
-
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
 
     // Set the trackData to be the data in the database at the key of the track name, e.g. "SPA".
     useEffect(() => {
