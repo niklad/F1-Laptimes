@@ -29,10 +29,48 @@ const firebaseConfig = {
 };
 
 function App() {
-    const [track, setTrack] = useState("DRIVER STANDINGS");
-    const [trackData, setTrackData] = useState(null);
-    const [displayMode, setDisplayMode] = useState("leaderboard");
-    const [showLaptimeDifference, setShowLaptimeDifference] = useState(true);
+    const [track, setTrack] = useState(() => {
+        const storedTrack = localStorage.getItem("track");
+        return storedTrack !== null ? storedTrack : "DRIVER STANDINGS";
+    });
+
+    const [trackData, setTrackData] = useState(() => {
+        const storedTrackData = localStorage.getItem("trackData");
+        return storedTrackData !== null ? JSON.parse(storedTrackData) : null;
+    });
+
+    const [displayMode, setDisplayMode] = useState(() => {
+        const storedDisplayMode = localStorage.getItem("displayMode");
+        return storedDisplayMode !== null ? storedDisplayMode : "leaderboard";
+    });
+
+    const [showLaptimeDifference, setShowLaptimeDifference] = useState(() => {
+        const storedShowLaptimeDifference = localStorage.getItem(
+            "showLaptimeDifference"
+        );
+        return storedShowLaptimeDifference !== null
+            ? JSON.parse(storedShowLaptimeDifference)
+            : true;
+    });
+
+    useEffect(() => {
+        localStorage.setItem("track", track);
+    }, [track]);
+
+    useEffect(() => {
+        localStorage.setItem("trackData", JSON.stringify(trackData));
+    }, [trackData]);
+
+    useEffect(() => {
+        localStorage.setItem("displayMode", displayMode);
+    }, [displayMode]);
+
+    useEffect(() => {
+        localStorage.setItem(
+            "showLaptimeDifference",
+            JSON.stringify(showLaptimeDifference)
+        );
+    }, [showLaptimeDifference]);
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
