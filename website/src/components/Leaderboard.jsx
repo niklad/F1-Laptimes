@@ -3,7 +3,15 @@ import React from "react";
 import "../styles/Leaderboard.css";
 
 const Leaderboard = ({ trackData, showLaptimeDifference }) => {
-    const latestLaptimesWithIndex = findAndSortLaptimes(trackData);
+    const latestLaptimes = findAndSortLaptimes(trackData);
+
+    // Add an index column to the latest laptimes
+    const latestLaptimesWithIndex = latestLaptimes.map((laptime, index) => {
+        return {
+            ...laptime,
+            index: index + 1,
+        };
+    });
 
     // Calculate the laptime difference and time gap between each laptime and the one that is 1 index quicker
     const latestLaptimesWithDifferenceAndGap = calculateLaptimeDiffAndGap(
@@ -82,15 +90,7 @@ function findAndSortLaptimes(trackData) {
 
     // Sort the latest laptimes by laptime
     sortLaptimes(latestLaptimes);
-
-    // Add an index column to the latest laptimes
-    const latestLaptimesWithIndex = latestLaptimes.map((laptime, index) => {
-        return {
-            ...laptime,
-            index: index + 1,
-        };
-    });
-    return latestLaptimesWithIndex;
+    return latestLaptimes;
 }
 
 function findLatestLaptime(trackData) {
