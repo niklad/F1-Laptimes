@@ -72,7 +72,18 @@ export function CombinedLeaderboard({ database, trackOptions }) {
                 {Object.entries(combinedLeaderboardPoints)
                     .sort((a, b) => b[1] - a[1])
                     .map(([driver, points], index) => (
-                        <tr key={driver}>
+                        <tr
+                            key={driver}
+                            className={
+                                index === 0
+                                    ? "first-place"
+                                    : index === 1
+                                    ? "second-place"
+                                    : index === 2
+                                    ? "third-place"
+                                    : ""
+                            }
+                        >
                             <td className="indexColumn">{index + 1}.</td>
                             <td className="driverNameColumn">{driver}</td>
                             <td className="driverStandingsPointsColumn">
