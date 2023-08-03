@@ -1,6 +1,6 @@
 // import the CombinedLeaderboard.css styling from ../styles/CombinedLeaderboard.css
 import { findAndSortLaptimes } from "./Leaderboard";
-import { getDatabase, ref, onValue, update, get } from "firebase/database";
+import { ref, onValue } from "firebase/database";
 import { useState, useEffect } from "react";
 
 import "../styles/Leaderboard.css";
