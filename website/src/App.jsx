@@ -14,6 +14,7 @@ import {
     trackLayoutMap,
 } from "./components/HeaderAndTrackSelector";
 import AddLaptimeForm from "./components/AddLaptimeForm";
+import CombinedLeaderboard from "./components/CombinedLeaderboard";
 
 // Web app's Firebase configuration
 const firebaseConfig = {
@@ -146,7 +147,9 @@ function App() {
                     selectedTrack={track}
                     onChange={handleTrackChange}
                 />
-                <div className="Rendered-content">{renderContent()}</div>
+                <div className="Rendered-content">
+                    {renderContent(trackOptions)}
+                </div>
                 <div className="Buttons">
                     {displayMode === "leaderboard" &&
                     track !== "DRIVER STANDINGS" ? (

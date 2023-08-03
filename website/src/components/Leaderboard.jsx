@@ -54,6 +54,14 @@ const Leaderboard = ({ trackData, showLaptimeDifference }) => {
     );
 };
 
+export function findAndSortLaptimes(trackData) {
+    const latestLaptimes = findLatestLaptime(trackData);
+
+    // Sort the latest laptimes by laptime
+    sortLaptimes(latestLaptimes);
+    return latestLaptimes;
+}
+
 // Function to calculate the time difference between two lap times
 const calculateTimeDifference = (laptime, quickestLaptime) => {
     // Convert laptime strings to arrays of time components
@@ -82,16 +90,6 @@ const calculateTimeDifference = (laptime, quickestLaptime) => {
         return `+ ${seconds}.${milliseconds.toString().padStart(3, "0")}`;
     }
 };
-
-export default Leaderboard;
-
-function findAndSortLaptimes(trackData) {
-    const latestLaptimes = findLatestLaptime(trackData);
-
-    // Sort the latest laptimes by laptime
-    sortLaptimes(latestLaptimes);
-    return latestLaptimes;
-}
 
 function findLatestLaptime(trackData) {
     const latestLaptimes = [];
@@ -154,3 +152,5 @@ function calculateLaptimeDiffAndGap(latestLaptimesWithIndex) {
         }
     });
 }
+
+export default Leaderboard;

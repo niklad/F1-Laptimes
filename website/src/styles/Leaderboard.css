@@ -5,6 +5,9 @@
     text-align: left;
 }
 
+.leaderboard-table driver-standings {
+}
+
 .indexColumn {
     width: 1em;
 }
@@ -27,5 +30,9 @@
 
 .racingLineColumn {
     text-align: end;
+    width: 1em;
+}
+
+.driverStandingsPointsColumn {
     width: 1em;
 }
