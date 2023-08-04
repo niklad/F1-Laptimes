@@ -26,7 +26,7 @@ function formatLaptime(laptime) {
     return minutes + ":" + seconds + "." + milliseconds;
 }
 
-const AddLaptimeForm = ({ track, onSubmit }) => {
+const AddLaptimeForm = ({ track, trackData, onSubmit }) => {
     const [driverName, setDriverName] = useState("");
     const [laptime, setLaptime] = useState("");
     const [racingLineUsed, setRacingLineUsed] = useState(false);
