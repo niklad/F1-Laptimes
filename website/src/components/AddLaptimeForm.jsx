@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Swal from "sweetalert2";
 import "../styles/AddLaptimeForm.css";
+import { findAndSortLaptimes } from "./Leaderboard";
 
 function formatLaptime(laptime) {
     // Make a function to format a laptime, so that it is always in the format m:ss:SSS
@@ -24,6 +25,56 @@ function formatLaptime(laptime) {
     }
 
     return minutes + ":" + seconds + "." + milliseconds;
+}
+
+function formatDiffTime(diffTime, trackData) {
+    // Make a function to format a time difference, so that it is always in the format ss.SSS
+    // Example: +1.226 -> +01.226
+    console.log("trackData formatDiffTime", trackData);
+
+    diffTime = diffTime.replace(/\:/g, ".");
+
+    // Split the diffTime into seconds and milliseconds, split on the "+" sign and the period
+    const diffTimeSplit = diffTime.split(/[+.]/);
+    let diffTimeSeconds = diffTimeSplit[1];
+    let diffTimeMilliseconds = diffTimeSplit[2];
+
+    // Add the diffTime to the fastest laptime in trackData
+    trackData = findAndSortLaptimes(trackData);
+
+    // Set the fastest laptime as the first time of the first driver, structured as driver->timestamp->latime
+    const fastestLaptime = trackData[0].laptime;
+
+    // Split the fastest laptime into minutes, seconds and milliseconds
+    const fastestLaptimeSplit = fastestLaptime.split(/[.:]/);
+    let fastestLaptimeMinutes = fastestLaptimeSplit[0];
+    let fastestLaptimeSeconds = fastestLaptimeSplit[1];
+    let fastestLaptimeMilliseconds = fastestLaptimeSplit[2];
+
+    let newLaptime;
+    let newLaptimeMinutes = parseInt(fastestLaptimeMinutes);
+    let newLaptimeSeconds =
+        parseInt(fastestLaptimeSeconds) + parseInt(diffTimeSeconds);
+    let newLaptimeMilliseconds =
+        parseInt(fastestLaptimeMilliseconds) + parseInt(diffTimeMilliseconds);
+
+    if (newLaptimeMilliseconds >= 1000) {
+        newLaptimeSeconds += 1;
+        newLaptimeMilliseconds -= 1000;
+    }
+    if (newLaptimeSeconds >= 60) {
+        newLaptimeMinutes += 1;
+        newLaptimeSeconds -= 60;
+    }
+
+    newLaptime =
+        newLaptimeMinutes +
+        ":" +
+        newLaptimeSeconds +
+        "." +
+        newLaptimeMilliseconds;
+
+    return formatLaptime(newLaptime);
 }
 
 const AddLaptimeForm = ({ track, trackData, onSubmit }) => {
