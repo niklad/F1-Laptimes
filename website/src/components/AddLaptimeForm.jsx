@@ -33,13 +33,24 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        let formattedLaptime;
         const nameRegex = /^[a-zA-Z]{3}$/;
         const laptimeRegex = /^[0-9]{1,2}[:.][0-9]{1,2}[:.][0-9]{1,3}$/;
+        // Regex to check if the entered time is on the format "+ss.SSS" or "+s.SSS"
+        const diffTimeRegex = /^[+][0-9]{1,2}[:.][0-9]{1,3}$/;
         if (
-            !nameRegex.test(driverName) ||
-            !laptimeRegex.test(laptime) ||
-            laptime.length !== 8
+            nameRegex.test(driverName) &&
+            laptimeRegex.test(laptime) &&
+            laptime.length == 8
         ) {
+            formattedLaptime = formatLaptime(laptime);
+        } else if (
+            nameRegex.test(driverName) &&
+            diffTimeRegex.test(laptime) &&
+            laptime.length >= 6
+        ) {
+            formattedLaptime = formatDiffTime(laptime, trackData);
+        } else {
             Swal.fire({
                 icon: "warning",
                 title: "heck no",
@@ -49,7 +60,6 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
             });
             return;
         }
-        const formattedLaptime = formatLaptime(laptime);
 
         onSubmit(
             track,
