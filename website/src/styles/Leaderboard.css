@@ -5,9 +5,6 @@
     text-align: left;
 }
 
-.leaderboard-table driver-standings {
-}
-
 .indexColumn {
     width: 1em;
 }
@@ -36,4 +33,18 @@
 .driverStandingsPointsColumn {
     text-align: end;
     width: 1em;
+}
+
+.first-place {
+    /* A light gold color */
+    color: #ffd700;
+}
+
+.second-place {
+    /* A light silver color */
+    color: #cccccc;
+}
+
+.third-place {
+    color: #fc9b3b;
 }

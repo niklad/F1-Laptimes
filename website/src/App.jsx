@@ -156,7 +156,11 @@ function App() {
                 );
             case "addTime":
                 return (
-                    <AddLaptimeForm track={track} onSubmit={handleAddLaptime} />
+                    <AddLaptimeForm
+                        track={track}
+                        trackData={trackData}
+                        onSubmit={handleAddLaptime}
+                    />
                 );
             case "statistics":
                 return (
