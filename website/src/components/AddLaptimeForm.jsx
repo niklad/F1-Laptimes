@@ -99,9 +99,7 @@ const AddLaptimeForm = ({ track, onSubmit }) => {
                 />
             </label>
             <br />
-            <button type="submit" className="wide-button">
-                Submit
-            </button>
+            <button type="submit">Submit</button>
         </form>
     );
 };
