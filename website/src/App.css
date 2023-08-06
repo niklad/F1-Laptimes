@@ -48,6 +48,7 @@
         height: 45%;
         width: 100%;
         opacity: 0.3;
+        filter: blur(1px);
         z-index: -1;
     }
 }
