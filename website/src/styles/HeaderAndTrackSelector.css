@@ -29,7 +29,6 @@
     font-size: 1em;
 }
 
-.active {
-    background-color: rgb(255, 255, 255, 0.2);
-    border-radius: 0.5em;
+.selected-flag {
+    height: 1.3em;
 }

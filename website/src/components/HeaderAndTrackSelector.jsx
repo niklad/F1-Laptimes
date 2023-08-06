@@ -96,12 +96,14 @@ export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
             <div className="container">
                 {trackOptions.map((track) => (
                     // Highlight the div if selectedTrack is the same as the track that the div represents
-                    <div
-                        key={track}
-                        onClick={() => onChange(track)}
-                        className={track === selectedTrack ? "active" : ""}
-                    >
-                        <div className={`${trackFlagMap[track]}`}></div>
+                    <div key={track} onClick={() => onChange(track)}>
+                        <div
+                            className={
+                                track === selectedTrack
+                                    ? `${trackFlagMap[track]} selected-flag`
+                                    : `${trackFlagMap[track]}`
+                            }
+                        ></div>
                     </div>
                 ))}
             </div>
