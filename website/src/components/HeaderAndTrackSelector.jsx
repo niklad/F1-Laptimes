@@ -4,27 +4,28 @@ import "/node_modules/flag-icons/css/flag-icons.min.css";
 
 // A map of track names to flag icons
 export const trackFlagMap = {
-    SILVERSTONE: "gb",
-    SPA: "be",
-    SUZUKA: "jp",
-    "RED BULL RING": "at",
-    MONZA: "it",
-    MONTREAL: "ca",
-    MELBOURNE: "au",
-    BAKU: "az",
-    SINGAPORE: "sg",
-    "ABU DHABI": "ae",
-    AUSTIN: "us",
-    INTERLAGOS: "br",
-    MONACO: "mc",
-    BAHRAIN: "bh",
-    SOCHI: "ru",
-    HUNGARORING: "hu",
-    BARCELONA: "es",
-    ZANDVOORT: "nl",
-    JEDDAH: "sa",
-    IMOLA: "it",
-    "PAUL RICARD": "fr",
+    "DRIVER STANDINGS": "standings-trophy",
+    SILVERSTONE: "fi fi-gb",
+    SPA: "fi fi-be",
+    SUZUKA: "fi fi-jp",
+    "RED BULL RING": "fi fi-at",
+    MONZA: "fi fi-it",
+    MONTREAL: "fi fi-ca",
+    MELBOURNE: "fi fi-au",
+    BAKU: "fi fi-az",
+    SINGAPORE: "fi fi-sg",
+    "ABU DHABI": "fi fi-ae",
+    AUSTIN: "fi fi-us",
+    INTERLAGOS: "fi fi-br",
+    MONACO: "fi fi-mc",
+    BAHRAIN: "fi fi-bh",
+    SOCHI: "fi fi-ru",
+    HUNGARORING: "fi fi-hu",
+    BARCELONA: "fi fi-es",
+    ZANDVOORT: "fi fi-nl",
+    JEDDAH: "fi fi-sa",
+    IMOLA: "fi fi-it",
+    "PAUL RICARD": "fi fi-fr",
 };
 
 // A map of track names to track country
@@ -90,21 +91,16 @@ export const trackLayoutMap = {
 };
 
 export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
-    // Make a track selector consisting of a carousel menu with the flags of each track.
     return (
         <div className="track-selector">
             <div className="container">
-                <div className="SPA">
-                    <div className="fi fi-be"></div>
-                </div>
-                <div className="SILVERSTONE">
-                    <div className="fi fi-gb"></div>
-                </div>
-                <div className="SUZUKA">
-                    <div className="fi fi-jp"></div>
-                </div>
+                {trackOptions.map((track) => (
+                    <div key={track} onClick={() => onChange(track)}>
+                        <div className={`${trackFlagMap[track]}`}></div>
+                    </div>
+                ))}
             </div>
-            <div className="header">{selectedTrack}</div>
+            <div>{selectedTrack}</div>
         </div>
     );
 }

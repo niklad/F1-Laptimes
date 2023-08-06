@@ -24,18 +24,20 @@
     opacity: 0;
 }
 
-.trophy-image {
+.standings-trophy {
+    /* Make the content of the div be the image trophy-icon.svg in ../public/ */
+    content: url(../../public/trophy-icon.svg);
     height: 1em;
 }
 
 .container {
-    width: 2em;
+    width: 6em;
     height: 2em;
     display: flex;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
+    background-color: transparent;
 }
-
 .container div {
     min-width: 2em;
     display: flex;

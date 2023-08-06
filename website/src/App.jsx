@@ -113,7 +113,7 @@ function App() {
 
     // Define a function to handle changes to the selected track
     const handleTrackChange = (event) => {
-        setTrack(event.target.value);
+        setTrack(event);
     };
 
     const handleAddLaptime = (track, driverName, laptime, racingLineUsed) => {
