@@ -19,7 +19,7 @@
     width: 100%;
     /** Some suggestions for color combinations: */
     /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
-    background: radial-gradient(ellipse at top, #ff1801 0%, #090a0f 100%);
+    background: radial-gradient(ellipse at top, #004d44, #090a0f 100%);
     /* background-size: 400% 400%; */
     /* animation: ellipse-animation 5s ease-in-out infinite; */
     z-index: -2;
