@@ -17,14 +17,11 @@
     position: absolute;
     height: 100%;
     width: 100%;
-    /** Some suggestions for color combinations: */
-    background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-    /* background: linear-gradient(-45deg, #ff1801, #5f0f40, #0f4c5c, #9aa0a8); */
-    /* background: linear-gradient(-45deg, #483c46, #ff1801, #70ae6e, #3c6e71); */
-    background-size: 400% 400%;
-    -webkit-animation: Gradient 25s ease infinite;
-    -moz-animation: Gradient 25s ease infinite;
-    animation: Gradient 25s ease infinite;
+    /* Some suggestions for color combinations: /
+    / background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
+    background: radial-gradient(ellipse at top, #ED254E 0%, #090a0f 100%);
+    /* / background-size: 400% 400%; /
+    / animation: ellipse-animation 5s ease-in-out infinite; */
     z-index: -2;
 }
 

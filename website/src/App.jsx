@@ -2,6 +2,7 @@ import "./App.css";
 import "./styles/HeaderAndTrackSelector.css";
 import "./styles/Buttons.css";
 import "./styles/Leaderboard.css";
+import "./styles/Statistics.css";
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, onValue, update, get } from "firebase/database";
@@ -15,6 +16,7 @@ import {
 } from "./components/HeaderAndTrackSelector";
 import AddLaptimeForm from "./components/AddLaptimeForm";
 import CombinedLeaderboard from "./components/CombinedLeaderboard";
+import Statistics from "./components/Statistics";
 
 // Web app's Firebase configuration
 const firebaseConfig = {
@@ -159,10 +161,8 @@ function App() {
                     <AddLaptimeForm track={track} onSubmit={handleAddLaptime} />
                 );
             case "statistics":
-                return (
-                    <div>
-                        Statistics Graph <br /> Coming Soon
-                    </div>
+                return(
+                    <Statistics track={track} trackData={trackData} />
                 );
             default:
                 return null;
@@ -173,7 +173,8 @@ function App() {
         <div className="App">
             <div className="Background" />
             <div className="Content">
-                {track === "DRIVER STANDINGS" ? null : (
+                {track === "DRIVER STANDINGS"  ||
+                displayMode === "statistics" ? null : (
                     <img
                         src={"trackLayouts/" + trackLayoutMap[track]}
                         alt="track layout"
