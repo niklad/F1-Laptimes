@@ -165,9 +165,7 @@ function App() {
                     />
                 );
             case "statistics":
-                return(
-                    <Statistics track={track} trackData={trackData} />
-                );
+                return <Statistics track={track} trackData={trackData} />;
             default:
                 return null;
         }
@@ -177,7 +175,7 @@ function App() {
         <div className="App">
             <div className="Background" />
             <div className="Content">
-                {track === "DRIVER STANDINGS"  ||
+                {track === "DRIVER STANDINGS" ||
                 displayMode === "statistics" ? null : (
                     <img
                         src={"trackLayouts/" + trackLayoutMap[track]}
