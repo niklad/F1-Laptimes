@@ -1,4 +1,5 @@
 import React from "react";
+import { useEffect, useRef } from "react";
 
 import "/node_modules/flag-icons/css/flag-icons.min.css";
 
@@ -91,11 +92,25 @@ export const trackLayoutMap = {
 };
 
 export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
+    const containerRef = useRef(null);
+
+    useEffect(() => {
+        const trackDivWidth =
+            containerRef.current.querySelector("div").offsetWidth;
+        const numberOfTracks = trackOptions.length + 4;
+        const selectedIndex = trackOptions.indexOf(selectedTrack);
+        const scrollAmount =
+            trackDivWidth * selectedIndex - 0.5 * trackDivWidth;
+        containerRef.current.scrollTo({
+            left: scrollAmount,
+            behavior: "smooth",
+        });
+    }, [trackOptions, selectedTrack]);
+
     return (
         <div className="track-selector">
-            <div className="container">
+            <div className="container" ref={containerRef}>
                 {trackOptions.map((track) => (
-                    // Highlight the div if selectedTrack is the same as the track that the div represents
                     <div key={track} onClick={() => onChange(track)}>
                         <div
                             className={

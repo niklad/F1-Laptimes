@@ -18,8 +18,7 @@
     height: 2em;
     display: flex;
     overflow-x: scroll;
-    scroll-snap-type: x mandatory;
-    /* Make the edges blurred on the side */
+    scroll-snap-type: x proximity;
     mask-image: linear-gradient(
         to right,
         transparent,
@@ -35,6 +34,15 @@
     justify-content: center;
     align-items: center;
     font-size: 1em;
+    scroll-snap-align: center;
+}
+
+.container div:first-child {
+    margin-left: 3em;
+}
+
+.container div:last-child {
+    margin-right: 3em;
 }
 
 .selected-flag {
