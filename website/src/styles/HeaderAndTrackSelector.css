@@ -14,13 +14,21 @@
 }
 
 .container {
-    width: 7em;
+    width: 9em;
     height: 2em;
     display: flex;
     overflow-x: scroll;
     scroll-snap-type: x mandatory;
-    background-color: transparent;
+    /* Make the edges blurred on the side */
+    mask-image: linear-gradient(
+        to right,
+        transparent,
+        black 30%,
+        black 70%,
+        transparent
+    );
 }
+
 .container div {
     min-width: 2em;
     display: flex;
