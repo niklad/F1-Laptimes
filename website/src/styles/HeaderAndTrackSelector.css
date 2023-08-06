@@ -7,23 +7,6 @@
     align-items: center;
 }
 
-.track-selector select {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-    background-color: white;
-    font-family: inherit;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.track-selector select {
-    opacity: 0;
-}
-
 .standings-trophy {
     /* Make the content of the div be the image trophy-icon.svg in ../public/ */
     content: url(../../public/trophy-icon.svg);
