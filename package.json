@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "chart.js": "^4.3.3",
+    "firebase": "^10.1.0",
+    "react-chartjs-2": "^5.2.0",
+    "react-redux": "^8.1.2",
+    "recharts": "^2.7.2",
+    "redux": "^4.2.1",
+    "redux-thunk": "^2.4.2",
     "sweetalert2": "^11.7.18"
   }
 }
