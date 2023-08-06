@@ -222,19 +222,21 @@ function App() {
                                 : "Add Laptime"}
                         </button>
                     )}
-                    <button
-                        onClick={() =>
-                            setDisplayMode(
-                                displayMode === "statistics"
-                                    ? "leaderboard"
-                                    : "statistics"
-                            )
-                        }
-                    >
-                        {displayMode === "statistics"
-                            ? "Back to Leaderboard"
-                            : "Show Statistics"}
-                    </button>
+                    {track === "DRIVER STANDINGS" ? null : (
+                        <button
+                            onClick={() =>
+                                setDisplayMode(
+                                    displayMode === "statistics"
+                                        ? "leaderboard"
+                                        : "statistics"
+                                )
+                            }
+                        >
+                            {displayMode === "statistics"
+                                ? "Back to Leaderboard"
+                                : "Show Statistics"}
+                        </button>
+                    )}
                 </div>
             </div>
         </div>
