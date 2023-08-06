@@ -90,29 +90,21 @@ export const trackLayoutMap = {
 };
 
 export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
+    // Make a track selector consisting of a carousel menu with the flags of each track.
     return (
-        <div className="track-selector" onClick={(e) => e.stopPropagation()}>
-            {/* If selectedTrack is "driverStandings", display trophy.svg instead of a flag */}
-            {selectedTrack === "DRIVER STANDINGS" ? (
-                <img
-                    src="trophy-icon.svg"
-                    className="trophy-image"
-                    alt="trophy"
-                />
-            ) : (
-                <span className={`fi fi-${trackFlagMap[selectedTrack]}`}></span>
-            )}
-            <br />
-            {/* Display the track name */}
-            <span> {selectedTrack}</span>
-            <select value={selectedTrack} onChange={onChange}>
-                {/* Add the rest of the tracks in trackOptions */}
-                {trackOptions.map((track) => (
-                    <option key={track} value={track}>
-                        {track}
-                    </option>
-                ))}
-            </select>
+        <div className="track-selector">
+            <div className="container">
+                <div className="SPA">
+                    <div className="fi fi-be"></div>
+                </div>
+                <div className="SILVERSTONE">
+                    <div className="fi fi-gb"></div>
+                </div>
+                <div className="SUZUKA">
+                    <div className="fi fi-jp"></div>
+                </div>
+            </div>
+            <div className="header">{selectedTrack}</div>
         </div>
     );
 }

@@ -92,7 +92,7 @@ const AddLaptimeForm = ({ track, trackData, onSubmit }) => {
         if (
             nameRegex.test(driverName) &&
             laptimeRegex.test(laptime) &&
-            laptime.length == 8
+            laptime.length === 8
         ) {
             formattedLaptime = formatLaptime(laptime);
         } else if (
