@@ -102,16 +102,16 @@ function App() {
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const db = getDatabase(app);
+    const database = getDatabase(app);
 
     // Set the trackData to be the data in the database at the key of the track name, e.g. "SPA".
     useEffect(() => {
-        const trackRef = ref(db, track);
+        const trackRef = ref(database, track);
         onValue(trackRef, (snapshot) => {
             const data = snapshot.val();
             setTrackData(data);
         });
-    }, [db, track]);
+    }, [database, track]);
 
     // Define a function to handle changes to the selected track
     const handleTrackChange = (event) => {
@@ -119,7 +119,7 @@ function App() {
     };
 
     const handleAddLaptime = handleAddLaptimeFunction(
-        db,
+        database,
         setTrackData,
         setTrack,
         setDisplayMode
@@ -127,7 +127,7 @@ function App() {
 
     const renderContent = renderContentFunction(
         track,
-        db,
+        database,
         displayMode,
         trackData,
         showLaptimeDifference,
@@ -254,15 +254,20 @@ function renderButtonSection(
     );
 }
 
-function handleAddLaptimeFunction(db, setTrackData, setTrack, setDisplayMode) {
+function handleAddLaptimeFunction(
+    database,
+    setTrackData,
+    setTrack,
+    setDisplayMode
+) {
     return (track, driverName, laptime, racingLineUsed) => {
         const timestamp = new Date().toISOString().replace(/[-:.]/g, "_");
-        update(ref(db, `${track}/${driverName}/${timestamp}`), {
+        update(ref(database, `${track}/${driverName}/${timestamp}`), {
             LAPTIME: laptime,
             RACING_LINE: racingLineUsed,
         })
             .then(() => {
-                return get(ref(db, track));
+                return get(ref(database, track));
             })
             .then((snapshot) => {
                 setTrackData(snapshot.val());
@@ -277,7 +282,7 @@ function handleAddLaptimeFunction(db, setTrackData, setTrack, setDisplayMode) {
 
 function renderContentFunction(
     track,
-    db,
+    database,
     displayMode,
     trackData,
     showLaptimeDifference,
@@ -287,7 +292,7 @@ function renderContentFunction(
         if (track === "DRIVER STANDINGS") {
             return (
                 <CombinedLeaderboard
-                    database={db}
+                    database={database}
                     trackOptions={trackOptions}
                 />
             );
