@@ -48,7 +48,7 @@
 .selected-flag {
     height: 1.3em;
     /* Animate the increase in height */
-    animation: flag-animation 0.3s ease-in-out;
+    animation: flag-animation 0.35s ease-in-out;
 }
 
 @keyframes flag-animation {
