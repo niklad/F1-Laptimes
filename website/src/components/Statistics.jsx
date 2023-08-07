@@ -7,8 +7,8 @@ const Statistics = ({ track, trackData }) => {
   const [hiddenLines, setHiddenLines] = useState([]);
   const [driverColorsState, setDriverColorsState] = useState({});
 
-  const [originalData, setOriginalData] = useState([]);
   const [presentableData, setPresentableData] = useState([]);
+  const [YAxisWidth, setYAxiswidth] = useState(0)
 
   // Empty the hiddenLines list when trackData changes
   useEffect(() => {
@@ -20,7 +20,16 @@ const Statistics = ({ track, trackData }) => {
 
       const data = createData(allLaptimes, timestamps);
       setPresentableData(data.slice());
-      setOriginalData(data.slice());
+
+      // Calculate aspect ratio
+      const AR = window.innerWidth / window.innerHeight;
+
+      // Set YAxisWidth based on aspect ratio
+      if (AR > 1) {
+        setYAxiswidth(window.innerWidth * 0.07);
+      } else {
+        setYAxiswidth(window.innerWidth * 0.17);
+      }
     }
     
   }, [track, trackData]);
@@ -39,15 +48,24 @@ const Statistics = ({ track, trackData }) => {
   const data = createData(allLaptimes, timestamps);
   const keys = Object.keys(data[0]);
 
-  // console.log(originalData)
-
   const CustomLegend = ({ payload, onClick }) => {
+
+    let opacityList = [];
+
+    for (let i = 0; i < payload.length; i++) {
+      if (hiddenLines.includes(payload[i]['dataKey'])) {
+        opacityList.push(0.2)
+      } else {
+        opacityList.push(1)
+      }
+    }
+
     return (
       <ul className="custom-legend" style={{ padding: 0, display: 'flex', justifyContent: 'center' }}>
         {payload.map((entry, index) => (
           <li
             key={`item-${index}`}
-            style={{ listStyleType: 'none', marginRight: 20, cursor: 'pointer' }}
+            style={{ listStyleType: 'none', marginRight: 20, cursor: 'pointer', opacity: opacityList[index]}}
             onClick={(e) => onClick(e, entry)}
           >
             <span style={{ color: entry.color }}>{entry.value}</span>
@@ -66,42 +84,28 @@ const Statistics = ({ track, trackData }) => {
         : [...prevHiddenLines, value]
     );
 
-    setPresentableData(originalData);
-    // console.log(originalData)
-    // const placeHolderData = originalData;
-    // console.log(placeHolderData)
     const [allLaptimes, timestamps] = findLaptimes(trackData);
 
-    const data2 = createData(allLaptimes, timestamps);
-    console.log(data2)
-    setPresentableData(data2)
+    const dataRefresh = createData(allLaptimes, timestamps);
+    setPresentableData(dataRefresh)
 
-    // console.log(hiddenLines);
-    for (const dict of data2) {
+    for (const dict of dataRefresh) {
       Object.keys(dict).forEach((key) => {
 
-        if (!Number.isFinite(dict[key]) || !hiddenLines.includes(key) && key === value) {
+        if (!Number.isFinite(dict[key]) || !hiddenLines.includes(key) && key === value || hiddenLines.includes(key) && key !== value) {
           delete dict[key]
         };
       });
     }
 
     let indexesToRemove = [];
-    for (let i = 0; i < data2.length; i++) {
-      if (Object.keys(data2[i]).length < 1) {
+    for (let i = 0; i < dataRefresh.length; i++) {
+      if (Object.keys(dataRefresh[i]).length < 1) {
         indexesToRemove.push(i);
       }
     }
-
-    // Remove the items with the indexesToRemove from presentableData
-    const filteredData = data2.filter((_, index) => !indexesToRemove.includes(index));
+    const filteredData = dataRefresh.filter((_, index) => !indexesToRemove.includes(index));
     setPresentableData(filteredData);
-
-    // presentableData.filter((element, index) => !indexesToRemove.includes(index));
-
-    // presentableData.filter((dict) => Object.keys(dict).length === 0);
-    // presentableData.shift();
-    // console.log(presentableData)
 
   };
 
@@ -121,18 +125,11 @@ const Statistics = ({ track, trackData }) => {
           <CartesianGrid vertical={false} strokeOpacity={0.7}/>
 
           <XAxis
-            // domain={['auto', 'auto']}
-            // type="number"
-            // domain={[1, 5]}
-            // type="number"
-            // domain={[0, 10]}
             dataKey="name"
-            // display="none"
             height={0}
           />
 
           <YAxis
-            // domain={['dataMin', 'dataMax']} // Use custom domain to show laptime range
             domain={['auto', 'auto']}
             
             tickFormatter={(value) => {
@@ -140,14 +137,10 @@ const Statistics = ({ track, trackData }) => {
               const seconds = (value % 60).toFixed(3).padStart(6, "0");
               return `${minutes.toString().padStart(2, "0")}:${seconds}`;
             }}
-            // axisLine={false} // Hide Y-axis line
             tickLine={false} // Hide Y-axis tick lines
-            // tick={false}
-            // axisLine={{ stroke: "white" }}
             axisLine={false}
             tick={{ fill: "rgba(255, 255, 255, 0.7)", fontSize: "0.7em" }}
-            width={120}
-            // width="20%"
+            width={YAxisWidth}
           />
 
           {keys.map((key, index) => (
@@ -257,8 +250,6 @@ function createData(allLaptimes, timestamps) {
       }
     }
   }
-  // presentableData = data;
-  // console.log(presentableData);
   return data;
 }
 
