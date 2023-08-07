@@ -5,13 +5,13 @@
         display: flex;
         flex-direction: row;
         justify-content: center;
-        width: 100%;
+        width: 4em;
     }
 
     .Buttons button {
         margin: 0 1%;
         width: 15em;
-        height: 4em;
+        height: 6em;
     }
 }
 
@@ -24,7 +24,7 @@
     }
     .Buttons button {
         margin: 1%;
-        width: 100%;
+        width: 6em;
     }
 }
 
@@ -44,6 +44,17 @@ button {
 button:hover {
     background: rgb(0, 0, 0, 0);
     cursor: pointer;
+}
+
+.button-icon {
+    width: 3em;
+    height: 3em;
+    filter: invert(100%);
+}
+
+.timeDiffs-icon {
+    width: 3em;
+    height: 3em;
 }
 
 form {

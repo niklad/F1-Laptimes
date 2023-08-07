@@ -195,14 +195,24 @@ function App() {
                     {displayMode === "leaderboard" &&
                     track !== "DRIVER STANDINGS" ? (
                         <button
-                            className="timeDiffs"
+                            // className="timeDiffs"
                             onClick={() =>
                                 setShowLaptimeDifference(!showLaptimeDifference)
                             }
                         >
-                            {showLaptimeDifference
-                                ? "Show Interval"
-                                : "Show Gap to Leader"}
+                            {showLaptimeDifference ? (
+                                <img
+                                    className="timeDiffs-icon"
+                                    src="button-icons/history-icon.svg"
+                                    alt="time interval icon"
+                                />
+                            ) : (
+                                <img
+                                    className="timeDiffs-icon"
+                                    src="button-icons/1-time-icon.svg"
+                                    alt="time gap icon"
+                                />
+                            )}
                         </button>
                     ) : null}
                     {track === "DRIVER STANDINGS" ? null : (
@@ -215,9 +225,19 @@ function App() {
                                 )
                             }
                         >
-                            {displayMode === "addTime"
-                                ? "Back to Leaderboard"
-                                : "Add Laptime"}
+                            {displayMode === "addTime" ? (
+                                <img
+                                    className="button-icon"
+                                    src="button-icons/leaderboard-icon.svg"
+                                    alt="leaderboard icon"
+                                />
+                            ) : (
+                                <img
+                                    className="button-icon"
+                                    src="button-icons/add-time-icon.svg"
+                                    alt="add laptime icon"
+                                ></img>
+                            )}
                         </button>
                     )}
                     {track === "DRIVER STANDINGS" ? null : (
@@ -230,9 +250,19 @@ function App() {
                                 )
                             }
                         >
-                            {displayMode === "statistics"
-                                ? "Back to Leaderboard"
-                                : "Show Statistics"}
+                            {displayMode === "statistics" ? (
+                                <img
+                                    className="button-icon"
+                                    src="button-icons/leaderboard-icon.svg"
+                                    alt="leaderboard icon"
+                                />
+                            ) : (
+                                <img
+                                    className="button-icon"
+                                    src="button-icons/market-research-icon.svg"
+                                    alt="statistics icon"
+                                />
+                            )}
                         </button>
                     )}
                 </div>
