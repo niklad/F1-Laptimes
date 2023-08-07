@@ -1,13 +1,16 @@
 .Buttons {
+    /* height: 100%; */
+    width: 17rem;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-content: center;
     justify-content: space-between;
 }
+
 .Buttons button {
     margin: 1%;
-    width: 5em;
-    height: 5em;
+    width: 5rem;
+    height: 5rem;
     animation: fade-in-buttons 0.3s ease-in-out;
     display: flex;
     align-items: center;
@@ -40,19 +43,25 @@ button:hover {
 }
 
 .button-icon {
-    width: 3em;
+    width: 2em;
     filter: invert(100%);
 }
 
 .timeDiffs-icon {
-    width: 3em;
+    width: 2em;
 }
 
 .time-diffs-button {
     display: flex;
+    align-self: flex-end;
+    justify-self: flex-end;
     flex-direction: row;
     justify-content: center;
-    align-items: center;
+    align-content: center;
+}
+
+.time-diffs-button {
+    height: 100%;
 }
 
 .other-buttons {
