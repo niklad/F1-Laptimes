@@ -18,8 +18,8 @@ export function CombinedLeaderboard({ database, trackOptions }) {
 
     useEffect(() => {
         async function fetchCombinedLeaderboardPoints() {
-            const promises = [];
-            const points = {};
+            let promises = [];
+            let points = {};
 
             for (const trackIndex in trackOptions) {
                 if (trackOptions[trackIndex] === "DRIVER STANDINGS") {
@@ -36,16 +36,21 @@ export function CombinedLeaderboard({ database, trackOptions }) {
                                 return;
                             }
                             let latestLaptimes = findAndSortLaptimes(trackData);
-                            // Remove laptimes set with racing line
-                            latestLaptimes = latestLaptimes.filter(
-                                (laptime) => !laptime.racingLine
-                            );
-                            for (let i = 0; i < latestLaptimes.length; i++) {
+                            let maxPoints = latestLaptimes.length;
+                            for (
+                                let i = latestLaptimes.length - 1;
+                                i >= 0;
+                                i--
+                            ) {
                                 const driver = latestLaptimes[i].driver;
+                                if (latestLaptimes[i].racingLine) {
+                                    maxPoints -= 1;
+                                    continue;
+                                }
                                 if (points[driver] === undefined) {
                                     points[driver] = 0;
                                 }
-                                points[driver] += latestLaptimes.length - i - 1;
+                                points[driver] += maxPoints - i - 1;
                             }
                             resolve();
                         },
