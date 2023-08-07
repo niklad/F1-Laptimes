@@ -1,22 +1,35 @@
 import React, { useRef, useState, useEffect } from "react";
 
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 const Statistics = ({ track, trackData }) => {
   const lineChartRef = useRef(null);
   const [hiddenLines, setHiddenLines] = useState([]);
   const [driverColorsState, setDriverColorsState] = useState({});
 
+  const [originalData, setOriginalData] = useState([]);
+  const [presentableData, setPresentableData] = useState([]);
+
   // Empty the hiddenLines list when trackData changes
   useEffect(() => {
     setHiddenLines([]);
-  }, [track]);
+
+    if (trackData !== null) {
+
+      const [allLaptimes, timestamps] = findLaptimes(trackData);
+
+      const data = createData(allLaptimes, timestamps);
+      setPresentableData(data.slice());
+      setOriginalData(data.slice());
+    }
+    
+  }, [track, trackData]);
 
   // Checking if there are any drivers with laptimes for selected track
   if (trackData == null) {
     return (
       <div>
-        There are no statistics to show for this track!
+        NO DATA
       </div>
     );
   }
@@ -26,7 +39,7 @@ const Statistics = ({ track, trackData }) => {
   const data = createData(allLaptimes, timestamps);
   const keys = Object.keys(data[0]);
 
-  
+  // console.log(originalData)
 
   const CustomLegend = ({ payload, onClick }) => {
     return (
@@ -46,16 +59,55 @@ const Statistics = ({ track, trackData }) => {
 
   const handleLegendClick = (e, entry) => {
     const { value } = entry;
+    
     setHiddenLines((prevHiddenLines) =>
       prevHiddenLines.includes(value)
         ? prevHiddenLines.filter((name) => name !== value)
         : [...prevHiddenLines, value]
     );
+
+    setPresentableData(originalData);
+    // console.log(originalData)
+    // const placeHolderData = originalData;
+    // console.log(placeHolderData)
+    const [allLaptimes, timestamps] = findLaptimes(trackData);
+
+    const data2 = createData(allLaptimes, timestamps);
+    console.log(data2)
+    setPresentableData(data2)
+
+    // console.log(hiddenLines);
+    for (const dict of data2) {
+      Object.keys(dict).forEach((key) => {
+
+        if (!Number.isFinite(dict[key]) || !hiddenLines.includes(key) && key === value) {
+          delete dict[key]
+        };
+      });
+    }
+
+    let indexesToRemove = [];
+    for (let i = 0; i < data2.length; i++) {
+      if (Object.keys(data2[i]).length < 1) {
+        indexesToRemove.push(i);
+      }
+    }
+
+    // Remove the items with the indexesToRemove from presentableData
+    const filteredData = data2.filter((_, index) => !indexesToRemove.includes(index));
+    setPresentableData(filteredData);
+
+    // presentableData.filter((element, index) => !indexesToRemove.includes(index));
+
+    // presentableData.filter((dict) => Object.keys(dict).length === 0);
+    // presentableData.shift();
+    // console.log(presentableData)
+
   };
 
   const renderLineChart = (
     <ResponsiveContainer width="90%" height="90%">
-        <LineChart ref={lineChartRef} data={data}>
+        <LineChart ref={lineChartRef} data={presentableData}>
           <Tooltip
             label="Times" // Customize the tooltip header
             formatter={(value, name) => {
@@ -66,24 +118,36 @@ const Statistics = ({ track, trackData }) => {
             cursor={false}
           />
           <Legend onClick={handleLegendClick} content={CustomLegend}/>
+          <CartesianGrid vertical={false} strokeOpacity={0.7}/>
 
           <XAxis
+            // domain={['auto', 'auto']}
+            // type="number"
+            // domain={[1, 5]}
+            // type="number"
+            // domain={[0, 10]}
             dataKey="name"
-            display="none"
+            // display="none"
             height={0}
           />
 
           <YAxis
-            domain={['dataMin', 'dataMax']} // Use custom domain to show laptime range
+            // domain={['dataMin', 'dataMax']} // Use custom domain to show laptime range
+            domain={['auto', 'auto']}
+            
             tickFormatter={(value) => {
               const minutes = Math.floor(value / 60);
               const seconds = (value % 60).toFixed(3).padStart(6, "0");
               return `${minutes.toString().padStart(2, "0")}:${seconds}`;
             }}
-            axisLine={false} // Hide Y-axis line
+            // axisLine={false} // Hide Y-axis line
             tickLine={false} // Hide Y-axis tick lines
-            tick={false}
-            width={0}
+            // tick={false}
+            // axisLine={{ stroke: "white" }}
+            axisLine={false}
+            tick={{ fill: "rgba(255, 255, 255, 0.7)", fontSize: "0.7em" }}
+            width={120}
+            // width="20%"
           />
 
           {keys.map((key, index) => (
@@ -193,7 +257,8 @@ function createData(allLaptimes, timestamps) {
       }
     }
   }
-
+  // presentableData = data;
+  // console.log(presentableData);
   return data;
 }
 
