@@ -39,6 +39,7 @@ const trackOptions = [
     "INTERLAGOS",
     "ZANDVOORT",
     "MONACO",
+    "IMOLA",
     "SILVERSTONE",
     "BAKU",
     "MONZA",
@@ -52,7 +53,6 @@ const trackOptions = [
     "PAUL RICARD",
     "SOCHI",
     "ABU DHABI",
-    "IMOLA",
     "JEDDAH",
 ];
 
