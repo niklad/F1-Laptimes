@@ -97,7 +97,6 @@ export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
     useEffect(() => {
         const trackDivWidth =
             containerRef.current.querySelector("div").offsetWidth;
-        const numberOfTracks = trackOptions.length + 4;
         const selectedIndex = trackOptions.indexOf(selectedTrack);
         const scrollAmount =
             trackDivWidth * selectedIndex + 0.5 * trackDivWidth;
