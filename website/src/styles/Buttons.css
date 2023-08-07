@@ -1,35 +1,20 @@
-@media (min-aspect-ratio: 1/1) {
-    /* Properties for desktop devices */
-    .Buttons {
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        width: 4em;
-    }
-
-    .Buttons button {
-        margin: 0 1%;
-        width: 15em;
-        height: 6em;
-    }
+.Buttons {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-between;
 }
-
-@media (max-aspect-ratio: 1/1) {
-    /* Properties for mobile devices */
-    .Buttons {
-        flex-direction: column;
-        align-content: center;
-        justify-content: center;
-    }
-    .Buttons button {
-        margin: 1%;
-        width: 6em;
-    }
+.Buttons button {
+    margin: 1%;
+    width: 5em;
+    height: 5em;
+    animation: fade-in-buttons 0.3s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 button {
-    /* Gradient background */
     background: rgb(0, 0, 0, 0.1);
     border: none;
     color: white;
@@ -38,7 +23,15 @@ button {
     font-family: inherit;
     border-radius: 15px;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
-    transition: all 0.25s ease-in-out;
+}
+
+@keyframes fade-in-buttons {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
 button:hover {
@@ -48,13 +41,25 @@ button:hover {
 
 .button-icon {
     width: 3em;
-    height: 3em;
     filter: invert(100%);
 }
 
 .timeDiffs-icon {
     width: 3em;
-    height: 3em;
+}
+
+.time-diffs-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.other-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 form {
