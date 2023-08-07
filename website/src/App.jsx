@@ -176,6 +176,7 @@ function App() {
             <div className="Background" />
             <div className="Content">
                 {track === "DRIVER STANDINGS" ||
+                track === "IMOLA" ||
                 displayMode === "statistics" ? null : (
                     <img
                         src={"trackLayouts/" + trackLayoutMap[track]}
