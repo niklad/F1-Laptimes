@@ -18,7 +18,7 @@
     height: 2em;
     display: flex;
     overflow-x: scroll;
-    scroll-snap-type: x proximity;
+    scroll-snap-type: x mandatory;
     mask-image: linear-gradient(
         to right,
         transparent,
@@ -38,11 +38,11 @@
 }
 
 .container div:first-child {
-    margin-left: 3em;
+    margin-left: 3.5em;
 }
 
 .container div:last-child {
-    margin-right: 3em;
+    margin-right: 3.5em;
 }
 
 .selected-flag {

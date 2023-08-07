@@ -100,7 +100,7 @@ export function TrackSelector({ trackOptions, selectedTrack, onChange }) {
         const numberOfTracks = trackOptions.length + 4;
         const selectedIndex = trackOptions.indexOf(selectedTrack);
         const scrollAmount =
-            trackDivWidth * selectedIndex - 0.5 * trackDivWidth;
+            trackDivWidth * selectedIndex + 0.5 * trackDivWidth;
         containerRef.current.scrollTo({
             left: scrollAmount,
             behavior: "smooth",
