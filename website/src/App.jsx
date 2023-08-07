@@ -111,7 +111,7 @@ function App() {
             const data = snapshot.val();
             setTrackData(data);
         });
-    }, [track]);
+    }, [db, track]);
 
     // Define a function to handle changes to the selected track
     const handleTrackChange = (event) => {
