@@ -12,8 +12,6 @@ import "../styles/Leaderboard.css";
 // If three or more laptimes are set at the track, the driver with the quickest laptime gets 2 points, the driver with the second quickest laptime gets 1 point, and the driver with the third quickest laptime gets 0 point.
 // Generally, (n-1) points are awarded to the driver with the nth quickest laptime.
 
-// Function to calculate the combined leaderboard points
-
 export function CombinedLeaderboard({ database, trackOptions }) {
     const [combinedLeaderboardPoints, setCombinedLeaderboardPoints] =
         useState(null);
@@ -37,8 +35,11 @@ export function CombinedLeaderboard({ database, trackOptions }) {
                                 resolve();
                                 return;
                             }
-                            const latestLaptimes =
-                                findAndSortLaptimes(trackData);
+                            let latestLaptimes = findAndSortLaptimes(trackData);
+                            // Remove laptimes set with racing line
+                            latestLaptimes = latestLaptimes.filter(
+                                (laptime) => !laptime.racingLine
+                            );
                             for (let i = 0; i < latestLaptimes.length; i++) {
                                 const driver = latestLaptimes[i].driver;
                                 if (points[driver] === undefined) {
