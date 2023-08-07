@@ -37,14 +37,27 @@
 
 .first-place {
     /* A light gold color */
-    color: #ffd700;
+    background-color: #ffd900bb;
 }
 
 .second-place {
     /* A light silver color */
-    color: #cccccc;
+    background-color: #ccccccbb;
 }
 
 .third-place {
-    color: #fc9b3b;
+    background-color: #fc9b3bbb;
 }
+
+/* Only color the index number */
+/* .index-0 {
+    color: #ffd700;
+}
+
+.index-1 {
+    color: #cccccc;
+}
+
+.index-2 {
+    color: #fc9b3b;
+} */

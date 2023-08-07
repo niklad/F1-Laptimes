@@ -30,6 +30,32 @@ const firebaseConfig = {
     measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
+// Define the track options for the dropdown menu
+const trackOptions = [
+    "DRIVER STANDINGS",
+    "SPA",
+    "RED BULL RING",
+    "SUZUKA",
+    "INTERLAGOS",
+    "ZANDVOORT",
+    "MONACO",
+    "IMOLA",
+    "SILVERSTONE",
+    "BAKU",
+    "MONZA",
+    "AUSTIN",
+    "BARCELONA",
+    "BAHRAIN",
+    "MONTREAL",
+    "MELBOURNE",
+    "SINGAPORE",
+    "HUNGARORING",
+    "PAUL RICARD",
+    "SOCHI",
+    "ABU DHABI",
+    "JEDDAH",
+];
+
 function App() {
     const [track, setTrack] = useState(() => {
         const storedTrack = localStorage.getItem("track");
@@ -78,32 +104,6 @@ function App() {
     const app = initializeApp(firebaseConfig);
     const db = getDatabase(app);
 
-    // Define the track options for the dropdown menu
-    const trackOptions = [
-        "DRIVER STANDINGS",
-        "SPA",
-        "RED BULL RING",
-        "SUZUKA",
-        "INTERLAGOS",
-        "ZANDVOORT",
-        "MONACO",
-        "SILVERSTONE",
-        "BAKU",
-        "MONZA",
-        "AUSTIN",
-        "BARCELONA",
-        "BAHRAIN",
-        "MONTREAL",
-        "MELBOURNE",
-        "SINGAPORE",
-        "HUNGARORING",
-        "PAUL RICARD",
-        "SOCHI",
-        "ABU DHABI",
-        "IMOLA",
-        "JEDDAH",
-    ];
-
     // Set the trackData to be the data in the database at the key of the track name, e.g. "SPA".
     useEffect(() => {
         const trackRef = ref(db, track);
@@ -118,7 +118,144 @@ function App() {
         setTrack(event);
     };
 
-    const handleAddLaptime = (track, driverName, laptime, racingLineUsed) => {
+    const handleAddLaptime = handleAddLaptimeFunction(
+        db,
+        setTrackData,
+        setTrack,
+        setDisplayMode
+    );
+
+    const renderContent = renderContentFunction(
+        track,
+        db,
+        displayMode,
+        trackData,
+        showLaptimeDifference,
+        handleAddLaptime
+    );
+
+    return (
+        <div className="App">
+            <div className="Background" />
+            <div className="Content">
+                {track === "DRIVER STANDINGS" ||
+                track === "IMOLA" ||
+                displayMode === "statistics" ? null : (
+                    <img
+                        src={"trackLayouts/" + trackLayoutMap[track]}
+                        alt="track layout"
+                        className="Track-layout"
+                    />
+                )}
+                <TrackSelector
+                    trackOptions={trackOptions}
+                    selectedTrack={track}
+                    onChange={handleTrackChange}
+                />
+                <div className="Rendered-content">
+                    {renderContent(trackOptions)}
+                </div>
+                {renderButtonSection(
+                    displayMode,
+                    track,
+                    setShowLaptimeDifference,
+                    showLaptimeDifference,
+                    setDisplayMode
+                )}
+            </div>
+        </div>
+    );
+}
+
+export default App;
+
+function renderButtonSection(
+    displayMode,
+    track,
+    setShowLaptimeDifference,
+    showLaptimeDifference,
+    setDisplayMode
+) {
+    return (
+        <div className="Buttons">
+            {track === "DRIVER STANDINGS" ? null : (
+                <button
+                    onClick={() =>
+                        setDisplayMode(
+                            displayMode === "addTime"
+                                ? "leaderboard"
+                                : "addTime"
+                        )
+                    }
+                >
+                    {displayMode === "addTime" ? (
+                        <img
+                            className="button-icon"
+                            src="button-icons/leaderboard-icon.svg"
+                            alt="leaderboard icon"
+                        />
+                    ) : (
+                        <img
+                            className="button-icon"
+                            src="button-icons/add-time-icon.svg"
+                            alt="add laptime icon"
+                        ></img>
+                    )}
+                </button>
+            )}
+            {displayMode === "leaderboard" && track !== "DRIVER STANDINGS" ? (
+                <button
+                    className="timeDiffs"
+                    onClick={() =>
+                        setShowLaptimeDifference(!showLaptimeDifference)
+                    }
+                >
+                    {showLaptimeDifference ? (
+                        <img
+                            className="timeDiffs-icon"
+                            src="button-icons/clockwise-icon.svg"
+                            alt="time interval icon"
+                        />
+                    ) : (
+                        <img
+                            className="timeDiffs-icon"
+                            src="button-icons/first-time-icon.svg"
+                            alt="time gap icon"
+                        />
+                    )}
+                </button>
+            ) : null}
+            {track === "DRIVER STANDINGS" ? null : (
+                <button
+                    onClick={() =>
+                        setDisplayMode(
+                            displayMode === "statistics"
+                                ? "leaderboard"
+                                : "statistics"
+                        )
+                    }
+                >
+                    {displayMode === "statistics" ? (
+                        <img
+                            className="button-icon"
+                            src="button-icons/leaderboard-icon.svg"
+                            alt="leaderboard icon"
+                        />
+                    ) : (
+                        <img
+                            className="button-icon"
+                            src="button-icons/market-research-icon.svg"
+                            alt="statistics icon"
+                        />
+                    )}
+                </button>
+            )}
+        </div>
+    );
+}
+
+function handleAddLaptimeFunction(db, setTrackData, setTrack, setDisplayMode) {
+    return (track, driverName, laptime, racingLineUsed) => {
         const timestamp = new Date().toISOString().replace(/[-:.]/g, "_");
         update(ref(db, `${track}/${driverName}/${timestamp}`), {
             LAPTIME: laptime,
@@ -136,8 +273,17 @@ function App() {
                 console.error(error);
             });
     };
+}
 
-    const renderContent = (trackOptions) => {
+function renderContentFunction(
+    track,
+    db,
+    displayMode,
+    trackData,
+    showLaptimeDifference,
+    handleAddLaptime
+) {
+    return (trackOptions) => {
         if (track === "DRIVER STANDINGS") {
             return (
                 <CombinedLeaderboard
@@ -170,75 +316,4 @@ function App() {
                 return null;
         }
     };
-
-    return (
-        <div className="App">
-            <div className="Background" />
-            <div className="Content">
-                {track === "DRIVER STANDINGS" ||
-                displayMode === "statistics" ? null : (
-                    <img
-                        src={"trackLayouts/" + trackLayoutMap[track]}
-                        alt="track layout"
-                        className="Track-layout"
-                    />
-                )}
-                <TrackSelector
-                    trackOptions={trackOptions}
-                    selectedTrack={track}
-                    onChange={handleTrackChange}
-                />
-                <div className="Rendered-content">
-                    {renderContent(trackOptions)}
-                </div>
-                <div className="Buttons">
-                    {displayMode === "leaderboard" &&
-                    track !== "DRIVER STANDINGS" ? (
-                        <button
-                            className="timeDiffs"
-                            onClick={() =>
-                                setShowLaptimeDifference(!showLaptimeDifference)
-                            }
-                        >
-                            {showLaptimeDifference
-                                ? "Show Interval"
-                                : "Show Gap to Leader"}
-                        </button>
-                    ) : null}
-                    {track === "DRIVER STANDINGS" ? null : (
-                        <button
-                            onClick={() =>
-                                setDisplayMode(
-                                    displayMode === "addTime"
-                                        ? "leaderboard"
-                                        : "addTime"
-                                )
-                            }
-                        >
-                            {displayMode === "addTime"
-                                ? "Back to Leaderboard"
-                                : "Add Laptime"}
-                        </button>
-                    )}
-                    {track === "DRIVER STANDINGS" ? null : (
-                        <button
-                            onClick={() =>
-                                setDisplayMode(
-                                    displayMode === "statistics"
-                                        ? "leaderboard"
-                                        : "statistics"
-                                )
-                            }
-                        >
-                            {displayMode === "statistics"
-                                ? "Back to Leaderboard"
-                                : "Show Statistics"}
-                        </button>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
 }
-
-export default App;
