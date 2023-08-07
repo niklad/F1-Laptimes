@@ -178,78 +178,83 @@ function renderButtonSection(
 ) {
     return (
         <div className="Buttons">
-            {displayMode === "leaderboard" && track !== "DRIVER STANDINGS" ? (
-                <button
-                    className="timeDiffs"
-                    onClick={() =>
-                        setShowLaptimeDifference(!showLaptimeDifference)
-                    }
-                >
-                    {showLaptimeDifference ? (
-                        <img
-                            className="timeDiffs-icon"
-                            src="button-icons/clockwise-icon.svg"
-                            alt="time interval icon"
-                        />
-                    ) : (
-                        <img
-                            className="timeDiffs-icon"
-                            src="button-icons/first-time-icon.svg"
-                            alt="time gap icon"
-                        />
-                    )}
-                </button>
-            ) : null}
-            {track === "DRIVER STANDINGS" ? null : (
-                <button
-                    onClick={() =>
-                        setDisplayMode(
-                            displayMode === "addTime"
-                                ? "leaderboard"
-                                : "addTime"
-                        )
-                    }
-                >
-                    {displayMode === "addTime" ? (
-                        <img
-                            className="button-icon"
-                            src="button-icons/leaderboard-icon.svg"
-                            alt="leaderboard icon"
-                        />
-                    ) : (
-                        <img
-                            className="button-icon"
-                            src="button-icons/add-time-icon.svg"
-                            alt="add laptime icon"
-                        ></img>
-                    )}
-                </button>
-            )}
-            {track === "DRIVER STANDINGS" ? null : (
-                <button
-                    onClick={() =>
-                        setDisplayMode(
-                            displayMode === "statistics"
-                                ? "leaderboard"
-                                : "statistics"
-                        )
-                    }
-                >
-                    {displayMode === "statistics" ? (
-                        <img
-                            className="button-icon"
-                            src="button-icons/leaderboard-icon.svg"
-                            alt="leaderboard icon"
-                        />
-                    ) : (
-                        <img
-                            className="button-icon"
-                            src="button-icons/market-research-icon.svg"
-                            alt="statistics icon"
-                        />
-                    )}
-                </button>
-            )}
+            <div className="time-diffs-button">
+                {displayMode === "leaderboard" &&
+                track !== "DRIVER STANDINGS" ? (
+                    <button
+                        className="timeDiffs"
+                        onClick={() =>
+                            setShowLaptimeDifference(!showLaptimeDifference)
+                        }
+                    >
+                        {showLaptimeDifference ? (
+                            <img
+                                className="timeDiffs-icon"
+                                src="button-icons/clockwise-icon.svg"
+                                alt="time interval icon"
+                            />
+                        ) : (
+                            <img
+                                className="timeDiffs-icon"
+                                src="button-icons/first-time-icon.svg"
+                                alt="time gap icon"
+                            />
+                        )}
+                    </button>
+                ) : null}
+            </div>
+            <div className="other-buttons">
+                {track === "DRIVER STANDINGS" ? null : (
+                    <button
+                        onClick={() =>
+                            setDisplayMode(
+                                displayMode === "addTime"
+                                    ? "leaderboard"
+                                    : "addTime"
+                            )
+                        }
+                    >
+                        {displayMode === "addTime" ? (
+                            <img
+                                className="button-icon"
+                                src="button-icons/leaderboard-icon.svg"
+                                alt="leaderboard icon"
+                            />
+                        ) : (
+                            <img
+                                className="button-icon"
+                                src="button-icons/add-time-icon.svg"
+                                alt="add laptime icon"
+                            ></img>
+                        )}
+                    </button>
+                )}
+                {track === "DRIVER STANDINGS" ? null : (
+                    <button
+                        onClick={() =>
+                            setDisplayMode(
+                                displayMode === "statistics"
+                                    ? "leaderboard"
+                                    : "statistics"
+                            )
+                        }
+                    >
+                        {displayMode === "statistics" ? (
+                            <img
+                                className="button-icon"
+                                src="button-icons/leaderboard-icon.svg"
+                                alt="leaderboard icon"
+                            />
+                        ) : (
+                            <img
+                                className="button-icon"
+                                src="button-icons/market-research-icon.svg"
+                                alt="statistics icon"
+                            />
+                        )}
+                    </button>
+                )}
+            </div>
         </div>
     );
 }
