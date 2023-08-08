@@ -1,22 +1,44 @@
 import React, { useRef, useState, useEffect } from "react";
 
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from 'recharts';
 
 const Statistics = ({ track, trackData }) => {
   const lineChartRef = useRef(null);
   const [hiddenLines, setHiddenLines] = useState([]);
   const [driverColorsState, setDriverColorsState] = useState({});
 
+  const [presentableData, setPresentableData] = useState([]);
+  const [YAxisWidth, setYAxiswidth] = useState(0)
+
   // Empty the hiddenLines list when trackData changes
   useEffect(() => {
     setHiddenLines([]);
-  }, [track]);
+
+    if (trackData !== null) {
+
+      const [allLaptimes, timestamps] = findLaptimes(trackData);
+
+      const data = createData(allLaptimes, timestamps);
+      setPresentableData(data.slice());
+
+      // Calculate aspect ratio
+      const AR = window.innerWidth / window.innerHeight;
+
+      // Set YAxisWidth based on aspect ratio
+      if (AR > 1) {
+        setYAxiswidth(window.innerWidth * 0.07);
+      } else {
+        setYAxiswidth(window.innerWidth * 0.17);
+      }
+    }
+    
+  }, [track, trackData]);
 
   // Checking if there are any drivers with laptimes for selected track
   if (trackData == null) {
     return (
       <div>
-        There are no statistics to show for this track!
+        NO DATA
       </div>
     );
   }
@@ -26,15 +48,24 @@ const Statistics = ({ track, trackData }) => {
   const data = createData(allLaptimes, timestamps);
   const keys = Object.keys(data[0]);
 
-  
-
   const CustomLegend = ({ payload, onClick }) => {
+
+    let opacityList = [];
+
+    for (let i = 0; i < payload.length; i++) {
+      if (hiddenLines.includes(payload[i]['dataKey'])) {
+        opacityList.push(0.2)
+      } else {
+        opacityList.push(1)
+      }
+    }
+
     return (
       <ul className="custom-legend" style={{ padding: 0, display: 'flex', justifyContent: 'center' }}>
         {payload.map((entry, index) => (
           <li
             key={`item-${index}`}
-            style={{ listStyleType: 'none', marginRight: 20, cursor: 'pointer' }}
+            style={{ listStyleType: 'none', marginRight: 20, cursor: 'pointer', opacity: opacityList[index]}}
             onClick={(e) => onClick(e, entry)}
           >
             <span style={{ color: entry.color }}>{entry.value}</span>
@@ -46,16 +77,41 @@ const Statistics = ({ track, trackData }) => {
 
   const handleLegendClick = (e, entry) => {
     const { value } = entry;
+    
     setHiddenLines((prevHiddenLines) =>
       prevHiddenLines.includes(value)
         ? prevHiddenLines.filter((name) => name !== value)
         : [...prevHiddenLines, value]
     );
+
+    const [allLaptimes, timestamps] = findLaptimes(trackData);
+
+    const dataRefresh = createData(allLaptimes, timestamps);
+    setPresentableData(dataRefresh)
+
+    for (const dict of dataRefresh) {
+      Object.keys(dict).forEach((key) => {
+
+        if (!Number.isFinite(dict[key]) || !hiddenLines.includes(key) && key === value || hiddenLines.includes(key) && key !== value) {
+          delete dict[key]
+        };
+      });
+    }
+
+    let indexesToRemove = [];
+    for (let i = 0; i < dataRefresh.length; i++) {
+      if (Object.keys(dataRefresh[i]).length < 1) {
+        indexesToRemove.push(i);
+      }
+    }
+    const filteredData = dataRefresh.filter((_, index) => !indexesToRemove.includes(index));
+    setPresentableData(filteredData);
+
   };
 
   const renderLineChart = (
     <ResponsiveContainer width="90%" height="90%">
-        <LineChart ref={lineChartRef} data={data}>
+        <LineChart ref={lineChartRef} data={presentableData}>
           <Tooltip
             label="Times" // Customize the tooltip header
             formatter={(value, name) => {
@@ -66,24 +122,25 @@ const Statistics = ({ track, trackData }) => {
             cursor={false}
           />
           <Legend onClick={handleLegendClick} content={CustomLegend}/>
+          <CartesianGrid vertical={false} strokeOpacity={0.7}/>
 
           <XAxis
             dataKey="name"
-            display="none"
             height={0}
           />
 
           <YAxis
-            domain={['dataMin', 'dataMax']} // Use custom domain to show laptime range
+            domain={['auto', 'auto']}
+            
             tickFormatter={(value) => {
               const minutes = Math.floor(value / 60);
               const seconds = (value % 60).toFixed(3).padStart(6, "0");
               return `${minutes.toString().padStart(2, "0")}:${seconds}`;
             }}
-            axisLine={false} // Hide Y-axis line
             tickLine={false} // Hide Y-axis tick lines
-            tick={false}
-            width={0}
+            axisLine={false}
+            tick={{ fill: "rgba(255, 255, 255, 0.7)", fontSize: "0.7em" }}
+            width={YAxisWidth}
           />
 
           {keys.map((key, index) => (
@@ -193,7 +250,6 @@ function createData(allLaptimes, timestamps) {
       }
     }
   }
-
   return data;
 }
 
