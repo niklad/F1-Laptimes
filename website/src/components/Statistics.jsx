@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from "react";
-
 import {
     LineChart,
     Line,
@@ -14,7 +13,7 @@ import {
 const Statistics = ({ track, trackData }) => {
     const lineChartRef = useRef(null);
     const [hiddenLines, setHiddenLines] = useState([]);
-    const [driverColorsState, setDriverColorsState] = useState({});
+    const [driverColorsState] = useState({});
 
     const [presentableData, setPresentableData] = useState([]);
     const [YAxisWidth, setYAxiswidth] = useState(0);
