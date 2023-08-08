@@ -12,16 +12,14 @@ import "../styles/Leaderboard.css";
 // If three or more laptimes are set at the track, the driver with the quickest laptime gets 2 points, the driver with the second quickest laptime gets 1 point, and the driver with the third quickest laptime gets 0 point.
 // Generally, (n-1) points are awarded to the driver with the nth quickest laptime.
 
-// Function to calculate the combined leaderboard points
-
 export function CombinedLeaderboard({ database, trackOptions }) {
     const [combinedLeaderboardPoints, setCombinedLeaderboardPoints] =
         useState(null);
 
     useEffect(() => {
         async function fetchCombinedLeaderboardPoints() {
-            const promises = [];
-            const points = {};
+            let promises = [];
+            let points = {};
 
             for (const trackIndex in trackOptions) {
                 if (trackOptions[trackIndex] === "DRIVER STANDINGS") {
@@ -37,14 +35,22 @@ export function CombinedLeaderboard({ database, trackOptions }) {
                                 resolve();
                                 return;
                             }
-                            const latestLaptimes =
-                                findAndSortLaptimes(trackData);
-                            for (let i = 0; i < latestLaptimes.length; i++) {
+                            let latestLaptimes = findAndSortLaptimes(trackData);
+                            let maxPoints = latestLaptimes.length;
+                            for (
+                                let i = latestLaptimes.length - 1;
+                                i >= 0;
+                                i--
+                            ) {
                                 const driver = latestLaptimes[i].driver;
+                                if (latestLaptimes[i].racingLine) {
+                                    maxPoints -= 1;
+                                    continue;
+                                }
                                 if (points[driver] === undefined) {
                                     points[driver] = 0;
                                 }
-                                points[driver] += latestLaptimes.length - i - 1;
+                                points[driver] += maxPoints - i - 1;
                             }
                             resolve();
                         },
