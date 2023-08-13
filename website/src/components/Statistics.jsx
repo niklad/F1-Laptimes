@@ -40,11 +40,6 @@ const Statistics = ({ track, trackData }) => {
         }
     }, [track, trackData]);
 
-    // Checking if there are any drivers with laptimes for selected track
-    if (trackData == null) {
-        return <div>NO DATA</div>;
-    }
-
     const [allLaptimes, timestamps] = findLaptimes(trackData);
 
     const data = createData(allLaptimes, timestamps);
