@@ -17,6 +17,7 @@ import {
 import AddLaptimeForm from "./components/AddLaptimeForm";
 import CombinedLeaderboard from "./components/CombinedLeaderboard";
 import Statistics from "./components/Statistics";
+import NoTrackData from "./components/NoTrackData";
 
 // Web app's Firebase configuration
 const firebaseConfig = {
@@ -299,6 +300,9 @@ function renderContentFunction(
         }
         switch (displayMode) {
             case "leaderboard":
+                if (!trackData) {
+                    return <NoTrackData />;
+                }
                 return (
                     trackData && (
                         <Leaderboard
@@ -316,6 +320,9 @@ function renderContentFunction(
                     />
                 );
             case "statistics":
+                if (!trackData) {
+                    return <NoTrackData />;
+                }
                 return <Statistics track={track} trackData={trackData} />;
             default:
                 return null;
