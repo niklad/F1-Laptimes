@@ -32,7 +32,7 @@ function formatDiffTime(diffTime, trackData) {
     // Example: +1.226 -> +01.226
     console.log("trackData formatDiffTime", trackData);
 
-    diffTime = diffTime.replace(/\:/g, ".");
+    diffTime = diffTime.replace(/:/g, ".");
 
     // Split the diffTime into seconds and milliseconds, split on the "+" sign and the period
     const diffTimeSplit = diffTime.split(/[+.]/);
