@@ -135,6 +135,8 @@ function App() {
         handleAddLaptime
     );
 
+    useArrowsForNavigation(track, setTrack);
+
     return (
         <div className="App">
             <div className="Background" />
