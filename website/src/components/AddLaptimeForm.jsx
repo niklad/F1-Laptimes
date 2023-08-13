@@ -150,7 +150,6 @@ const AddLaptimeForm = ({ track, trackData, onSubmit }) => {
             <br />
             <label>
                 Racing Line:
-                <br />
                 <input
                     type="checkbox"
                     name="racingLineUsed"
