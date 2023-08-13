@@ -135,6 +135,8 @@ function App() {
         handleAddLaptime
     );
 
+    useArrowsForNavigation(track, setTrack);
+
     return (
         <div className="App">
             <div className="Background" />
@@ -169,6 +171,57 @@ function App() {
 }
 
 export default App;
+
+function useArrowsForNavigation(track, setTrack) {
+    useEffect(() => {
+        const handleKeyDown = (event) => {
+            let currentIndex;
+            let newIndex;
+            switch (event.key) {
+                case "ArrowUp":
+                    currentIndex = trackOptions.indexOf(track);
+                    newIndex =
+                        currentIndex === 0
+                            ? trackOptions.length - 1
+                            : currentIndex - 1;
+                    setTrack(trackOptions[newIndex]);
+                    break;
+                case "ArrowLeft":
+                    currentIndex = trackOptions.indexOf(track);
+                    newIndex =
+                        currentIndex === 0
+                            ? trackOptions.length - 1
+                            : currentIndex - 1;
+                    setTrack(trackOptions[newIndex]);
+                    break;
+                case "ArrowDown":
+                    currentIndex = trackOptions.indexOf(track);
+                    newIndex =
+                        currentIndex === trackOptions.length - 1
+                            ? 0
+                            : currentIndex + 1;
+                    setTrack(trackOptions[newIndex]);
+                    break;
+                case "ArrowRight":
+                    currentIndex = trackOptions.indexOf(track);
+                    newIndex =
+                        currentIndex === trackOptions.length - 1
+                            ? 0
+                            : currentIndex + 1;
+                    setTrack(trackOptions[newIndex]);
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        window.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            window.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [setTrack, track]);
+}
 
 function renderButtonSection(
     displayMode,
