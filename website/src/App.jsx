@@ -18,6 +18,7 @@ import AddLaptimeForm from "./components/AddLaptimeForm";
 import CombinedLeaderboard from "./components/CombinedLeaderboard";
 import Statistics from "./components/Statistics";
 import NoTrackData from "./components/NoTrackData";
+import Game from "./components/Game";
 
 // Web app's Firebase configuration
 const firebaseConfig = {
@@ -82,6 +83,8 @@ function App() {
             : true;
     });
 
+    const [game, setGame] = useState(false);
+
     useEffect(() => {
         localStorage.setItem("track", track);
     }, [track]);
@@ -140,32 +143,38 @@ function App() {
     return (
         <div className="App">
             <div className="Background" />
-            <div className="Content">
-                {track === "DRIVER STANDINGS" ||
-                track === "IMOLA" ||
-                displayMode === "statistics" ? null : (
-                    <img
-                        src={"trackLayouts/" + trackLayoutMap[track]}
-                        alt="track layout"
-                        className="Track-layout"
+            {/* Show content if game === false */}
+            {game === false ? (
+                <div className="Content">
+                    {track === "DRIVER STANDINGS" ||
+                    track === "IMOLA" ||
+                    displayMode === "statistics" ? null : (
+                        <img
+                            src={"trackLayouts/" + trackLayoutMap[track]}
+                            alt="track layout"
+                            className="Track-layout"
+                        />
+                    )}
+                    <TrackSelector
+                        trackOptions={trackOptions}
+                        selectedTrack={track}
+                        onChange={handleTrackChange}
                     />
-                )}
-                <TrackSelector
-                    trackOptions={trackOptions}
-                    selectedTrack={track}
-                    onChange={handleTrackChange}
-                />
-                <div className="Rendered-content">
-                    {renderContent(trackOptions)}
+                    <div className="Rendered-content">
+                        {renderContent(trackOptions)}
+                    </div>
+                    {renderButtonSection(
+                        displayMode,
+                        track,
+                        setShowLaptimeDifference,
+                        showLaptimeDifference,
+                        setDisplayMode,
+                        setGame
+                    )}
                 </div>
-                {renderButtonSection(
-                    displayMode,
-                    track,
-                    setShowLaptimeDifference,
-                    showLaptimeDifference,
-                    setDisplayMode
-                )}
-            </div>
+            ) : (
+                <Game />
+            )}
         </div>
     );
 }
@@ -228,7 +237,8 @@ function renderButtonSection(
     track,
     setShowLaptimeDifference,
     showLaptimeDifference,
-    setDisplayMode
+    setDisplayMode,
+    setGame
 ) {
     return (
         <div className="Buttons">
@@ -304,6 +314,9 @@ function renderButtonSection(
                     )}
                 </button>
             )}
+            {track === "JEDDAH" ? (
+                <button onClick={() => setGame(true)}>GAME</button>
+            ) : null}
         </div>
     );
 }
