@@ -82,8 +82,12 @@ function App() {
             ? JSON.parse(storedShowLaptimeDifference)
             : true;
     });
+    const [game, setGame] = useState(() => {
+        const storedGame = localStorage.getItem("game");
+        return storedGame !== null ? JSON.parse(storedGame) : false;
+    });
 
-    const [game, setGame] = useState(false);
+    // const [game, setGame] = useState(false);
 
     useEffect(() => {
         localStorage.setItem("track", track);
@@ -103,6 +107,10 @@ function App() {
             JSON.stringify(showLaptimeDifference)
         );
     }, [showLaptimeDifference]);
+
+    useEffect(() => {
+        localStorage.setItem("game", JSON.stringify(game));
+    }, [game]);
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
