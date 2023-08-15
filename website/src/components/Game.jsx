@@ -6,6 +6,7 @@ export default function Game() {
     const startCoordinates = { x: -370, y: -1000 };
     const backgroundXRef = useRef(startCoordinates.x);
     const backgroundYRef = useRef(startCoordinates.y);
+    const backgroundRotationRef = useRef(0);
     const keysRef = useRef({});
     let centerPixelColor = useRef("rgb(41, 41, 41)");
 
@@ -31,28 +32,48 @@ export default function Game() {
         const updateCanvas = () => {
             if (centerPixelColor === "rgb(41, 41, 41)") {
                 if (keysRef.current["ArrowLeft"]) {
-                    backgroundXRef.current += 5;
+                    backgroundRotationRef.current += 0.015;
                 } else if (keysRef.current["ArrowRight"]) {
-                    backgroundXRef.current -= 5;
+                    backgroundRotationRef.current -= 0.015;
                 }
                 if (keysRef.current["ArrowUp"]) {
-                    backgroundYRef.current += 5;
+                    const angle = backgroundRotationRef.current;
+                    const dx = Math.sin(angle) * 5;
+                    const dy = Math.cos(angle) * 5;
+                    backgroundXRef.current += dx;
+                    backgroundYRef.current += dy;
                 } else if (keysRef.current["ArrowDown"]) {
-                    backgroundYRef.current -= 5;
+                    const angle = backgroundRotationRef.current;
+                    const dx = Math.sin(angle) * 5;
+                    const dy = -Math.cos(angle) * 5;
+                    backgroundXRef.current += dx;
+                    backgroundYRef.current += dy;
                 }
             } else {
                 setTimeout(() => {
                     // reset the car position after 300ms
                     backgroundXRef.current = startCoordinates.x;
                     backgroundYRef.current = startCoordinates.y;
+                    backgroundRotationRef.current = 0;
                 }, 300);
             }
+
+            // Clear the canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw the background
+            context.save();
+            // Rotate around the center of the canvas
+            context.translate(canvas.width / 2, canvas.height / 2);
+            context.rotate(backgroundRotationRef.current);
+            context.translate(-canvas.width / 2, -canvas.height / 2);
             context.drawImage(
                 backgroundImage,
                 backgroundXRef.current,
                 backgroundYRef.current
             );
+
+            context.restore();
 
             // Get the color of the pixel in the middle of the canvas
             const canvasMiddleX = canvas.width / 2;
