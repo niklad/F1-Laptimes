@@ -3,9 +3,11 @@ import "../styles/Game.css";
 
 export default function Game() {
     const canvasRef = useRef(null);
-    const backgroundXRef = useRef(0);
-    const backgroundYRef = useRef(0);
+    const startCoordinates = { x: -370, y: -1000 };
+    const backgroundXRef = useRef(startCoordinates.x);
+    const backgroundYRef = useRef(startCoordinates.y);
     const keysRef = useRef({});
+    let centerPixelColor = useRef("rgb(41, 41, 41)");
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -17,9 +19,6 @@ export default function Game() {
         backgroundImage.onload = () => {
             canvas.width = 0.4 * window.innerWidth;
             canvas.height = 0.9 * window.innerHeight;
-            // Set the initial position of the background image
-            // backgroundXRef.current = -375;
-            // backgroundYRef.current = -800;
         };
 
         // Load the car image
@@ -30,17 +29,24 @@ export default function Game() {
         };
 
         const updateCanvas = () => {
-            if (keysRef.current["ArrowLeft"]) {
-                backgroundXRef.current += 5;
-            } else if (keysRef.current["ArrowRight"]) {
-                backgroundXRef.current -= 5;
+            if (centerPixelColor === "rgb(41, 41, 41)") {
+                if (keysRef.current["ArrowLeft"]) {
+                    backgroundXRef.current += 5;
+                } else if (keysRef.current["ArrowRight"]) {
+                    backgroundXRef.current -= 5;
+                }
+                if (keysRef.current["ArrowUp"]) {
+                    backgroundYRef.current += 5;
+                } else if (keysRef.current["ArrowDown"]) {
+                    backgroundYRef.current -= 5;
+                }
+            } else {
+                setTimeout(() => {
+                    // reset the car position after 300ms
+                    backgroundXRef.current = startCoordinates.x;
+                    backgroundYRef.current = startCoordinates.y;
+                }, 300);
             }
-            if (keysRef.current["ArrowUp"]) {
-                backgroundYRef.current += 5;
-            } else if (keysRef.current["ArrowDown"]) {
-                backgroundYRef.current -= 5;
-            }
-
             context.clearRect(0, 0, canvas.width, canvas.height);
             context.drawImage(
                 backgroundImage,
@@ -49,11 +55,15 @@ export default function Game() {
             );
 
             // Get the color of the pixel in the middle of the canvas
-            const cX = canvas.width / 2;
-            const cY = canvas.height / 2;
-            const imageData = context.getImageData(cX, cY, 1, 1);
-            let pixelColor = `rgb(${imageData.data[0]}, ${imageData.data[1]}, ${imageData.data[2]})`;
-            console.log(pixelColor);
+            const canvasMiddleX = canvas.width / 2;
+            const canvasMiddleY = canvas.height / 2;
+            const imageData = context.getImageData(
+                canvasMiddleX,
+                canvasMiddleY,
+                1,
+                1
+            );
+            centerPixelColor = `rgb(${imageData.data[0]}, ${imageData.data[1]}, ${imageData.data[2]})`;
             const centerX = canvas.width / 2 - carImage.width / 2;
             const centerY = canvas.height / 2 - carImage.height / 2;
             context.drawImage(carImage, centerX, centerY);
@@ -78,7 +88,6 @@ export default function Game() {
     return (
         <div>
             <canvas ref={canvasRef} id="game" />
-            <p>hello</p>
         </div>
     );
 }
