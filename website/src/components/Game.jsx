@@ -13,7 +13,7 @@ export default function Game() {
 
         // Load the background image
         const backgroundImage = new Image();
-        backgroundImage.src = "game/bilspill-demospor.png";
+        backgroundImage.src = "game/track1.png";
         backgroundImage.onload = () => {
             canvas.width = 0.4 * window.innerWidth;
             canvas.height = 0.9 * window.innerHeight;
@@ -24,7 +24,7 @@ export default function Game() {
 
         // Load the car image
         const carImage = new Image();
-        carImage.src = "game/bilspill-bil-v1-transparent.png";
+        carImage.src = "game/racecar.png";
         carImage.onload = () => {
             requestAnimationFrame(updateCanvas);
         };
