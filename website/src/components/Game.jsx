@@ -44,26 +44,27 @@ export default function Game() {
 
         const updateCanvas = () => {
             if (centerPixelColor !== "rgb(41, 41, 41)") {
+                velocityX = 0;
+                velocityY = 0;
                 setTimeout(() => {
                     // reset the car position after 300ms
                     backgroundXRef.current = startCoordinates.x;
                     backgroundYRef.current = startCoordinates.y;
                     backgroundRotationRef.current = 0;
-                    velocityX = 0;
-                    velocityY = 0;
-                }, 300);
+                }, 600);
             }
 
             if (keysRef.current["ArrowLeft"]) {
                 backgroundRotationRef.current += 0.015;
-                velocityX -= Math.sin(backgroundRotationRef.current) * 0.1;
-
+                velocityX += Math.sin(backgroundRotationRef.current);
+                velocityY += Math.cos(backgroundRotationRef.current);
                 // 0.01 *
                 // Math.log(Math.sqrt(velocityX ** 2 + velocityY ** 2));
                 // velocityY -= Math.cos(backgroundRotationRef.current) * 0.1;
             } else if (keysRef.current["ArrowRight"]) {
                 backgroundRotationRef.current -= 0.015;
-                velocityX += Math.sin(backgroundRotationRef.current) * 0.1;
+                velocityX += Math.sin(backgroundRotationRef.current);
+                velocityY += Math.cos(backgroundRotationRef.current);
                 // 0.01 *
                 // Math.log(Math.sqrt(velocityX ** 2 + velocityY ** 2));
 
@@ -127,11 +128,7 @@ export default function Game() {
 
             // Limit the velocity to the maximum value
             const currentVelocity = Math.sqrt(velocityX ** 2 + velocityY ** 2);
-            if (currentVelocity < MIN_VELOCITY) {
-                // Prevent reverse driving
-                velocityX = 0;
-                velocityY = 0;
-            } else if (currentVelocity > MAX_VELOCITY) {
+            if (currentVelocity > MAX_VELOCITY) {
                 const angle = Math.atan2(velocityY, velocityX);
                 velocityX = Math.cos(angle) * MAX_VELOCITY;
                 velocityY = Math.sin(angle) * MAX_VELOCITY;
