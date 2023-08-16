@@ -3,14 +3,14 @@ import "../styles/Game.css";
 
 export default function Game() {
     const canvasRef = useRef(null);
-    const startCoordinates = { x: -560, y: -1300 };
-    const backgroundXRef = useRef(startCoordinates.x);
-    const backgroundYRef = useRef(startCoordinates.y);
+    const START_COORDINATES = { x: -560, y: -1300 };
+    const backgroundXRef = useRef(START_COORDINATES.x);
+    const backgroundYRef = useRef(START_COORDINATES.y);
     const backgroundRotationRef = useRef(0);
     const keysRef = useRef({});
     const timerRef = useRef(0);
     const bestLaptimeRef = useRef(0.0);
-    let centerPixelColorRef = useRef("rgb(41, 41, 41)");
+    let centerPixelColorRef = useRef("rgb   (41, 41, 41)");
     let velocityRef = useRef({ vx: 0, vy: 0 });
 
     // Define the acceleration and deceleration constants
@@ -47,21 +47,21 @@ export default function Game() {
             const seconds = Math.floor((timestamp - timerRef.current) / 1000);
             const milliseconds = timestamp - timerRef.current - seconds * 1000;
 
-            if (centerPixelColorRef === "rgb(134, 2, 0)") {
+            if (centerPixelColorRef.current === "rgb(134, 2, 0)") {
                 // Update bestLaptime if the current laptime on the format is better
                 const currentLaptime = seconds + milliseconds / 1000;
                 if (currentLaptime < bestLaptimeRef.current) {
                     bestLaptimeRef.current = currentLaptime;
                 }
             }
-            if (centerPixelColorRef !== "rgb(41, 41, 41)") {
+            if (centerPixelColorRef.current !== "rgb(41, 41, 41)") {
                 timerRef.current = 0;
                 setTimeout(() => {
                     velocityRef.current.vy = 0;
                     velocityRef.current.vx = 0;
                     backgroundRotationRef.current = 0;
-                    backgroundXRef.current = startCoordinates.x;
-                    backgroundYRef.current = startCoordinates.y;
+                    backgroundXRef.current = START_COORDINATES.x;
+                    backgroundYRef.current = START_COORDINATES.y;
                 }, 600);
             }
 
@@ -69,12 +69,8 @@ export default function Game() {
                 backgroundRotationRef.current = 0;
             } else if (keysRef.current["ArrowLeft"]) {
                 backgroundRotationRef.current -= STEERING_ACCELERATION;
-                velocityRef.current.vx -=
-                    0.004 * (MAX_VELOCITY - velocityRef.current.vy);
             } else if (keysRef.current["ArrowRight"]) {
                 backgroundRotationRef.current += STEERING_ACCELERATION;
-                velocityRef.current.vx +=
-                    0.006 * (MAX_VELOCITY - velocityRef.current.vy);
             } else {
                 if (velocityRef.current.vx > 0) {
                     velocityRef.current.vx -= BRAKE_DECELERATION;
@@ -103,6 +99,17 @@ export default function Game() {
                     velocityRef.current.vy += GEAR_BRAKE_DECELERATION;
                 }
             }
+
+            // if (keysRef.current["ArrowUp"] && keysRef.current["ArrowLeft"]) {
+            //     velocityRef.current.vx +=
+            //         0.01 * (MAX_VELOCITY - velocityRef.current.vy);
+            // } else if (
+            //     keysRef.current["ArrowUp"] &&
+            //     keysRef.current["ArrowRight"]
+            // ) {
+            //     velocityRef.current.vx -=
+            //         0.01 * (MAX_VELOCITY - velocityRef.current.vy);
+            // }
 
             // Clear the canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -146,7 +153,8 @@ export default function Game() {
                 1,
                 1
             );
-            centerPixelColorRef = `rgb(${imageData.data[0]}, ${imageData.data[1]}, ${imageData.data[2]})`;
+            console.log(centerPixelColorRef.current);
+            centerPixelColorRef.current = `rgb(${imageData.data[0]}, ${imageData.data[1]}, ${imageData.data[2]})`;
 
             const centerX = canvas.width / 2 - carImage.width / 2;
             const centerY = canvas.height / 2 - carImage.height / 2;
@@ -183,7 +191,7 @@ export default function Game() {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, []);
+    }, [START_COORDINATES.x, START_COORDINATES.y]);
 
     return (
         <div>
