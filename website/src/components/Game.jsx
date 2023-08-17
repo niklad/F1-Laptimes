@@ -3,14 +3,15 @@ import "../styles/Game.css";
 
 export default function Game() {
     const canvasRef = useRef(null);
-    const START_COORDINATES = { x: -560, y: -1300 };
-    const backgroundXRef = useRef(START_COORDINATES.x);
-    const backgroundYRef = useRef(START_COORDINATES.y);
+    const START_COORDINATES_REF = useRef({ x: -560, y: -1300 });
+    const backgroundXRef = useRef(START_COORDINATES_REF.current.x);
+    const backgroundYRef = useRef(START_COORDINATES_REF.current.y);
     const backgroundRotationRef = useRef(0);
     const keysRef = useRef({});
     const timerRef = useRef(0);
     const bestLaptimeRef = useRef(0.0);
-    let centerPixelColorRef = useRef("rgb   (41, 41, 41)");
+    const gameStateRef = useRef("idle");
+    let centerPixelColorRef = useRef("rgb (41, 41, 41)");
     let velocityRef = useRef({ vx: 0, vy: 0 });
 
     // Define the acceleration and deceleration constants
@@ -40,29 +41,64 @@ export default function Game() {
             requestAnimationFrame(updateCanvas);
         };
 
-        const updateCanvas = (timestamp) => {
-            if (timerRef.current === 0) {
-                timerRef.current = timestamp;
-            }
-            const seconds = Math.floor((timestamp - timerRef.current) / 1000);
-            const milliseconds = timestamp - timerRef.current - seconds * 1000;
+        let elapsedTime = 0;
 
-            if (centerPixelColorRef.current === "rgb(134, 2, 0)") {
-                // Update bestLaptime if the current laptime on the format is better
-                const currentLaptime = seconds + milliseconds / 1000;
-                if (currentLaptime < bestLaptimeRef.current) {
-                    bestLaptimeRef.current = currentLaptime;
-                }
-            }
-            if (centerPixelColorRef.current !== "rgb(41, 41, 41)") {
-                timerRef.current = 0;
-                setTimeout(() => {
-                    velocityRef.current.vy = 0;
-                    velocityRef.current.vx = 0;
-                    backgroundRotationRef.current = 0;
-                    backgroundXRef.current = START_COORDINATES.x;
-                    backgroundYRef.current = START_COORDINATES.y;
-                }, 600);
+        const updateCanvas = () => {
+            switch (gameStateRef.current) {
+                case "idle":
+                    if (
+                        keysRef.current["ArrowUp"] ||
+                        keysRef.current["ArrowRight"] ||
+                        keysRef.current["ArrowLeft"]
+                    ) {
+                        gameStateRef.current = "running";
+                    }
+                    break;
+                case "running":
+                    elapsedTime = startLap(
+                        timerRef,
+                        centerPixelColorRef,
+                        bestLaptimeRef,
+                        velocityRef,
+                        backgroundRotationRef,
+                        backgroundXRef,
+                        START_COORDINATES_REF,
+                        backgroundYRef,
+                        gameStateRef
+                    );
+                    break;
+                case "exceedingTrackLimits":
+                    timerRef.current = 0;
+                    resetGame(
+                        timerRef,
+                        velocityRef,
+                        backgroundRotationRef,
+                        backgroundXRef,
+                        backgroundYRef,
+                        START_COORDINATES_REF,
+                        gameStateRef
+                    );
+                    setTimeout(() => {
+                        gameStateRef.current = "idle";
+                    }, 600);
+                    break;
+                case "finished":
+                    resetGame(
+                        timerRef,
+                        velocityRef,
+                        backgroundRotationRef,
+                        backgroundXRef,
+                        backgroundYRef,
+                        START_COORDINATES_REF,
+                        gameStateRef
+                    );
+                    setTimeout(() => {
+                        gameStateRef.current = "idle";
+                    }, 600);
+
+                    break;
+                default:
+                    break;
             }
 
             if (velocityRef.current.vy === 0) {
@@ -100,30 +136,13 @@ export default function Game() {
                 }
             }
 
-            // if (keysRef.current["ArrowUp"] && keysRef.current["ArrowLeft"]) {
-            //     velocityRef.current.vx +=
-            //         0.01 * (MAX_VELOCITY - velocityRef.current.vy);
-            // } else if (
-            //     keysRef.current["ArrowUp"] &&
-            //     keysRef.current["ArrowRight"]
-            // ) {
-            //     velocityRef.current.vx -=
-            //         0.01 * (MAX_VELOCITY - velocityRef.current.vy);
-            // }
-
-            // Clear the canvas
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Draw the background
             context.save();
-            // Rotate around the center of the canvas
+
             context.translate(canvas.width / 2, canvas.height / 2);
             context.rotate(-backgroundRotationRef.current);
             context.translate(-canvas.width / 2, -canvas.height / 2);
-
-            // if (velocityRef.current.vy < 0.01) {
-            //     velocityRef.current.vy = 0;
-            // }
 
             backgroundXRef.current +=
                 Math.cos(backgroundRotationRef.current) *
@@ -153,7 +172,6 @@ export default function Game() {
                 1,
                 1
             );
-            console.log(centerPixelColorRef.current);
             centerPixelColorRef.current = `rgb(${imageData.data[0]}, ${imageData.data[1]}, ${imageData.data[2]})`;
 
             const centerX = canvas.width / 2 - carImage.width / 2;
@@ -163,18 +181,10 @@ export default function Game() {
             // Draw the timer
             context.fillStyle = "white";
             context.font = "24px Arial";
-            context.fillText(
-                `${(seconds + milliseconds / 1000).toFixed(3)}`,
-                10,
-                30
-            );
+            context.fillText(`Time: ${elapsedTime.toFixed(3)}`, 10, 30);
 
             // Draw best laptime
-            context.fillText(
-                `Best laptime: ${bestLaptimeRef.current.toFixed(3)}`,
-                10,
-                60
-            );
+            context.fillText(`Best Laptime: ${bestLaptimeRef.current}`, 10, 60);
 
             requestAnimationFrame(updateCanvas);
         };
@@ -191,11 +201,64 @@ export default function Game() {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, [START_COORDINATES.x, START_COORDINATES.y]);
+    }, []);
 
     return (
         <div>
             <canvas ref={canvasRef} id="game" />
         </div>
     );
+}
+
+function updateBestLaptime(bestLaptimeRef, elapsedTime) {
+    if (bestLaptimeRef.current === 0.0) {
+        bestLaptimeRef.current = elapsedTime;
+    } else if (elapsedTime < bestLaptimeRef.current) {
+        bestLaptimeRef.current = elapsedTime;
+    }
+}
+
+function startLap(
+    timerRef,
+    centerPixelColorRef,
+    bestLaptimeRef,
+    velocityRef,
+    backgroundRotationRef,
+    backgroundXRef,
+    START_COORDINATES_REF,
+    backgroundYRef,
+    gameStateRef
+) {
+    const timestamp = performance.now();
+    if (timerRef.current === 0) {
+        timerRef.current = timestamp;
+    }
+    const elapsedTime = (timestamp - timerRef.current) / 1000;
+
+    // let laptimeUpdated = false;
+    console.log(centerPixelColorRef.current);
+    if (centerPixelColorRef.current === "rgb(134, 2, 0)") {
+        updateBestLaptime(bestLaptimeRef, elapsedTime);
+        gameStateRef.current = "finished";
+    } else if (centerPixelColorRef.current !== "rgb(41, 41, 41)") {
+        gameStateRef.current = "exceedingTrackLimits";
+    }
+    return elapsedTime;
+}
+
+function resetGame(
+    timerRef,
+    velocityRef,
+    backgroundRotationRef,
+    backgroundXRef,
+    backgroundYRef,
+    START_COORDINATES_REF,
+    gameStateRef
+) {
+    timerRef.current = 0;
+    velocityRef.current.vy = 0;
+    velocityRef.current.vx = 0;
+    backgroundRotationRef.current = 0;
+    backgroundXRef.current = START_COORDINATES_REF.current.x;
+    backgroundYRef.current = START_COORDINATES_REF.current.y;
 }
