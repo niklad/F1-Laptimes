@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import "../styles/Game.css";
 
 export default function Game() {
@@ -9,11 +9,21 @@ export default function Game() {
     const backgroundRotationRef = useRef(0);
     const keysRef = useRef({});
     const timerRef = useRef(0);
-    const bestLaptimeRef = useRef(0.0);
+    const elapsedTimeRef = useRef(0);
     const gameStateRef = useRef("idle");
     let centerPixelColorRef = useRef("rgb (41, 41, 41)");
     let velocityRef = useRef({ vx: 0, vy: 0 });
-
+    const [personalBestLaptime, setPersonalBestLaptime] = useState(() => {
+        const storedpersonalBestLaptime = localStorage.getItem(
+            "personalBestLaptime"
+        );
+        return storedpersonalBestLaptime !== null
+            ? parseFloat(storedpersonalBestLaptime)
+            : 0.0;
+    });
+    useEffect(() => {
+        localStorage.setItem("personalBestLaptime", personalBestLaptime);
+    }, [personalBestLaptime]);
     // Define the acceleration and deceleration constants
     const THROTTLE_ACCELERATION = 0.05;
     const BRAKE_DECELERATION = 0.1;
@@ -41,8 +51,6 @@ export default function Game() {
             requestAnimationFrame(updateCanvas);
         };
 
-        let elapsedTime = 0;
-
         const updateCanvas = () => {
             switch (gameStateRef.current) {
                 case "idle":
@@ -55,10 +63,12 @@ export default function Game() {
                     }
                     break;
                 case "running":
-                    elapsedTime = startLap(
+                    startLap(
                         timerRef,
+                        elapsedTimeRef,
                         centerPixelColorRef,
-                        bestLaptimeRef,
+                        personalBestLaptime,
+                        setPersonalBestLaptime,
                         velocityRef,
                         backgroundRotationRef,
                         backgroundXRef,
@@ -180,11 +190,16 @@ export default function Game() {
 
             // Draw the timer
             context.fillStyle = "white";
-            context.font = "24px Arial";
-            context.fillText(`Time: ${elapsedTime.toFixed(3)}`, 10, 30);
+            // ADd an arcade font
+            context.font = "24px PressStart2P-Regular";
+            context.fillText(
+                `Time: ${elapsedTimeRef.current.toFixed(3)}`,
+                10,
+                30
+            );
 
             // Draw best laptime
-            context.fillText(`Best Laptime: ${bestLaptimeRef.current}`, 10, 60);
+            context.fillText(`Best Laptime: ${personalBestLaptime}`, 10, 60);
 
             requestAnimationFrame(updateCanvas);
         };
@@ -201,7 +216,7 @@ export default function Game() {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, []);
+    }, [personalBestLaptime]);
 
     return (
         <div>
@@ -210,18 +225,25 @@ export default function Game() {
     );
 }
 
-function updateBestLaptime(bestLaptimeRef, elapsedTime) {
-    if (bestLaptimeRef.current === 0.0) {
-        bestLaptimeRef.current = elapsedTime;
-    } else if (elapsedTime < bestLaptimeRef.current) {
-        bestLaptimeRef.current = elapsedTime;
+function updatePersonalBestLaptime(
+    personalBestLaptime,
+    setPersonalBestLaptime,
+    elapsedTimeRef
+) {
+    if (
+        personalBestLaptime === 0.0 ||
+        elapsedTimeRef.current < personalBestLaptime
+    ) {
+        setPersonalBestLaptime(elapsedTimeRef.current);
     }
 }
 
 function startLap(
     timerRef,
+    elapsedTimeRef,
     centerPixelColorRef,
-    bestLaptimeRef,
+    personalBestLaptime,
+    setPersonalBestLaptime,
     velocityRef,
     backgroundRotationRef,
     backgroundXRef,
@@ -233,17 +255,19 @@ function startLap(
     if (timerRef.current === 0) {
         timerRef.current = timestamp;
     }
-    const elapsedTime = (timestamp - timerRef.current) / 1000;
+    elapsedTimeRef.current = (timestamp - timerRef.current) / 1000;
 
-    // let laptimeUpdated = false;
     console.log(centerPixelColorRef.current);
     if (centerPixelColorRef.current === "rgb(134, 2, 0)") {
-        updateBestLaptime(bestLaptimeRef, elapsedTime);
+        updatePersonalBestLaptime(
+            personalBestLaptime,
+            setPersonalBestLaptime,
+            elapsedTimeRef
+        );
         gameStateRef.current = "finished";
     } else if (centerPixelColorRef.current !== "rgb(41, 41, 41)") {
         gameStateRef.current = "exceedingTrackLimits";
     }
-    return elapsedTime;
 }
 
 function resetGame(
