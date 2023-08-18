@@ -194,6 +194,9 @@ function useArrowsForNavigation(track, setTrack) {
         const handleKeyDown = (event) => {
             let currentIndex;
             let newIndex;
+            if (document.activeElement.tagName === "INPUT") {
+                return;
+            }
             switch (event.key) {
                 case "ArrowUp":
                     currentIndex = trackOptions.indexOf(track);
