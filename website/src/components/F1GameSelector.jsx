@@ -6,10 +6,10 @@ export function F1GameSelector({ f1Game, setf1Game }) {
             <div
                 // Set game to 2021 if it is currently 2023, and vice versa.
                 onClick={() =>
-                    setf1Game(f1Game === "F1 2021" ? "F1 2023" : "F1 2021")
+                    setf1Game(f1Game === "F12023" ? "F12021" : "F12023")
                 }
             >
-                {f1Game}
+                {f1Game === "F12023" ? "F1® 23" : "F1® 21"}
             </div>
         </div>
     );
