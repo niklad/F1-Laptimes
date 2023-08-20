@@ -146,7 +146,7 @@ function App() {
         handleAddLaptime
     );
 
-    useArrowsForNavigation(track, setTrack);
+    useArrowsForNavigation(track, setTrack, game);
 
     return (
         <div className="App">
@@ -189,12 +189,12 @@ function App() {
 
 export default App;
 
-function useArrowsForNavigation(track, setTrack) {
+function useArrowsForNavigation(track, setTrack, game) {
     useEffect(() => {
         const handleKeyDown = (event) => {
             let currentIndex;
             let newIndex;
-            if (document.activeElement.tagName === "INPUT") {
+            if (document.activeElement.tagName === "INPUT" || game === true) {
                 return;
             }
             switch (event.key) {
@@ -240,7 +240,7 @@ function useArrowsForNavigation(track, setTrack) {
         return () => {
             window.removeEventListener("keydown", handleKeyDown);
         };
-    }, [setTrack, track]);
+    }, [setTrack, track, game]);
 }
 
 function renderButtonSection(
@@ -326,7 +326,13 @@ function renderButtonSection(
                 </button>
             )}
             {track === "JEDDAH" ? (
-                <button onClick={() => setGame(true)}>GAME</button>
+                <button onClick={() => setGame(true)}>
+                    <img
+                        className="button-icon"
+                        src="button-icons/gamepad-icon.svg"
+                        alt="game icon"
+                    />
+                </button>
             ) : null}
         </div>
     );
