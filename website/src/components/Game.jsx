@@ -19,18 +19,25 @@ export default function Game() {
     );
 
     // Define the acceleration and deceleration constants
-    const THROTTLE_ACCELERATION = 0.05;
-    const BRAKE_DECELERATION = 0.1;
-    const REVERSE_ACCELERATION = 0.025;
-    const GEAR_BRAKE_DECELERATION = 0.05;
-    const MAX_VELOCITY = 9;
-    const STEERING_ACCELERATION = 0.015;
+    const scaleFactor = 1;
+    const THROTTLE_ACCELERATION = 0.05 / scaleFactor;
+    const BRAKE_DECELERATION = 0.1 / scaleFactor;
+    const REVERSE_ACCELERATION = 0.025 / scaleFactor;
+    const GEAR_BRAKE_DECELERATION = 0.05 / scaleFactor;
+    const MAX_VELOCITY = 10 / scaleFactor;
+    // const STEERING_ACCELERATION = 0.015 / scaleFactor;
+
+    const controls = useRef({
+        throttle: "8",
+        brake: "ArrowDown",
+        steerLeft: "4",
+        steerRight: "6",
+    });
 
     useEffect(() => {
         const canvas = canvasRef.current;
         const context = canvas.getContext("2d");
 
-        // Load the background image
         const backgroundImage = new Image();
         backgroundImage.src = "game/track1.png";
         backgroundImage.onload = () => {
@@ -38,7 +45,6 @@ export default function Game() {
             canvas.height = 0.9 * window.innerHeight;
         };
 
-        // Load the car image
         const carImage = new Image();
         carImage.src = "game/racecar.png";
         carImage.onload = () => {
@@ -49,9 +55,9 @@ export default function Game() {
             switch (gameStateRef.current) {
                 case "idle":
                     if (
-                        keysRef.current["ArrowUp"] ||
-                        keysRef.current["ArrowRight"] ||
-                        keysRef.current["ArrowLeft"]
+                        keysRef.current[controls.current.throttle] ||
+                        keysRef.current[controls.current.steerRight] ||
+                        keysRef.current[controls.current.steerLeft]
                     ) {
                         gameStateRef.current = "running";
                     }
@@ -104,67 +110,32 @@ export default function Game() {
                     break;
             }
 
-            if (velocityRef.current.vy === 0) {
-                backgroundRotationRef.current = 0;
-            } else if (keysRef.current["ArrowLeft"]) {
-                backgroundRotationRef.current -= STEERING_ACCELERATION;
-            } else if (keysRef.current["ArrowRight"]) {
-                backgroundRotationRef.current += STEERING_ACCELERATION;
-            } else {
-                if (velocityRef.current.vx > 0) {
-                    velocityRef.current.vx -= BRAKE_DECELERATION;
-                } else if (velocityRef.current.vx < 0) {
-                    velocityRef.current.vx += BRAKE_DECELERATION;
-                }
-            }
-
-            if (keysRef.current["ArrowUp"]) {
-                velocityRef.current.vy += THROTTLE_ACCELERATION;
-                if (velocityRef.current.vy >= MAX_VELOCITY) {
-                    velocityRef.current.vy = MAX_VELOCITY;
-                }
-            } else if (keysRef.current["ArrowDown"]) {
-                if (velocityRef.current.vy > 0) {
-                    velocityRef.current.vy -= BRAKE_DECELERATION;
-                } else if (velocityRef.current.vy < 0) {
-                    velocityRef.current.vy -= REVERSE_ACCELERATION;
-                } else {
-                    velocityRef.current.vy = 0;
-                }
-            } else {
-                if (velocityRef.current.vy > 0) {
-                    velocityRef.current.vy -= GEAR_BRAKE_DECELERATION;
-                } else if (velocityRef.current.vy < 0) {
-                    velocityRef.current.vy += GEAR_BRAKE_DECELERATION;
-                }
-            }
+            handleControls(
+                keysRef,
+                controls,
+                velocityRef,
+                backgroundRotationRef,
+                MAX_VELOCITY,
+                BRAKE_DECELERATION,
+                THROTTLE_ACCELERATION,
+                REVERSE_ACCELERATION,
+                GEAR_BRAKE_DECELERATION
+            );
 
             context.clearRect(0, 0, canvas.width, canvas.height);
 
-            context.save();
+            context.scale(scaleFactor, scaleFactor);
 
-            context.translate(canvas.width / 2, canvas.height / 2);
-            context.rotate(-backgroundRotationRef.current);
-            context.translate(-canvas.width / 2, -canvas.height / 2);
-
-            backgroundXRef.current +=
-                Math.cos(backgroundRotationRef.current) *
-                    velocityRef.current.vx -
-                Math.sin(backgroundRotationRef.current) *
-                    velocityRef.current.vy;
-            backgroundYRef.current +=
-                Math.sin(backgroundRotationRef.current) *
-                    velocityRef.current.vx +
-                Math.cos(backgroundRotationRef.current) *
-                    velocityRef.current.vy;
-
-            context.drawImage(
-                backgroundImage,
-                backgroundXRef.current,
-                backgroundYRef.current
+            renderBackground(
+                context,
+                canvas,
+                scaleFactor,
+                backgroundRotationRef,
+                backgroundXRef,
+                velocityRef,
+                backgroundYRef,
+                backgroundImage
             );
-
-            context.restore();
 
             // Get the color of the pixel in the middle of the canvas
             const canvasMiddleX = canvas.width / 2;
@@ -177,22 +148,16 @@ export default function Game() {
             );
             centerPixelColorRef.current = `rgb(${imageData.data[0]}, ${imageData.data[1]}, ${imageData.data[2]})`;
 
-            const centerX = canvas.width / 2 - carImage.width / 2;
-            const centerY = canvas.height / 2 - carImage.height / 2;
-            context.drawImage(carImage, centerX, centerY);
+            renderCar(canvas, carImage, context, scaleFactor);
+            context.scale(1 / scaleFactor, 1 / scaleFactor);
 
-            // Draw the timer
-            context.fillStyle = "white";
-            // ADd an arcade font
-            context.font = "24px PressStart2P-Regular";
-            context.fillText(
-                `Time: ${elapsedTimeRef.current.toFixed(3)}`,
-                10,
-                30
+            resetPersonalBestLaptimeButton(
+                context,
+                canvas,
+                personalBestLaptimeRef
             );
 
-            // Draw best laptime
-            context.fillText(`Best Laptime: ${personalBestLaptime}`, 10, 60);
+            displayTimeInfo(context, elapsedTimeRef, personalBestLaptimeRef);
 
             requestAnimationFrame(updateCanvas);
         };
@@ -209,7 +174,15 @@ export default function Game() {
             window.removeEventListener("keydown", handleKeyDown);
             window.removeEventListener("keyup", handleKeyUp);
         };
-    }, [personalBestLaptime]);
+    }, [
+        BRAKE_DECELERATION,
+        GEAR_BRAKE_DECELERATION,
+        MAX_VELOCITY,
+        THROTTLE_ACCELERATION,
+        REVERSE_ACCELERATION,
+        controls,
+        personalBestLaptimeRef,
+    ]);
 
     return (
         <div>
@@ -218,12 +191,161 @@ export default function Game() {
     );
 }
 
-function updatePersonalBestLaptime(
-    personalBestLaptime,
-    setPersonalBestLaptime,
-    elapsedTimeRef
+function renderCar(canvas, carImage, context, scaleFactor) {
+    const centerX = canvas.width / 2 - carImage.width / 2;
+    const centerY = canvas.height / 2 - carImage.height / 2;
+    context.drawImage(carImage, centerX / scaleFactor, centerY / scaleFactor);
+}
+
+function resetPersonalBestLaptimeButton(
+    context,
+    canvas,
+    personalBestLaptimeRef
+) {
+    context.fillStyle = "white";
+    context.fillRect(10, 90, 150, 30);
+    context.fillStyle = "black";
+    context.font = "24px PressStart2P-Regular";
+    context.fillText("Reset Laptime", 10, 110);
+
+    // Check if the button is clicked
+    canvas.addEventListener("click", (event) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = event.clientX - rect.left;
+        const y = event.clientY - rect.top;
+        if (x >= 10 && x <= 160 && y >= 90 && y <= 120) {
+            personalBestLaptimeRef.current = 0.0;
+            localStorage.setItem(
+                "personalBestLaptime",
+                personalBestLaptimeRef.current
+            );
+        }
+    });
+}
+
+function renderBackground(
+    context,
+    canvas,
+    scaleFactor,
+    backgroundRotationRef,
+    backgroundXRef,
+    velocityRef,
+    backgroundYRef,
+    backgroundImage
+) {
+    context.save();
+    // Rotate around the center of the canvas
+    context.translate(
+        canvas.width / (2 * scaleFactor),
+        canvas.height / (2 * scaleFactor)
+    );
+    context.rotate(-backgroundRotationRef.current);
+    context.translate(
+        -canvas.width / (2 * scaleFactor),
+        -canvas.height / (2 * scaleFactor)
+    );
+
+    backgroundXRef.current +=
+        Math.cos(backgroundRotationRef.current) * velocityRef.current.vx -
+        Math.sin(backgroundRotationRef.current) * velocityRef.current.vy;
+    backgroundYRef.current +=
+        Math.sin(backgroundRotationRef.current) * velocityRef.current.vx +
+        Math.cos(backgroundRotationRef.current) * velocityRef.current.vy;
+
+    context.drawImage(
+        backgroundImage,
+        backgroundXRef.current,
+        backgroundYRef.current
+    );
+
+    context.restore();
+}
+
+function handleControls(
+    keysRef,
+    controls,
+    velocityRef,
+    backgroundRotationRef,
+    MAX_VELOCITY,
+    BRAKE_DECELERATION,
+    THROTTLE_ACCELERATION,
+    REVERSE_ACCELERATION,
+    GEAR_BRAKE_DECELERATION
 ) {
     if (
+        keysRef.current[controls.current.steerLeft] ||
+        keysRef.current[controls.current.steerRight]
+    ) {
+        if (velocityRef.current.vy === 0) {
+            backgroundRotationRef.current = 0;
+        } else if (keysRef.current[controls.current.steerLeft]) {
+            backgroundRotationRef.current -=
+                // (0.03 / (1.5 * MAX_VELOCITY)) *
+                // (1.5 * MAX_VELOCITY - velocityRef.current.vy);
+                0.004 *
+                Math.sqrt(
+                    Math.abs(velocityRef.current.vy) *
+                        (MAX_VELOCITY - 0.85 * velocityRef.current.vy)
+                );
+        }
+        if (keysRef.current[controls.current.steerRight]) {
+            backgroundRotationRef.current +=
+                // (0.03 / (1.5 * MAX_VELOCITY)) *
+                // (1.5 * MAX_VELOCITY - velocityRef.current.vy);
+                0.004 *
+                Math.sqrt(
+                    Math.abs(velocityRef.current.vy) *
+                        (MAX_VELOCITY - 0.85 * velocityRef.current.vy)
+                );
+        }
+    } else {
+        if (velocityRef.current.vx > 0) {
+            velocityRef.current.vx -= 2 * BRAKE_DECELERATION;
+        } else if (velocityRef.current.vx < 0) {
+            velocityRef.current.vx += 2 * BRAKE_DECELERATION;
+        }
+    }
+
+    if (
+        keysRef.current[controls.current.throttle] ||
+        keysRef.current[controls.current.brake]
+    ) {
+        if (keysRef.current[controls.current.throttle]) {
+            velocityRef.current.vy += THROTTLE_ACCELERATION;
+            if (velocityRef.current.vy >= MAX_VELOCITY) {
+                velocityRef.current.vy = MAX_VELOCITY;
+            }
+        }
+        if (
+            keysRef.current[controls.current.brake] ||
+            keysRef.current["ArrowDown"]
+        ) {
+            if (velocityRef.current.vy > 0) {
+                velocityRef.current.vy -= BRAKE_DECELERATION;
+            } else if (velocityRef.current.vy < 0) {
+                velocityRef.current.vy -= REVERSE_ACCELERATION;
+            } else {
+                velocityRef.current.vy = 0;
+            }
+        }
+    } else {
+        if (velocityRef.current.vy > 0) {
+            velocityRef.current.vy -= GEAR_BRAKE_DECELERATION;
+        } else if (velocityRef.current.vy < 0) {
+            velocityRef.current.vy += GEAR_BRAKE_DECELERATION;
+        }
+    }
+}
+
+function displayTimeInfo(context, elapsedTimeRef, personalBestLaptimeRef) {
+    context.fillStyle = "white";
+    // ADd an arcade font
+    context.font = "24px PressStart2P-Regular";
+    context.fillText(`Time: ${elapsedTimeRef.current.toFixed(3)}`, 10, 30);
+
+    // Draw best laptime
+    context.fillText(`Best Laptime: ${personalBestLaptimeRef.current}`, 10, 60);
+}
 
 function updatePersonalBestLaptime(personalBestLaptimeRef, elapsedTimeRef) {
     if (
