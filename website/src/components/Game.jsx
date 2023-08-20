@@ -344,7 +344,11 @@ function displayTimeInfo(context, elapsedTimeRef, personalBestLaptimeRef) {
     context.fillText(`Time: ${elapsedTimeRef.current.toFixed(3)}`, 10, 30);
 
     // Draw best laptime
-    context.fillText(`Best Laptime: ${personalBestLaptimeRef.current}`, 10, 60);
+    context.fillText(
+        `Best Laptime: ${personalBestLaptimeRef.current.toFixed(3)}`,
+        10,
+        60
+    );
 }
 
 function updatePersonalBestLaptime(personalBestLaptimeRef, elapsedTimeRef) {
