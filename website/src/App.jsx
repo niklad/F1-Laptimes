@@ -18,6 +18,7 @@ import AddLaptimeForm from "./components/AddLaptimeForm";
 import CombinedLeaderboard from "./components/CombinedLeaderboard";
 import Statistics from "./components/Statistics";
 import NoTrackData from "./components/NoTrackData";
+import F1GameSelector from "./components/F1GameSelector";
 
 // Web app's Firebase configuration
 const firebaseConfig = {
@@ -82,6 +83,11 @@ function App() {
             : true;
     });
 
+    const [f1Game, setf1Game] = useState(() => {
+        const storedf1Game = localStorage.getItem("f1Game");
+        return storedf1Game !== null ? storedf1Game : "F1 2021";
+    });
+
     useEffect(() => {
         localStorage.setItem("track", track);
     }, [track]);
@@ -100,6 +106,10 @@ function App() {
             JSON.stringify(showLaptimeDifference)
         );
     }, [showLaptimeDifference]);
+
+    useEffect(() => {
+        localStorage.setItem("f1Game", f1Game);
+    }, [f1Game]);
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
@@ -150,6 +160,7 @@ function App() {
                         className="Track-layout"
                     />
                 )}
+                <F1GameSelector f1Game={f1Game} setf1Game={setf1Game} />
                 <TrackSelector
                     trackOptions={trackOptions}
                     selectedTrack={track}
