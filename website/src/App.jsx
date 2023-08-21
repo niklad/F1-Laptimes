@@ -19,6 +19,7 @@ import CombinedLeaderboard from "./components/CombinedLeaderboard";
 import Statistics from "./components/Statistics";
 import NoTrackData from "./components/NoTrackData";
 import Game from "./components/Game";
+import F1GameSelector from "./components/F1GameSelector";
 
 // Web app's Firebase configuration
 const firebaseConfig = {
@@ -89,6 +90,11 @@ function App() {
 
     // const [game, setGame] = useState(false);
 
+    const [f1Game, setf1Game] = useState(() => {
+        const storedf1Game = localStorage.getItem("f1Game");
+        return storedf1Game !== null ? storedf1Game : "F1 2023";
+    });
+
     useEffect(() => {
         localStorage.setItem("track", track);
     }, [track]);
@@ -112,18 +118,23 @@ function App() {
         localStorage.setItem("game", JSON.stringify(game));
     }, [game]);
 
+    useEffect(() => {
+        localStorage.setItem("f1Game", f1Game);
+    }, [f1Game]);
+
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
+    // get the database at the game given by f1Game
     const database = getDatabase(app);
 
     // Set the trackData to be the data in the database at the key of the track name, e.g. "SPA".
     useEffect(() => {
-        const trackRef = ref(database, track);
+        const trackRef = ref(database, `${f1Game}/${track}`);
         onValue(trackRef, (snapshot) => {
             const data = snapshot.val();
             setTrackData(data);
         });
-    }, [database, track]);
+    }, [database, f1Game, track]);
 
     // Define a function to handle changes to the selected track
     const handleTrackChange = (event) => {
@@ -134,7 +145,8 @@ function App() {
         database,
         setTrackData,
         setTrack,
-        setDisplayMode
+        setDisplayMode,
+        f1Game
     );
 
     const renderContent = renderContentFunction(
@@ -143,7 +155,8 @@ function App() {
         displayMode,
         trackData,
         showLaptimeDifference,
-        handleAddLaptime
+        handleAddLaptime,
+        f1Game
     );
 
     useArrowsForNavigation(track, setTrack, game);
@@ -163,6 +176,7 @@ function App() {
                             className="Track-layout"
                         />
                     )}
+                    <F1GameSelector f1Game={f1Game} setf1Game={setf1Game} />
                     <TrackSelector
                         trackOptions={trackOptions}
                         selectedTrack={track}
@@ -342,16 +356,17 @@ function handleAddLaptimeFunction(
     database,
     setTrackData,
     setTrack,
-    setDisplayMode
+    setDisplayMode,
+    f1Game
 ) {
     return (track, driverName, laptime, racingLineUsed) => {
         const timestamp = new Date().toISOString().replace(/[-:.]/g, "_");
-        update(ref(database, `${track}/${driverName}/${timestamp}`), {
+        update(ref(database, `${f1Game}/${track}/${driverName}/${timestamp}`), {
             LAPTIME: laptime,
             RACING_LINE: racingLineUsed,
         })
             .then(() => {
-                return get(ref(database, track));
+                return get(ref(database, `${f1Game}/${track}`));
             })
             .then((snapshot) => {
                 setTrackData(snapshot.val());
@@ -370,7 +385,8 @@ function renderContentFunction(
     displayMode,
     trackData,
     showLaptimeDifference,
-    handleAddLaptime
+    handleAddLaptime,
+    f1Game
 ) {
     return (trackOptions) => {
         if (track === "DRIVER STANDINGS") {
@@ -378,6 +394,7 @@ function renderContentFunction(
                 <CombinedLeaderboard
                     database={database}
                     trackOptions={trackOptions}
+                    f1Game={f1Game}
                 />
             );
         }

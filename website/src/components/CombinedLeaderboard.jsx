@@ -12,7 +12,7 @@ import "../styles/Leaderboard.css";
 // If three or more laptimes are set at the track, the driver with the quickest laptime gets 2 points, the driver with the second quickest laptime gets 1 point, and the driver with the third quickest laptime gets 0 point.
 // Generally, (n-1) points are awarded to the driver with the nth quickest laptime.
 
-export function CombinedLeaderboard({ database, trackOptions }) {
+export function CombinedLeaderboard({ database, trackOptions, f1Game }) {
     const [combinedLeaderboardPoints, setCombinedLeaderboardPoints] =
         useState(null);
 
@@ -25,7 +25,10 @@ export function CombinedLeaderboard({ database, trackOptions }) {
                 if (trackOptions[trackIndex] === "DRIVER STANDINGS") {
                     continue;
                 }
-                const trackRef = ref(database, trackOptions[trackIndex]);
+                const trackRef = ref(
+                    database,
+                    `${f1Game}/${trackOptions[trackIndex]}`
+                );
                 const promise = new Promise((resolve, reject) => {
                     onValue(
                         trackRef,
@@ -66,7 +69,7 @@ export function CombinedLeaderboard({ database, trackOptions }) {
         }
 
         fetchCombinedLeaderboardPoints();
-    }, [database, trackOptions]);
+    }, [database, trackOptions, f1Game]);
 
     if (!combinedLeaderboardPoints) {
         return <div>Loading...</div>;
