@@ -1,3 +1,10 @@
+@font-face {
+    font-family: "Formula One Bold";
+    src: url("../styles/Formula1-Bold.ttf") format("truetype");
+    font-weight: bold;
+    font-style: normal;
+}
+
 canvas {
     border: 1px solid #ffffff;
 }

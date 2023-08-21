@@ -157,7 +157,12 @@ export default function Game() {
                 personalBestLaptimeRef
             );
 
-            displayTimeInfo(context, elapsedTimeRef, personalBestLaptimeRef);
+            displayTimeInfo(
+                context,
+                elapsedTimeRef,
+                personalBestLaptimeRef,
+                canvas
+            );
 
             requestAnimationFrame(updateCanvas);
         };
@@ -203,10 +208,9 @@ function resetPersonalBestLaptimeButton(
     personalBestLaptimeRef
 ) {
     context.fillStyle = "white";
-    context.fillRect(10, 90, 150, 30);
     context.fillStyle = "black";
-    context.font = "24px PressStart2P-Regular";
-    context.fillText("Reset Laptime", 10, 110);
+    context.font = "20px Formula One Bold";
+    context.fillText("Reset Best Laptime", 10, canvas.height - 20);
 
     // Check if the button is clicked
     canvas.addEventListener("click", (event) => {
@@ -280,8 +284,6 @@ function handleControls(
             backgroundRotationRef.current = 0;
         } else if (keysRef.current[controls.current.steerLeft]) {
             backgroundRotationRef.current -=
-                // (0.03 / (1.5 * MAX_VELOCITY)) *
-                // (1.5 * MAX_VELOCITY - velocityRef.current.vy);
                 0.004 *
                 Math.sqrt(
                     Math.abs(velocityRef.current.vy) *
@@ -290,8 +292,6 @@ function handleControls(
         }
         if (keysRef.current[controls.current.steerRight]) {
             backgroundRotationRef.current +=
-                // (0.03 / (1.5 * MAX_VELOCITY)) *
-                // (1.5 * MAX_VELOCITY - velocityRef.current.vy);
                 0.004 *
                 Math.sqrt(
                     Math.abs(velocityRef.current.vy) *
@@ -337,17 +337,26 @@ function handleControls(
     }
 }
 
-function displayTimeInfo(context, elapsedTimeRef, personalBestLaptimeRef) {
+function displayTimeInfo(
+    context,
+    elapsedTimeRef,
+    personalBestLaptimeRef,
+    canvas
+) {
     context.fillStyle = "white";
-    // ADd an arcade font
-    context.font = "24px PressStart2P-Regular";
-    context.fillText(`Time: ${elapsedTimeRef.current.toFixed(3)}`, 10, 30);
-
-    // Draw best laptime
+    context.font = "20px Formula One Bold";
+    // Place in bottom left corner
     context.fillText(
-        `Best Laptime: ${personalBestLaptimeRef.current.toFixed(3)}`,
-        10,
-        60
+        `${elapsedTimeRef.current.toFixed(3)}`,
+        // center horizontally
+        canvas.width / 2 - 35,
+        canvas.height - 40
+    );
+
+    context.fillText(
+        `Best: ${personalBestLaptimeRef.current.toFixed(3)}`,
+        canvas.width / 2 - 70,
+        canvas.height - 20
     );
 }
 
